@@ -19,8 +19,8 @@ function updateUser(id, user){
 };
 
 
-function getAllPosts(){
-    return knex("Users").select("*");
+function getAllPostsOfUser(user_id){
+    return knex("Posts").where("owner_id",user_id).get();
 }
 
 function createPost(post){
@@ -31,8 +31,24 @@ function deletePost(post_id){
     return knex("Posts").where("post_id", post_id).del();
 };
 
-function updateUser(post_id, post){
+function updatePost(post_id, post){
     return knex("Posts").where("post_id", post_id).update(post);
+};
+
+function getAllCommentsOfUser(user_id){
+    return knex("Comments").where("use_id",user_id).get();
+}
+
+function createComment(comment){
+    return knex("Comments").insert(comment);
+};
+
+function deleteComment(comment_id){
+    return knex("Comments").where("comment_id", comment_id).del();
+};
+
+function updateComment(comment_id, comment){
+    return knex("Comments").where("comment_id", comment_id).update(comment);
 };
 
 
@@ -45,8 +61,13 @@ module.exports = {
     updateUser,
 
     createPost,
-    getAllPosts,
+    getAllPostsOfUser,
     deletePost,
-    updatePost
+    updatePost,
+
+    createComment,
+    getAllCommentsOfUser,
+    deleteComment,
+    updateComment
 
 }

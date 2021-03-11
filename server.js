@@ -24,9 +24,6 @@ app.delete("/users/deleteUser/:id", async (req, res) => {
     res.status(200).json({success:true})
 });
 
-app.get("/", async (req, res) => {
-    res.status(200).json({success:true})
-});
 
 app.put("/users/updateUser/:id",async(req,res) =>{
     await db.updateUser(req.params.id);
@@ -34,29 +31,57 @@ app.put("/users/updateUser/:id",async(req,res) =>{
 });
 
 
-app.get("/users/getAllPosts", async (req, res) => {
-    const posts = await db.getAllPosts();
-    res.status(200).json({posts})
-});
-
-// note to deal with case where users try to sign up with the same id
-app.post("/users/createPost", async (req, res) =>{
-    const result = await db.createPost(req.body);
-    res.status(200).json({id: result[0]});
-});
-
-app.delete("/users/deletePost/:post_id", async (req, res) => {
-    // const result = await db.getAllUsers(req.params.id);
-    await db.deletePost(req.params.id);
-    res.status(200).json({success:true})
-});
-
 app.get("/", async (req, res) => {
     res.status(200).json({success:true})
 });
 
-app.put("/users/updatePost/:id",async(req,res) =>{
-    await db.updatePost(req.params.id);
+
+
+
+app.get("/post/getAllPosts/:user_id", async (req, res) => {
+    const posts = await db.getAllPostsOfUser(req.params.user_id);
+    res.status(200).json({posts})
+});
+
+// note to deal with case where users try to sign up with the same id
+app.post("/post/createPost", async (req, res) =>{
+    const result = await db.createPost(req.body);
+    res.status(200).json({id: result[0]});
+});
+
+app.delete("/post/deletePost/:post_id", async (req, res) => {
+    // const result = await db.getAllUsers(req.params.id);
+    await db.deletePost(req.params.post_id);
+    res.status(200).json({success:true})
+});
+
+
+app.put("/post/updatePost/:post_id",async(req,res) =>{
+    await db.updatePost(req.params.post_id);
+    res.status(200).json({success:true})
+});
+
+
+
+app.get("/post/getAllComments/:user_id", async (req, res) => {
+    const posts = await db.getAllCommentsOfUser(req.params.user_id);
+    res.status(200).json({posts})
+});
+
+app.post("/comment/createComment", async (req, res) =>{
+    const result = await db.createComment(req.body);
+    res.status(200).json({id: result[0]});
+});
+
+app.delete("/comment/deleteComment/:comment_id", async (req, res) => {
+    // const result = await db.getAllUsers(req.params.id);
+    await db.deletePost(req.params.comment_id);
+    res.status(200).json({success:true})
+});
+
+
+app.put("/comment/updateComment/:comment_id",async(req,res) =>{
+    await db.updatePost(req.params.comment_id);
     res.status(200).json({success:true})
 });
 
