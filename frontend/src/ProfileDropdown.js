@@ -6,6 +6,10 @@ class ProfileDropdown extends Component {
     this.props.toggle(); 
   };
 
+  handleLogout = () => {
+    this.props.signout(); 
+  };
+
   render() {
     return ( 
       <div>
@@ -18,7 +22,7 @@ class ProfileDropdown extends Component {
             <a href="#" class="profile-dropdown-items"> My Profile  </a> 
             <a href="#" class="profile-dropdown-items"> My Posts </a>
             <a href="#" class="profile-dropdown-items"> Settings </a> 
-            <a href="#" class="profile-dropdown-items"> Logout </a>
+            <a href="#" onClick={this.handleLogout} class="profile-dropdown-items"> Logout </a>
           </div>
         </div>
       </div>
