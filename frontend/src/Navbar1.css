@@ -34,6 +34,7 @@ code {
   padding: 0 10px;
   float: right;
   font-size: 15px;
+  outline: none;
 }
 
 #signin-button, #create-post-button {
@@ -56,7 +57,7 @@ code {
   text-align: center;
 }
 #nav-searchbar {
-  height: 25px;
+  height: 30px;
   border: white solid 3px;
   margin: 10px 5px;
   padding: 0 10px;
@@ -91,6 +92,7 @@ p {
   position: relative; 
   z-index: 20; 
   background-color: #7BA3D7;
+  cursor: pointer;
 }
 
 #create-post-plus-icon {
