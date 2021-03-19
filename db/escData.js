@@ -14,14 +14,16 @@ function deleteUser(id){
     return knex("Users").where("id", id).del();
 };
  
-function updateUser(id, user){
-    return knex("Users").where("id", id).update(user);
+function updateUser(user){
+    console.log(user);
+    const ids = user.id;
+    knex("Users").where("id", ids).update({"username": user.username});
+    return knex("Users").where("id", ids).update({"location": user.location});
 };
 
 
 
-
-
+///////////////////////////////////////////
 
 function getAllPostsOfUser(user_id){
     return knex("Posts").where("owner_id",user_id).get();
@@ -39,10 +41,7 @@ function updatePost(post_id, post){
     return knex("Posts").where("post_id", post_id).update(post);
 };
 
-
-
-
-
+///////////////////////////////////////////
 
 function getAllCommentsOfUser(user_id){
     return knex("Comments").where("use_id",user_id).get();
