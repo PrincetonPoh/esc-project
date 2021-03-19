@@ -32,9 +32,26 @@ function updateUser(user){
 
 ///////////////////////////////////////////
 
-function getAllPostsOfUser(user_id){
-    return knex("Posts").where("owner_id",user_id).get();
+function SearchPostsBasedOnOwner_id(owner_id){
+    return knex("Posts").where("owner_id",owner_id).get("postTitle");
 }
+function SearchPostsBasedOnDataOfCreation(dataOfCreation){
+    return knex("Posts").where("dataOfCreation",dataOfCreation).get("postTitle");
+}
+function SearchPostsBasedOnPostalCode(postalCode){
+    return knex("Posts").where("postalCode",postalCode).get("postTitle");
+}
+function DisplayPostsDetailsBasedOnPost_id(post_id){
+    return knex("Posts").where("post_id",postid).get();
+}
+function DisplayAttendUserListsOfThePost(post_id){
+    return knex("attendUsers").where("post_id",postid).get();
+}
+function CreateUserListsOfThePost(post_id,user_information){
+    return knex("attendUsers").where("post_id",post_id).insert(user_information);
+};
+
+
 
 function createPost(post){
     return knex("Posts").insert(post);
@@ -75,8 +92,14 @@ module.exports = {
     deleteUser,
     updateUser,
 
+    SearchPostsBasedOnOwner_id,
+    SearchPostsBasedOnDataOfCreation,
+    SearchPostsBasedOnPostalCode,
+    DisplayPostsDetailsBasedOnPost_id,
+    DisplayAttendUserListsOfThePost,
+    CreateUserListsOfThePost,
     createPost,
-    getAllPostsOfUser,
+    
     deletePost,
     updatePost,
 
