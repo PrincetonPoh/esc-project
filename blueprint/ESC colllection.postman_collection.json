@@ -25,19 +25,51 @@
 			"response": []
 		},
 		{
-			"name": "get all posts",
+			"name": "search all posts",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:1337/users/getAllPosts",
+					"raw": "localhost:1337/posts/searchAllPosts",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
-						"users",
-						"getAllPosts"
+						"posts",
+						"searchAllPosts"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search post by owner id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1337/posts/SearchPostsBasedOn?owner_id=321",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"posts",
+						"SearchPostsBasedOn"
+					],
+					"query": [
+						{
+							"key": "owner_id",
+							"value": "321"
+						}
 					]
 				}
 			},
@@ -50,7 +82,12 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": 2,\n    \"username\": \"wanghan\",\n    \"location\": 670111\n}"
+					"raw": "{\n    \"user_id\": 1,\n    \"phoneNumber\": 12344321,\n    \"userName\": \"princeton\",\n    \"emailAddress\": \"prince@gmail.com\",\n    \"password\": \"asd123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
 					"raw": "localhost:1337/users/createUser",
@@ -73,16 +110,21 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": 2,\n    \"username\": \"wanghan\",\n    \"location\": 670111\n}"
+					"raw": "{\n    \"post_id\": 2,\n    \"owner_id\": 321,\n    \"postTitle\": \"gooood\",\n    \"dateOfCreation\": 888888,\n    \"postalCode\": 670222,\n    \"description\": \"pns is great today!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "localhost:1337/users/createPost",
+					"raw": "localhost:1337/posts/createPost",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
-						"users",
+						"posts",
 						"createPost"
 					]
 				}
@@ -99,7 +141,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:1337/users/deleteUser/?id=2",
+					"raw": "localhost:1337/users/deleteUser/?user_id=1",
 					"host": [
 						"localhost"
 					],
@@ -111,8 +153,8 @@
 					],
 					"query": [
 						{
-							"key": "id",
-							"value": "2"
+							"key": "user_id",
+							"value": "1"
 						}
 					]
 				}
