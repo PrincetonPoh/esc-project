@@ -19,6 +19,10 @@ function updateUser(id, user){
 };
 
 
+
+
+
+
 function getAllPostsOfUser(user_id){
     return knex("Posts").where("owner_id",user_id).get();
 }
@@ -34,6 +38,11 @@ function deletePost(post_id){
 function updatePost(post_id, post){
     return knex("Posts").where("post_id", post_id).update(post);
 };
+
+
+
+
+
 
 function getAllCommentsOfUser(user_id){
     return knex("Comments").where("use_id",user_id).get();
