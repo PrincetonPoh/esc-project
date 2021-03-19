@@ -3,22 +3,29 @@ const knex = require("./knex");
 
 
 function getAllUsers(){
-    return knex("Users").select("*");
+    return knex("users").select("*");
 }
 
 function createUser(user){
-    return knex("Users").insert(user);
+    return knex("users").insert(user);
 };
 
-function deleteUser(id){
-    return knex("Users").where("id", id).del();
+function deleteUser(user_id){
+    return knex("users").where("user_id", user_id).del();
 };
  
 function updateUser(user){
     console.log(user);
-    const ids = user.id;
-    knex("Users").where("id", ids).update({"username": user.username});
-    return knex("Users").where("id", ids).update({"location": user.location});
+    const ids = user.user_id;
+    return knex("users")
+            .where("user_id", ids)
+                .update({
+                    "user_id": user.user_id,
+                    "phoneNumber": user.phoneNumber,
+                    "userName": user.userName,
+                    "emailAddress": user.emailAddress,
+                    "password": user.password
+                });
 };
 
 

@@ -22,7 +22,7 @@ router.post("/createUser", async (req, res) =>{
 
 router.delete("/deleteUser", async (req, res) => {
     // const result = await db.getAllUsers(req.params.id);
-    await db.deleteUser(req.query.id);
+    await db.deleteUser(req.query.user_id);
     res.status(200).json({success:true})
 });
 
