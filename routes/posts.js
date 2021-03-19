@@ -5,30 +5,33 @@ const router = express.Router();
 
 
 
-
-router.get("/SearchPostsBasedOn/:owner_id", async (req, res) => {
-    const posts = await db.SearchPostsBasedOnOwner_id(req.params.user_id);
+router.get("/searchAllPosts", async (req, res) =>{
+    const posts = await db.searchAllPosts();
+    res.status(200).json({posts})
+})
+router.get("/SearchPostsBasedOn", async (req, res) => {
+    const posts = await db.searchPostsBasedOnOwner_id(req.query.owner_id);
     res.status(200).json({posts})
 });
 router.get("/SearchPostsBasedOn/:dataOfCreation", async (req, res) => {
-    const posts = await db.SearchPostsBasedOnDataOfCreation(req.params.dataOfCreation);
+    const posts = await db.searchPostsBasedOnDataOfCreation(req.params.dataOfCreation);
     res.status(200).json({posts})
 });
 router.get("/SearchPostsBasedOn/:postalCode", async (req, res) => {
-    const posts = await db.SearchPostsBasedOnPostalCode(req.params.postalCode);
+    const posts = await db.searchPostsBasedOnPostalCode(req.params.postalCode);
     res.status(200).json({posts})
 });
 router.get("/DisplayPostsDetails/:post_id", async (req, res) => {
-    const posts = await db.DisplayPostsDetailsBasedOnPost_id(req.params.post_id);
+    const posts = await db.displayPostsDetailsBasedOnPost_id(req.params.post_id);
     res.status(200).json({posts})
 });
 
 router.get("/DisplayAttendUserListsOfThePost/:post_id", async (req, res) => {
-    const users = await db.DisplayAttendUserListsOfThePost(req.params.post_id);
+    const users = await db.displayAttendUserListsOfThePost(req.params.post_id);
     res.status(200).json({users})
 });
 router.post("/CreateUserListsOfThePost", async (req, res) =>{
-    const result = await db.CreateUserListsOfThePost(req.params.post_id,req.body);
+    const result = await db.createUserListsOfThePost(req.params.post_id,req.body);
     res.status(200).json({id: result[0]});
 });
 
@@ -56,10 +59,6 @@ router.put("/updatePost/:post_id",async(req,res) =>{
 });
 
 
-router.get("/getAllComments/:user_id", async (req, res) => {
-    const posts = await db.getAllCommentsOfUser(req.params.user_id);
-    res.status(200).json({posts})
-});
 
 
 
