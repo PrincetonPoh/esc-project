@@ -38,20 +38,21 @@ function searchPostsBasedOnOwner_id(owner_id){
     // return knex("posts").select("postTitle").where("owner_id", owner_id);
     return knex("posts").where("owner_id", owner_id).select("postTitle");
 }
-function searchPostsBasedOnDataOfCreation(dataOfCreation){
-    return knex("posts").where("dataOfCreation",dataOfCreation).get("postTitle");
+function searchPostsBasedOnDateOfCreation(dateOfCreation){
+    return knex("posts").where("dateOfCreation",dateOfCreation).select("postTitle");
 }
 function searchPostsBasedOnPostalCode(postalCode){
-    return knex("posts").where("postalCode",postalCode).get("postTitle");
+    return knex("posts").where("postalCode",postalCode).select("postTitle");
 }
 function displayPostsDetailsBasedOnPost_id(post_id){
-    return knex("posts").where("post_id",postid).get();
+    return knex("posts").where("post_id",post_id).select("*");
 }
 function displayAttendUserListsOfThePost(post_id){
-    return knex("attendUsers").where("post_id",postid).get();
+    return knex("attendUsers").where("post_id",post_id).select("userName","phoneNumber");
 }
-function createUserListsOfThePost(post_id,user_information){
-    return knex("attendUsers").where("post_id",post_id).insert(user_information);
+function createUserListsOfThePost(user_information){
+    console.log(user_information);
+    return knex("attendUsers").insert(user_information);
 };
 
 
@@ -98,7 +99,7 @@ module.exports = {
 
     searchAllPosts,
     searchPostsBasedOnOwner_id,
-    searchPostsBasedOnDataOfCreation,
+    searchPostsBasedOnDateOfCreation,
     searchPostsBasedOnPostalCode,
     displayPostsDetailsBasedOnPost_id,
     displayAttendUserListsOfThePost,
