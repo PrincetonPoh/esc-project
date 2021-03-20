@@ -4,9 +4,8 @@ import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { useHistory } from "react-router-dom";
 
-class Navbar_custom extends Component {
+class Navbar_custom extends Component {//Not working
 
     toUser = () => {
         this.props.toggleLogin();

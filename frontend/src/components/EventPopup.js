@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function EventPopup(eventId) {
+function EventPopup(eventId) {//Need change to class for instance property
 
     const event = [];
 

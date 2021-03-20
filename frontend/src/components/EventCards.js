@@ -5,7 +5,7 @@ import EventPopup from './EventPopup';
 import Modal from './modal'
 
 
-function EventsCards(event, popup, togglePopup) {
+function EventsCards(event, popup, togglePopup) {//Need covert to class for instance property
 
     return (
         <div class="customCard" onClick={togglePopup}>

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Link, useRouteMatch } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 class Signup extends Component {
