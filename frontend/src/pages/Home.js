@@ -1,55 +1,91 @@
-import React, { Component } from 'react';
-import Card from 'react-bootstrap/Card';
-import Image from 'react-bootstrap/Image'
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Location from '../location.png';
-import Calendar from '../calendar.png';
+import React, { useState, useEffect } from 'react';
+import '../styles/Home.css';
+import EventCards from '../components/EventCards';
+import axios from 'axios';
 
-class Home extends Component {
+function Home() {
 
-    constructor(props) {
-        super(props);
-        const post = [];
-        var today = new Date(),
-        date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + ' ' +  today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
-        for (let i = 0; i < 1200; i++) {
-            post.push({
-                title: "Event " + i,
-                description: "Random"
-            });
-        }
+    const [events, setEvents] = useState([]);
+    const [sortResult, setSortResult] = useState(0);
+    const [sort, setSort] = useState("newestPosts");
+    const [location, setLocation] = useState('anywhere');
+    const [eventIsChecked, setEventIsChecked] = useState(false);
+    const [eventCardPopup, setEventCardPopup] = useState(false);
 
-        this.state = { post, currentDate: date};
+    const togglePopup = () => {
+        setEventCardPopup(!eventCardPopup);
+        callApi();
     }
 
-    render() {
-        return (
-            <Container style={{ width: "100%" }}>
-                <Row>
-                    <h1>Home Page</h1>
-                </Row>
-                <Row className="overflow-auto">
-                    {this.state.post.map((posts, index) => (
-                        <Card className="col-3 rounded" style={{ marginBottom: "30px", marginRight: "80px" }}>
-                            <Card.Body>
-                                <Card.Title>{posts.title}</Card.Title>
-                                <Card.Text>
-                                    <Row>
-                                        <Image width={30} height={30} className="mr-3" src={Location} alt="location" />
-                                        {posts.description}
-                                    </Row>
-                                    <Row>
-                                        <Image width={30} height={30} className="mr-3" src={Calendar} alt="location" />
-                                        {this.state.currentDate}
-                                    </Row>
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    ))}
-                </Row>
-            </Container>
-        );
+    const callApi = () => { //Template
+        axios.get('https://api.github.com/users/mapbox')
+        .then((response) => {
+            console.log(response);
+        })
     }
+
+
+    // useEffect(() => { //
+    //     setSortResult(Object.keys(events).length);
+    // }, [events])
+
+    for (let i = 0; i < 100; i++) {
+        events.push({
+            id: i,
+            title: "Event " + i,
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        })
+    }
+
+    const cardify = (events) => {
+        return events.map((event) => {
+            return EventCards(event, eventCardPopup, togglePopup);
+        });
+    };
+
+    const sortDropDown = () => {
+        return <form>
+            <select value={sort} onChange={(e) => { setSort(e.target.value) }}>
+                <option value="newestPosts">Newest Posts</option>
+                <option value="oldestPosts">Oldest Posts</option>
+                <option value="eventDate">Event Date</option>
+                <option value="distance">Distance</option>
+                <option value="cost">Cost</option>
+            </select>
+        </form>
+    };
+
+    const locationDropDown = () => {//Fetch from db the list and populate
+        return <form>
+            <select value={location} onChange={(e) => { setLocation(e.target.value) }}>
+                <option value="anywhere">Anywhere</option>
+                <option value="clementi">Clementi ()</option>
+                <option value="tampinese">Tampinese ()</option>
+                <option value="bishan">Bishan ()</option>
+                <option value="woodlands">Woodlands ()</option>
+            </select>
+        </form>
+    };
+
+    const eventsCheckBox = () => {
+        return <form>
+            <label>Events</label>
+            <input type="checkbox" checked={eventIsChecked} onChange={(e)=>{setEventIsChecked(e.target.checked)}}/>
+        </form>
+    }
+
+    return (
+        <div>
+            <div>
+                <h1> Posts from People Nearby </h1>
+                <div id="sortResults">{sortResult} Results</div>
+                <div id="sortBy">Sort by: {sortDropDown()} </div>
+                <div id="sortByLocation">Location: {locationDropDown()}</div>
+                <div id="filters">Filter By: {eventsCheckBox()} </div>
+                <div id="cardsContainer">{cardify(events)}</div>
+            </div>
+        </div>
+    );
+
 }
 export default Home;

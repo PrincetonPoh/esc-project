@@ -32,7 +32,7 @@ class Navbar_custom extends Component {
                             </Modal.Header>
                             <Modal.Body>Login Authentication</Modal.Body>
                             <Modal.Footer>
-                                <Button variant="primary" onClick={this.toUser}>
+                                <Button variant="primary"  onClick={this.toUser}>
                                     Login
                                 </Button>
                             </Modal.Footer>
