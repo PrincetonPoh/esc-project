@@ -1,0 +1,87 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 300px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.dropshadow {
+  filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.4));
+}
+
+p {
+  margin: 0;
+}
+
+#signinpopup-background {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  z-index: 15;
+}
+
+#signin-popup {
+  width: 50vw;
+  background-color: white;
+  color: black;
+  padding: 20px 5vw;
+  margin: 30vh 20vw; /* replace 30vh with better vertical align */ 
+  font-size: 30px;
+  position: fixed;
+  z-index: 15;
+}
+
+.popup-contents {
+  font-size: 20px;
+  padding-top: 20px; 
+}
+
+.text-fields {
+  background-color: rgb(231, 231, 231);
+  border: none; 
+  width: 90%;
+  height: 30px;
+  padding: 0 5%;
+  font-size: 15px;
+}
+
+#signin-popup-button{
+  background-color: #7BA3D7;
+  color: white;
+  display: block;
+}
+
+#popup-cross-icon {
+  float: right; 
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}
+button:hover, #popup-cross-icon:hover {
+  position: relative;
+	bottom: 2px;
+  filter: drop-shadow(0px 6px 2px rgba(0, 0, 0, 0.4));
+}
+button:active, #popup-cross-icon:active {
+  position: relative;
+	top: 2px;
+}
+
+#forgot-password {
+  font-size: small;
+  color: grey;
+}
+#forgot-password:hover {
+  color: #7BA3D7;
+}
