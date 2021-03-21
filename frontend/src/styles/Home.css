@@ -1,0 +1,118 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 300px;
+  }
+
+
+
+.customCard
+{
+  height:10em;
+  border: rgba(0, 0, 0, 0.25) 1px solid;
+  display:-webkit-box;
+  display:-ms-flexbox;
+  /* display:flex; */
+  padding: 5px 10px;
+  margin: 15px;
+  -webkit-box-orient:vertical;
+  -webkit-box-direction:normal;
+  /* -ms-flex-direction:column;
+  flex-direction:column;
+  position:relative; */
+  -webkit-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -o-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  border-radius:16px;
+  overflow: hidden;
+  -webkit-box-shadow:  4px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow:  4px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.customCardDescription {
+  height: 8em;
+  overflow: hidden;
+}
+.customCardTitle {
+  margin-bottom: 0;
+}
+#cardsContainer {
+  display:flex;
+  flex-wrap: wrap;
+  -ms-flex-direction:row;
+  flex-direction:row;
+  position:relative;
+  padding: 0 20px;
+} 
+#cardsContainer>* {
+  flex: 1 1 14em;
+}
+
+h1 {
+  padding: 0 35px;
+}
+
+#sort-container, #filters {
+  padding: 0 35px;
+  margin-bottom: 10px;
+}
+
+#sort-container div {
+  display: inline-block; 
+  margin-right: 30px;
+}
+
+#home-container input, #home-container select, #home-container form, #home-container label {
+  display: inline-block;
+  outline: none;
+  box-sizing: border-box;
+} 
+
+select {
+  height: 30px;
+  border-radius: 15px;
+  border: 0px;
+  padding: 0 5px;
+  background-color: #7BA3D7;
+  color: white;
+  cursor: pointer;
+  filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.4));
+}
+
+.filter-checkbox {
+  display: inline-block;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.filter-checkbox:checked {
+  background-color: #7BA3D7;
+}
+.filter-checkbox-label {
+  border-radius: 15px;
+  height: 30px;
+  padding: 0 5px 0 12px;
+  border: #7BA3D7 2px solid;
+  background-color: white;
+  display: inline-block;
+  outline: none;
+  box-sizing: border-box;
+  text-align: center;
+  transition: 0.2s all linear;
+  filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.4));
+}
+
+.filter-checkbox-label p {
+  position: relative;
+  top: 30px;
+}
+
+
+#filters form {
+  /* width: 100px; */
+  margin: 0 5px;
+}

@@ -1,17 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import Navbar1 from './Navbar1'; 
 import reportWebVitals from './reportWebVitals';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
-  <div>
-    <Navbar1 />
-    <App />
-  </div>,
-  
-  document.getElementById('root')
+    <App />,
+    document.getElementById('root')
 );
 
 // ReactDOM.render(
