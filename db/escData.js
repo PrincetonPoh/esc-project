@@ -58,21 +58,22 @@ function createUserListsOfThePost(user_information){
 
 
 function createPost(post){
-    console.log(post);
+    console.log('creating post now');
     return knex("posts").insert(post);
 };
 
 function deletePost(post_id){
+    console.log('deleting post now');
     return knex("posts").where("post_id", post_id).del();
 };
 
-function updatePost(post_id, post){
-    return knex("posts").where("post_id", post_id).update(post);
-};
+// function updatePost(post_id, post){
+//     return knex("posts").where("post_id", post_id).update(post);
+// };
 
 ///////////////////////////////////////////
 
-function getAllCommentsOfUser(user_id){
+function getAllCommentsOfPost(user_id){
     return knex("comments").where("use_id",user_id).get();
 }
 
@@ -84,9 +85,9 @@ function deleteComment(comment_id){
     return knex("comments").where("comment_id", comment_id).del();
 };
 
-function updateComment(comment_id, comment){
-    return knex("comments").where("comment_id", comment_id).update(comment);
-};
+// function updateComment(comment_id, comment){
+//     return knex("comments").where("comment_id", comment_id).update(comment);
+// };
 
 
 
@@ -107,11 +108,8 @@ module.exports = {
     createPost,
     
     deletePost,
-    updatePost,
 
     createComment,
-    getAllCommentsOfUser,
+    getAllCommentsOfPost,
     deleteComment,
-    updateComment
-
 }
