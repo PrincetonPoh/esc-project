@@ -10,6 +10,8 @@ import Signup from './pages/Signup';
 // import Container from 'react-bootstrap/Container';
 // import Row from 'react-bootstrap/Row';
 import Navbar from './components/Navbar';
+import CreatePost from './pages/CreatePost';
+import Post from './pages/Post';
 
 class App extends Component {
 
@@ -43,12 +45,13 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Navbar/>
-          {/* <Navbar_custom seen={this.state.seen} login={this.state.login} toggleLogin={this.toggleLogin} togglePopup={this.togglePopup} resetState={this.resetState} {...this.props}/> */}
+          <Navbar toggleLogin={this.toggleLogin.bind(this)}/>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/signup" component={Signup} />
             <Route path="/user" component={User} />
+            <Route path="/createpost" component={CreatePost}/>
+            <Route path="/post/:id" component={Post}/>
           </Switch>
         </div>
       </Router>

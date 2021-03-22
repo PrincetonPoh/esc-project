@@ -8,11 +8,13 @@ import Sidebar from './Sidebar';
 import sample_pfp from '../media/sample_pfp.png';
 import plus_icon from '../media/plus_icon.png';
 import ProfileDropdown from './ProfileDropdown';
+import {BrowserRouter as Router, Link} from 'react-router-dom';
 
 class Navbar extends React.Component {
 
   signup() {
     alert("go to sign up page"); // may use router or href instead of onClick
+
   }
   createPost() {
     alert("go to create post page"); // may use router or href instead of onClick
@@ -37,6 +39,7 @@ class Navbar extends React.Component {
       seen: false // hides signinPopup
     });
     alert("signed in!")
+    this.props.toggleLogin();
   }
   setSignedout = () => {
     this.setState({
@@ -70,13 +73,13 @@ class Navbar extends React.Component {
         <div class="navbar"> 
           <img id="nav-menu-icon" src={menu_icon} onClick={this.toggleSidebar} class="navbar-icons"/>
           <img id="nav-logo" src={logo_rect} class="navbar-icons"/> 
-          <p id="nav-brand" class="navbar-icons dropshadow">Scratchbac</p>
+          <p id="nav-brand" class="navbar-icons dropshadow"><Link to="/">Scratchbac</Link></p>
           
           <div> 
             {this.state.signedin ? 
             <div> 
               <img id="profile-button" src={sample_pfp} onClick={this.toggleProfileDropdown} class="navbar-buttons dropshadow"/>
-              <button id="create-post-button" onClick={this.createPost} class="navbar-buttons dropshadow"> <img id="create-post-plus-icon" src={plus_icon}/> Create a Post </button>
+              <button id="create-post-button" class="navbar-buttons dropshadow"> <img id="create-post-plus-icon" src={plus_icon}/><Link to="/createpost"> Create a Post</Link></button>
             </div>
             :
             <div> 
