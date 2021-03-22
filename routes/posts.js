@@ -10,14 +10,17 @@ router.post("/createPost", async (req, res) =>{
     res.status(200).json({id: result[0]});
 });
 
+// for dev use only
 router.get("/searchAllPosts", async (req, res) =>{
     const posts = await db.searchAllPosts();
     res.status(200).json({posts})
 })
+
 router.get("/searchPostsBasedOn", async (req, res) => {
     const posts = await db.searchPostsBasedOn(req.query.type, req.query.owner_id);
     res.status(200).json({posts})
 });
+
 
 
 router.get("/displayPostsDetails", async (req, res) => {
@@ -31,6 +34,7 @@ router.get("/displayAttendUserListsOfThePost", async (req, res) => {
 
 router.post("/createUserListsOfThePost", async (req, res) =>{
     const result = await db.createUserListsOfThePost(req.query.post_id,req.query.userName,req.query.phoneNumber);
+
     res.status(200).json({id: result[0]});
 });
 
@@ -44,10 +48,12 @@ router.delete("/deletePost", async (req, res) => {
 });
 
 
+
 router.put("/updatePost",async(req,res) =>{
     await db.updatePost(req.query.post_id,req.query.type,req.query.value);
     res.status(200).json({success:true})
 });
+
 
 
 

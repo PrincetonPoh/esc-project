@@ -56,19 +56,72 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:1337/posts/SearchPostsBasedOn?owner_id=321",
+					"raw": "localhost:1337/posts/searchPostsBasedOnId/?owner_id=321",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
 						"posts",
-						"SearchPostsBasedOn"
+						"searchPostsBasedOnId",
+						""
 					],
 					"query": [
 						{
 							"key": "owner_id",
 							"value": "321"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "display post details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1337/posts/displayPostsDetails/?post_id=2",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"posts",
+						"displayPostsDetails",
+						""
+					],
+					"query": [
+						{
+							"key": "post_id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "attend user list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1337/posts/displayAttendUserListsOfThePost/?post_id=2",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"posts",
+						"displayAttendUserListsOfThePost",
+						""
+					],
+					"query": [
+						{
+							"key": "post_id",
+							"value": "2"
 						}
 					]
 				}
@@ -110,7 +163,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"post_id\": 2,\n    \"owner_id\": 321,\n    \"postTitle\": \"gooood\",\n    \"dateOfCreation\": 888888,\n    \"postalCode\": 670222,\n    \"description\": \"pns is great today!\"\n}",
+					"raw": "{\n    \"post_id\": 3,\n    \"owner_id\": 333,\n    \"postTitle\": \"3treegooood\",\n    \"dateOfCreation\": 33333,\n    \"postalCode\": 670333,\n    \"description\": \"lies\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -126,6 +179,34 @@
 					"path": [
 						"posts",
 						"createPost"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create attend user list",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"users\": [\n        {\n            \"userName\": \" Alice\",\n            \"phoneNumber\": 99990000\n        },\n        {\n            \"userName\": \"Bob\",\n            \"phoneNumber\": 22221111\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:1337/posts/createUserListsOfThePost",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"posts",
+						"createUserListsOfThePost"
 					]
 				}
 			},
@@ -171,15 +252,21 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:1337/users/deletePost/1",
+					"raw": "localhost:1337/posts/deletePost/?post_id=3",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
-						"users",
+						"posts",
 						"deletePost",
-						"1"
+						""
+					],
+					"query": [
+						{
+							"key": "post_id",
+							"value": "3"
+						}
 					]
 				}
 			},
@@ -192,7 +279,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 3,\r\n    \"username\": \"yoyoman\",\r\n    \"location\": 000000\r\n}",
+					"raw": "{\r\n    \"user_id\": 1,\r\n    \"phoneNumber\": 12344321222,\r\n    \"userName\": \"princeton2\",\r\n    \"emailAddress\": \"prince2@gmail.com\",\r\n    \"password\": \"asd123222\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -208,30 +295,6 @@
 					"path": [
 						"users",
 						"updateUser"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "update post",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "localhost:1337/users/updatePost/1",
-					"host": [
-						"localhost"
-					],
-					"port": "1337",
-					"path": [
-						"users",
-						"updatePost",
-						"1"
 					]
 				}
 			},

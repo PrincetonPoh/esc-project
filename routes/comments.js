@@ -4,9 +4,9 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 
 
-
-router.get("/getAllComments/:user_id", async (req, res) => {
-    const posts = await db.getAllCommentsOfUser(req.params.user_id);
+// for dev use only
+router.get("/getAllCommentsOfPost", async (req, res) => {
+    const posts = await db.getAllCommentsOfPost(req.query.post_id);
     res.status(200).json({posts})
 });
 
@@ -15,18 +15,15 @@ router.post("/createComment", async (req, res) =>{
     res.status(200).json({id: result[0]});
 });
 
-router.delete("/deleteComment/:comment_id", async (req, res) => {
+router.delete("/deleteComment", async (req, res) => {
     // const result = await db.getAllUsers(req.params.id);
-    await db.deletePost(req.params.comment_id);
+    await db.deletePost(req.query.comment_id);
     res.status(200).json({success:true})
 });
 
-router.put("/updateComment/:comment_id",async(req,res) =>{
-    await db.updatePost(req.params.comment_id);
-    res.status(200).json({success:true})
-});
+// DisplayParentCommentsOfThePost
 
-
-
+//DisplayChildCommentsOfTheParentComment
+// get + create + delete
 
 module.exports = router;
