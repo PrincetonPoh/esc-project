@@ -1,10 +1,11 @@
+const { use } = require("../routes/posts");
 const knex = require("./knex");
 
 
 
 function getAllUsers(){
     return knex("users").select("*");
-}
+};
 
 function createUser(user){
     return knex("users").insert(user);
@@ -33,26 +34,38 @@ function updateUser(user){
 ///////////////////////////////////////////
 function searchAllPosts(){
     return knex("posts").select("*");
-}
-function searchPostsBasedOnOwner_id(owner_id){
-    // return knex("posts").select("postTitle").where("owner_id", owner_id);
-    return knex("posts").where("owner_id", owner_id).select("postTitle");
-}
-function searchPostsBasedOnDateOfCreation(dateOfCreation){
-    return knex("posts").where("dateOfCreation",dateOfCreation).select("postTitle");
-}
-function searchPostsBasedOnPostalCode(postalCode){
-    return knex("posts").where("postalCode",postalCode).select("postTitle");
-}
+};
+
+function searchPostsBasedOn(type, owner_id){
+    
+   if(type=="owner_id"){   
+        return knex("posts").where("owner_id", owner_id).select("postTitle");
+    }
+    if(type=="postal_code"){
+        return knex("posts").where("postalCode",postalCode).select("postTitle");
+    }
+    if(type=="dateOfcreation"){
+        return knex("posts").where("dateOfCreation",dateOfCreation).select("postTitle");
+    }
+    
+};
+
+
 function displayPostsDetailsBasedOnPost_id(post_id){
     return knex("posts").where("post_id",post_id).select("*");
-}
+};
+
 function displayAttendUserListsOfThePost(post_id){
     return knex("attendUsers").where("post_id",post_id).select("userName","phoneNumber");
-}
-function createUserListsOfThePost(user_information){
+};
+
+function createUserListsOfThePost(post_id,userName,phoneNumber){
     console.log(user_information);
-    return knex("attendUsers").insert(user_information);
+    return knex("attendUsers").insert({
+        "post_id": post_id,
+        "userName": userName,
+        "phoneNumber":phoneNumber
+    });
 };
 
 
@@ -66,8 +79,27 @@ function deletePost(post_id){
     return knex("posts").where("post_id", post_id).del();
 };
 
-function updatePost(post_id, post){
-    return knex("posts").where("post_id", post_id).update(post);
+function updatePost(post_id, type, value){
+
+    if(type=="owner_id"){   
+        return knex("posts").where("post_id",post_id).update({owner_id: value});
+    }
+    if(type=="postal_code"){
+        return knex("posts").where("post_id",post_id).update({postalCode: value});
+    
+    }
+    if(type=="dateOfcreation"){
+        return knex("posts").where("post_id",post_id).update({dateOfCreation: value});
+    }
+    if(type=="description"){
+        return knex("posts").where("post_id",post_id).update({description: value});
+    
+    }if(type=="postTitle"){
+        return knex("posts").where("post_id",post_id).update({postTitle: value});
+    }
+    
+
+    
 };
 
 ///////////////////////////////////////////
@@ -98,9 +130,8 @@ module.exports = {
     updateUser,
 
     searchAllPosts,
-    searchPostsBasedOnOwner_id,
-    searchPostsBasedOnDateOfCreation,
-    searchPostsBasedOnPostalCode,
+    searchPostsBasedOn,
+
     displayPostsDetailsBasedOnPost_id,
     displayAttendUserListsOfThePost,
     createUserListsOfThePost,
