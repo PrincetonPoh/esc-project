@@ -82,8 +82,10 @@ class Navbar extends React.Component {
               <button id="create-post-button" class="navbar-buttons dropshadow"> <img id="create-post-plus-icon" src={plus_icon}/><Link to="/createpost"> Create a Post</Link></button>
             </div>
             :
-            <div> 
-              <button id="signup-button" onClick={this.signup} class="navbar-buttons dropshadow"> Sign up</button>
+            <div>
+              
+              <button id="signup-button" class="navbar-buttons dropshadow"><Link to="/signup"> Sign up</Link></button>
+              
               <button id="signin-button" onClick={this.togglePopup} class="navbar-buttons dropshadow"> Sign in</button>
             </div>
             }
