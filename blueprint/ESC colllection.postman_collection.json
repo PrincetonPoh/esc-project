@@ -1,36 +1,31 @@
 {
+	"variables": [],
 	"info": {
-		"_postman_id": "5c6507a1-62e9-4543-b6cc-9de9a9b7b019",
-		"name": "ESC colllection",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"name": "ESC colllection copy",
+		"_postman_id": "0f579266-cadc-f471-5e38-9a468c453af1",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "get all users",
 			"request": {
+				"url": "localhost:1337/users/getAllUsers",
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "localhost:1337/users/getAllUsers",
-					"host": [
-						"localhost"
-					],
-					"port": "1337",
-					"path": [
-						"users",
-						"getAllUsers"
-					]
-				}
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
 			},
 			"response": []
 		},
 		{
 			"name": "search all posts",
 			"request": {
-				"method": "GET",
-				"header": [],
 				"url": {
-					"raw": "localhost:1337/posts/searchAllPosts",
+					"raw": "localhost:1337/posts/searchAllPosts?",
 					"host": [
 						"localhost"
 					],
@@ -45,182 +40,214 @@
 							"value": "",
 							"disabled": true
 						}
-					]
-				}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "search post by owner id",
+			"name": "search post by owner id/postal code/ date of creation",
 			"request": {
-				"method": "GET",
-				"header": [],
 				"url": {
-					"raw": "localhost:1337/posts/searchPostsBasedOnId/?owner_id=321",
+					"raw": "localhost:1337/posts/SearchPostsBasedOn?owner_id=321&type=owner_id",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
 						"posts",
-						"searchPostsBasedOnId",
-						""
+						"SearchPostsBasedOn"
 					],
 					"query": [
 						{
 							"key": "owner_id",
-							"value": "321"
+							"value": "321",
+							"equals": true,
+							"description": "put in the value of that type"
+						},
+						{
+							"key": "type",
+							"value": "owner_id",
+							"equals": true,
+							"description": "put in the type"
 						}
-					]
-				}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "owner_id",
+						"value": "123",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "display post details",
+			"name": "get posts details by post id",
 			"request": {
-				"method": "GET",
-				"header": [],
 				"url": {
-					"raw": "localhost:1337/posts/displayPostsDetails/?post_id=2",
+					"raw": "localhost:1337/posts/DisplayPostsDetails?post_id=1",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
 						"posts",
-						"displayPostsDetails",
-						""
+						"DisplayPostsDetails"
 					],
 					"query": [
 						{
 							"key": "post_id",
-							"value": "2"
+							"value": "1",
+							"equals": true,
+							"description": ""
 						}
-					]
-				}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "owner_id",
+						"value": "123",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "attend user list",
+			"name": "DisplayAttendUserListsOfThePost",
 			"request": {
-				"method": "GET",
-				"header": [],
 				"url": {
-					"raw": "localhost:1337/posts/displayAttendUserListsOfThePost/?post_id=2",
+					"raw": "localhost:1337/posts/DisplayAttendUserListsOfThePost?post_id=2",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
 						"posts",
-						"displayAttendUserListsOfThePost",
-						""
+						"DisplayAttendUserListsOfThePost"
 					],
 					"query": [
 						{
 							"key": "post_id",
-							"value": "2"
+							"value": "2",
+							"equals": true,
+							"description": ""
 						}
-					]
-				}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "owner_id",
+						"value": "123",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "createUserListsOfThePost",
+			"request": {
+				"url": "localhost:1337/posts/CreateUserListsOfThePost",
+				"method": "POST",
+				"header": [
+					{
+						"key": "owner_id",
+						"value": "123",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"post_id\": 2,\n    \"userName\":\"Bob\",\n    \"phoneNumber\": 22221111\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "deleteUserListsOfThePost copy",
+			"request": {
+				"url": "localhost:1337/posts/CreateUserListsOfThePost",
+				"method": "POST",
+				"header": [
+					{
+						"key": "owner_id",
+						"value": "123",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"post_id\": 2,\n    \"userName\":\"Bob\",\n    \"phoneNumber\": 22221111\n}"
+				},
+				"description": ""
 			},
 			"response": []
 		},
 		{
 			"name": "create user",
 			"request": {
+				"url": "localhost:1337/users/createUser",
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"user_id\": 1,\n    \"phoneNumber\": 12344321,\n    \"userName\": \"princeton\",\n    \"emailAddress\": \"prince@gmail.com\",\n    \"password\": \"asd123\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"raw": "{\n    \"user_id\": 1,\n    \"phoneNumber\": 12344321,\n    \"userName\": \"princeton\",\n    \"emailAddress\": \"prince@gmail.com\",\n    \"password\": \"asd123\"\n}"
 				},
-				"url": {
-					"raw": "localhost:1337/users/createUser",
-					"host": [
-						"localhost"
-					],
-					"port": "1337",
-					"path": [
-						"users",
-						"createUser"
-					]
-				}
+				"description": ""
 			},
 			"response": []
 		},
 		{
 			"name": "create post",
 			"request": {
+				"url": "localhost:1337/posts/createPost",
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"post_id\": 3,\n    \"owner_id\": 333,\n    \"postTitle\": \"3treegooood\",\n    \"dateOfCreation\": 33333,\n    \"postalCode\": 670333,\n    \"description\": \"lies\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"raw": "{\n    \"post_id\": 2,\n    \"owner_id\": 321,\n    \"postTitle\": \"gooood\",\n    \"dateOfCreation\": 888888,\n    \"postalCode\": 670222,\n    \"description\": \"pns is great today!\"\n}"
 				},
-				"url": {
-					"raw": "localhost:1337/posts/createPost",
-					"host": [
-						"localhost"
-					],
-					"port": "1337",
-					"path": [
-						"posts",
-						"createPost"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "create attend user list",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"users\": [\n        {\n            \"userName\": \" Alice\",\n            \"phoneNumber\": 99990000\n        },\n        {\n            \"userName\": \"Bob\",\n            \"phoneNumber\": 22221111\n        }\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:1337/posts/createUserListsOfThePost",
-					"host": [
-						"localhost"
-					],
-					"port": "1337",
-					"path": [
-						"posts",
-						"createUserListsOfThePost"
-					]
-				}
+				"description": ""
 			},
 			"response": []
 		},
 		{
 			"name": "delete user",
 			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "localhost:1337/users/deleteUser/?user_id=1",
 					"host": [
@@ -237,66 +264,77 @@
 							"key": "user_id",
 							"value": "1"
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete post",
-			"request": {
+					],
+					"variable": []
+				},
 				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": ""
 				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "delete post",
+			"request": {
 				"url": {
-					"raw": "localhost:1337/posts/deletePost/?post_id=3",
+					"raw": "localhost:1337/posts/deletePost?post_id=1",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
 						"posts",
-						"deletePost",
-						""
+						"deletePost"
 					],
 					"query": [
 						{
 							"key": "post_id",
-							"value": "3"
+							"value": "1",
+							"equals": true,
+							"description": ""
 						}
-					]
-				}
+					],
+					"variable": []
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
 			},
 			"response": []
 		},
 		{
 			"name": "update user",
 			"request": {
+				"url": "localhost:1337/users/updateUser",
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"user_id\": 1,\r\n    \"phoneNumber\": 12344321222,\r\n    \"userName\": \"princeton2\",\r\n    \"emailAddress\": \"prince2@gmail.com\",\r\n    \"password\": \"asd123222\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"raw": "{\r\n    \"id\": 3,\r\n    \"username\": \"yoyoman\",\r\n    \"location\": 000000\r\n}"
 				},
-				"url": {
-					"raw": "localhost:1337/users/updateUser",
-					"host": [
-						"localhost"
-					],
-					"port": "1337",
-					"path": [
-						"users",
-						"updateUser"
-					]
-				}
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "update post",
+			"request": {
+				"url": "localhost:1337/users/updatePost/1",
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
 			},
 			"response": []
 		}

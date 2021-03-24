@@ -17,7 +17,7 @@ router.get("/searchAllPosts", async (req, res) =>{
 })
 
 router.get("/searchPostsBasedOn", async (req, res) => {
-    const posts = await db.searchPostsBasedOn(req.query.type, req.query.owner_id);
+    const posts = await db.searchPostsBasedOn(req.query.type, req.query.value);
     res.status(200).json({posts})
 });
 
@@ -36,6 +36,23 @@ router.post("/createUserListsOfThePost", async (req, res) =>{
     const result = await db.createUserListsOfThePost(req.query.post_id,req.query.userName,req.query.phoneNumber);
 
     res.status(200).json({id: result[0]});
+});
+router.delete("/deleteAllUserListsOfThePost", async (req, res) => {
+    // const result = await db.getAllUsers(req.params.id);
+    await db.deleteUserListsOfThePost(req.query.post_id);
+    res.status(200).json({success:true})
+});
+router.delete("/deleteUserListsOfThePost", async (req, res) => {
+    // const result = await db.getAllUsers(req.params.id);
+    await db.deleteUserListsOfThePost(req.query.post_id,req.query.userName);
+    res.status(200).json({success:true})
+});
+
+
+
+router.put("/updateUserListsOfThePost",async(req,res) =>{
+    await db.updateUserListsOfThePost(req.query.post_id,req.query.userName, req.query.type, req.query.value);
+    res.status(200).json({success:true})
 });
 
 

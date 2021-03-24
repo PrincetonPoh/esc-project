@@ -31,20 +31,20 @@ function updateUser(user){
 
 
 ///////////////////////////////////////////
+
+
 function searchAllPosts(){
     return knex("posts").select("*");
 };
 
-function searchPostsBasedOn(type, owner_id){
+function searchPostsBasedOn(type, value){
     
    if(type=="owner_id"){   
-        return knex("posts").where("owner_id", owner_id).select("postTitle");
-    }
-    if(type=="postal_code"){
-        return knex("posts").where("postalCode",postalCode).select("postTitle");
-    }
-    if(type=="dateOfcreation"){
-        return knex("posts").where("dateOfCreation",dateOfCreation).select("postTitle");
+        return knex("posts").where("owner_id", value).select("postTitle");
+    }else if(type=="postalCode"){
+        return knex("posts").where("postalCode",value).select("postTitle");
+    }else if(type=="dateOfcreation"){
+        return knex("posts").where("dateOfCreation",value).select("postTitle");
     }
     
 };
@@ -66,6 +66,25 @@ function createUserListsOfThePost(post_id, userName, phoneNumber){
     });
 };
 
+function deleteUserListsOfThePost(post_id,userName){
+    console.log('deleting User list of the post now');
+    return knex("attendUsers").where("post_id", post_id).where("userName",userName).del();
+};
+
+function deleteAllUserListsOfThePost(post_id,userName){
+    console.log('deleting User list of the post now');
+    return knex("attendUsers").where("post_id", post_id).del();
+};
+function updateUserListsOfThePost(post_id, type, value){
+
+    if(type=="userName"){   
+        return knex("posts").where("post_id",post_id).where("userName",userName).update({userName: value});
+    }
+    if(type=="phoneNumber"){
+        return knex("posts").where("post_id",post_id).where("userName",userName).update({phoneNumber: value});
+    
+    }
+}
 
 
 function createPost(post){
@@ -80,6 +99,8 @@ function deletePost(post_id){
 
 
 function updatePost(post_id, type, value){
+
+
 
     if(type=="owner_id"){   
         return knex("posts").where("post_id",post_id).update({owner_id: value});
@@ -97,8 +118,6 @@ function updatePost(post_id, type, value){
     }if(type=="postTitle"){
         return knex("posts").where("post_id",post_id).update({postTitle: value});
     }
-    
-
     
 }
 
@@ -144,9 +163,13 @@ module.exports = {
     displayPostsDetailsBasedOnPost_id,
     displayAttendUserListsOfThePost,
     createUserListsOfThePost,
+    deleteUserListsOfThePost,
+    deleteAllUserListsOfThePost,
+    updateUserListsOfThePost,
     createPost,
     
     deletePost,
+    updatePost,
 
     createParentComment,
     getParentComments,
