@@ -18,12 +18,72 @@ function Home() {
     }
 
     const callApi = () => { //Template
-        axios.get('https://api.github.com/users/mapbox')
+        console.log("Getting posts.")
+        axios.get('http://localhost:1337/posts/searchAllPosts')
         .then((response) => {
-            console.log(response);
+            setEvents(response);
         })
+        .catch(error => alert("Error in getting posts."))
     }
 
+    /*
+    const searchPostByOwnerId = (ownerId) => {
+        axios.get("http://localhost:1337/posts/searchPostsBasedOnId/?owner_id=" + ownerId)
+        .then(response => {
+            // response contains the post's details with the following data fields in order:
+            // post_id, owner_id, postTitle, dateOfCreation, postalCode, description
+        })
+        .catch(error => alert("Error in searching posts by owner ID."))
+    }
+
+    const getAttendList = (postId) => {
+        axios.get("http://localhost:1337/posts/displayAttendUserListsOfThePost/?post_id=" + postId)
+        .then(response => {
+            // response contains a list of users, each having the data fields:
+            // [{username: "user1", phoneNumber: number}, {username: "user2", phoneNumber: number}]
+        })
+        .catch(error => alert("Error in getting attendance list for this post."))
+    }
+
+    const createAttendList  = () => {
+        // i think backend might need post id here?
+        axios.post("http://localhost:1337/posts/createUserListsOfThePost", {
+            // post a list of users, each having the data fields:
+            // [{username: "user1", phoneNumber: number}, {username: "user2", phoneNumber: number}]
+        })
+        .then(response => {
+            // this should probably be a 'put' request? since I'm guessing there will be an 'attend' button, then a press will
+            // push the current user to the attendance list, but anyway
+        })
+        .catch(error => alert("Error in posting attendance list."))
+    }
+
+    const updateUser = (userId) => {
+        axios.put("http://localhost:1337/users/updateUser", {
+            // "user_id": userId,
+            // "phoneNumber": data.hp,
+            // "userName": data.username,
+            // "emailAddress": data.email,
+            // "password": data.password
+        })
+        .then(response => {
+            alert("Successfully updated profile.")
+        })
+        .catch(error => alert("Unable to update profile."))
+    }
+
+    const deleteUser = (userId) => {
+        axios.delete("http://localhost:1337/users/deleteUser/?user_id=" + userId)
+        .then(response => alert("Successfully deleted user profile."))
+        .catch(error => alert("Unable to delete profile."))
+    }
+
+    const deletePost = (postId) => {
+        axios.delete("localhost:1337/posts/deletePost/?post_id=" + postId)
+        .then(response => alert("Post deleted."))
+        .catch(error => alert("Post could not be deleted."))
+    }
+    */
 
     // useEffect(() => { //
     //     setSortResult(Object.keys(events).length);

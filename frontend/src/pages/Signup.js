@@ -3,6 +3,8 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+
 class Signup extends Component {
 
     handleSubmit = e => {
@@ -10,12 +12,20 @@ class Signup extends Component {
         const data = {
             first_name: this.firstName,
             last_name: this.lastName,
+            username: this.username,
+            hp: this.hp,
             email: this.email,
             password: this.password,
             confirm_password: this.confirmPassword
         };
         console.log(data);
-        //Implement axios
+        axios.post("http://localhost:1337/users/createUser", {
+            "user_id": Math.floor(Math.random() * 1000),
+            "phoneNumber": data.hp,
+            "userName": data.username,
+            "emailAddress": data.email,
+            "password": data.password
+        }).then((response) => alert("Sign-up successful.")).catch(error => alert("Error."))
         this.props.history.push('/');//Force push
     }
 
@@ -38,6 +48,22 @@ class Signup extends Component {
                         </Form.Label>
                         <Col>
                             <Form.Control type="lastName" placeholder="Last Name" onChange={e => this.lastName = e.target.value} />
+                        </Col>
+                    </Form.Group>
+                    <Form.Group controlId="formGroupUserName" className="text-left">
+                        <Form.Label style={{padding: "0px 15px"}}>
+                            Username
+                        </Form.Label>
+                        <Col>
+                            <Form.Control placeholder="Username" onChange={e => this.username = e.target.value}/>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group controlId="formGroupHP" className="text-left">
+                        <Form.Label style={{padding: "0px 15px"}}>
+                            Mobile Number
+                        </Form.Label>
+                        <Col>
+                            <Form.Control type="tel" placeholder="Mobile Number" onChange={e => this.hp = e.target.value}/>
                         </Col>
                     </Form.Group>
                     <Form.Group controlId="formGroupEmail" className="text-left">
