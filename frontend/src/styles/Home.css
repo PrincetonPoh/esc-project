@@ -1,15 +1,3 @@
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-height: 300px;
-  }
-
-
-
 .customCard
 {
   height:10em;
@@ -52,10 +40,6 @@ body {
   flex: 1 1 14em;
 }
 
-h1 {
-  padding: 0 35px;
-}
-
 #sort-container, #filters {
   padding: 0 35px;
   margin-bottom: 10px;
@@ -76,7 +60,7 @@ select {
   height: 30px;
   border-radius: 15px;
   border: 0px;
-  padding: 0 5px;
+  padding: 0 15px;
   background-color: #7BA3D7;
   color: white;
   cursor: pointer;

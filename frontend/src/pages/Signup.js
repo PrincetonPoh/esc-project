@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import axios from 'axios'
+// import Container from 'react-bootstrap/Container';
+// import Form from 'react-bootstrap/Form';
+// import Col from 'react-bootstrap/Col';
+// import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+import '../styles/Signup.css';
 
 class Signup extends Component {
 
@@ -31,68 +32,54 @@ class Signup extends Component {
 
     render() {
         return (
-            <Container style={{width: "30%", padding: "30px 0px"}}>
-                <Form onSubmit={this.handleSubmit}>
-                    <h3>Sign up</h3>
-                    <Form.Group controlId="formPlaintextEmail"  className="text-left">
-                        <Form.Label style={{padding:"0px 15px"}}>
+            <div> 
+                <h1>Sign up</h1>
+                <form id="signup-form" onSubmit={this.handleSubmit}>
+                    <div id="formPlaintextEmail" class="form-item">
+                        <label >
                             First Name
-                        </Form.Label>
-                        <Col>
-                            <Form.Control type="firstName" placeholder="First Name" onChange={e => this.firstName = e.target.value} />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group controlId="formGroupLastName" className="text-left">
-                        <Form.Label style={{padding:"0px 15px"}}>
+                        </label>
+                        <input type="firstName" class="signup-form-input" onChange={e => this.firstName = e.target.value} />
+                    </div>
+                    <div id="formGroupLastName" class="form-item">
+                        <label >
                             Last Name
-                        </Form.Label>
-                        <Col>
-                            <Form.Control type="lastName" placeholder="Last Name" onChange={e => this.lastName = e.target.value} />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group controlId="formGroupUserName" className="text-left">
-                        <Form.Label style={{padding: "0px 15px"}}>
+                        </label>
+                        <input type="lastName" class="signup-form-input" onChange={e => this.lastName = e.target.value} />
+                    </div>
+                    <div id="formGroupUserName" class="form-item">
+                        <label>
                             Username
-                        </Form.Label>
-                        <Col>
-                            <Form.Control placeholder="Username" onChange={e => this.username = e.target.value}/>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group controlId="formGroupHP" className="text-left">
-                        <Form.Label style={{padding: "0px 15px"}}>
+                        </label>
+                        <input class="signup-form-input" onChange={e => this.username = e.target.value}/>
+                    </div>
+                    <div id="formGroupHP" class="form-item">
+                        <label>
                             Mobile Number
-                        </Form.Label>
-                        <Col>
-                            <Form.Control type="tel" placeholder="Mobile Number" onChange={e => this.hp = e.target.value}/>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group controlId="formGroupEmail" className="text-left">
-                        <Form.Label style={{padding:"0px 15px"}}>
+                        </label>
+                        <input type="tel" class="signup-form-input" onChange={e => this.hp = e.target.value}/>
+                    </div>
+                    <div id="formGroupEmail" class="form-item">
+                        <label >
                             Email
-                        </Form.Label>
-                        <Col>
-                            <Form.Control type="email" placeholder="Email" onChange={e => this.email = e.target.value} />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group controlId="formGroupPassword" className="text-left">
-                        <Form.Label style={{padding:"0px 15px"}}>
+                        </label>
+                        <input type="email" class="signup-form-input" onChange={e => this.email = e.target.value} />
+                    </div>
+                    <div id="formGroupPassword" class="form-item">
+                        <label >
                             Password
-                        </Form.Label>
-                        <Col>
-                            <Form.Control type="password" placeholder="Password" onChange={e => this.password = e.target.value} />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group controlId="formGroupConfirmPassword" className="text-left">
-                        <Form.Label style={{padding:"0px 15px"}}>
+                        </label>
+                        <input type="password" class="signup-form-input" onChange={e => this.password = e.target.value} />
+                    </div>
+                    <div id="formGroupConfirmPassword" class="form-item">
+                        <label >
                             Confirm Password
-                        </Form.Label>
-                        <Col>
-                            <Form.Control type="confirmPassword" placeholder="Confirm Password" onChange={e => this.confirmPassword = e.target.value} />
-                        </Col>
-                    </Form.Group>
-                    <Button variant="primary" type="submit">Sign up</Button>
-                </Form>
-            </Container>
+                        </label>
+                        <input type="password" class="signup-form-input" onChange={e => this.confirmPassword = e.target.value} />
+                    </div>
+                    <input id="signup-form-button" type="submit" value="Create Account"/>
+                </form>
+            </div>
         );
     }
 
