@@ -19,6 +19,9 @@ code {
   min-width: 700px; /* Ideally would auto shift buttons and search bar instead */
   height: 50px;
   color: white;
+  position: fixed;
+  top: 0;
+  z-index: 1;
 }
 
 .navbar-icons {

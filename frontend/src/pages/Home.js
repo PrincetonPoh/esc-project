@@ -9,7 +9,7 @@ function Home() {
     const [sortResult, setSortResult] = useState(0);
     const [sort, setSort] = useState("newestPosts");
     const [location, setLocation] = useState('anywhere');
-    const [tag, setTag] = useState({ offer: false, events: false, ongoing: false, oneoff: false, value: [] });
+    const [tag, setTag] = useState({ offer: true, events: true, ongoing: true, oneoff: true, value: [] });
 
     const locations = ["Clementi", "Tampines", "Bishan", "Woodlands"];
     const tags = ["Offer", "Events", "Ongoing", "OneOff"];
