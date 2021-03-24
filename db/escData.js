@@ -1,4 +1,3 @@
-const { use } = require("../routes/posts");
 const knex = require("./knex");
 
 
@@ -59,8 +58,7 @@ function displayAttendUserListsOfThePost(post_id){
     return knex("attendUsers").where("post_id",post_id).select("userName","phoneNumber");
 };
 
-function createUserListsOfThePost(post_id,userName,phoneNumber){
-    console.log(user_information);
+function createUserListsOfThePost(post_id, userName, phoneNumber){
     return knex("attendUsers").insert({
         "post_id": post_id,
         "userName": userName,
@@ -106,21 +104,30 @@ function updatePost(post_id, type, value){
 
 ///////////////////////////////////////////
 
-function getAllCommentsOfPost(user_id){
-    return knex("comments").where("use_id",user_id).get();
+function getParentComments(post_id){
+    return knex("childComment").where("post_id",post_id).select("*");
 }
 
-function createComment(comment){
-    return knex("comments").insert(comment);
+function createParentComment(comment){
+    return knex("childComment").insert(comment);
 };
 
-function deleteComment(comment_id){
-    return knex("comments").where("comment_id", comment_id).del();
+function deleteParentComment(comment_id){
+    return knex("childComment").where("parent_comment_id", comment_id).del();
 };
 
-// function updateComment(comment_id, comment){
-//     return knex("comments").where("comment_id", comment_id).update(comment);
-// };
+function getChildComments(parent_comment_id){
+    return knex("childComment").where("parent_comment_id",parent_comment_id).select("*");
+}
+
+function createChildComment(comment){
+    return knex("childComment").insert(comment);
+};
+
+function deleteChildComment(child_comment_id){
+    return knex("childComment").where("child_comment_id", child_comment_id).del();
+};
+
 
 
 
@@ -141,7 +148,11 @@ module.exports = {
     
     deletePost,
 
-    createComment,
-    getAllCommentsOfPost,
-    deleteComment,
+    createParentComment,
+    getParentComments,
+    deleteParentComment,
+
+    getChildComments,
+    createChildComment,
+    deleteChildComment
 }

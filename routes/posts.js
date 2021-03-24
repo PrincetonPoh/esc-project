@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 
 
-// note to deal with case where users try to sign up with the same id
+// insert date of creation
 router.post("/createPost", async (req, res) =>{
     const result = await db.createPost(req.body);
     res.status(200).json({id: result[0]});
@@ -50,7 +50,7 @@ router.delete("/deletePost", async (req, res) => {
 
 
 router.put("/updatePost",async(req,res) =>{
-    await db.updatePost(req.query.post_id,req.query.type,req.query.value);
+    await db.updatePost(req.query.post_id, req.query.type, req.query.value);
     res.status(200).json({success:true})
 });
 
