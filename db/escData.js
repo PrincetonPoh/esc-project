@@ -31,8 +31,11 @@ function updateUser(user){
 
 
 ///////////////////////////////////////////
+
+
 function searchAllPosts(){
-    return knex("posts").select("*");
+    let allPosts= await knex("posts").select("*");
+    return allPosts;
 };
 
 function searchPostsBasedOn(type, owner_id){
