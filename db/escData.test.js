@@ -1,5 +1,5 @@
 
-
+/*
 const Knex = require('knex');
 const allPosts = require('./searchAllPosts');
 
@@ -8,4 +8,4 @@ test('searchAllPosts', () => {
   expect(posts.ownerName).toEqual(0)
   
 
-});
+});*/
