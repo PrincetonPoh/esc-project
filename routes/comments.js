@@ -12,7 +12,8 @@ router.get("/getParentComments", async (req, res) => {
 
 // insert date of creation
 router.post("/createParentComment", async (req, res) =>{
-    const result = await db.createParentComment(req.body);
+    const comment_id=Server.generateUuid();
+    const result = await db.createParentComment(comment_id, req.body);
     res.status(200).json({id: result[0]});
 });
 
@@ -31,7 +32,8 @@ router.get("/getChildComments", async (req, res) => {
 
 // insert date of creation
 router.post("/createChildComment", async (req, res) =>{
-    const result = await db.createChildComment(req.body);
+    const comment_id=Server.generateUuid();
+    const result = await db.createChildComment(comment_id,req.body);
     res.status(200).json({id: result[0]});
 });
 

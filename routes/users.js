@@ -15,7 +15,9 @@ router.get("/getAllUsers", async (req, res) => {
 
 // note to deal with case where users try to sign up with the same id
 router.post("/createUser", async (req, res) =>{
-    const result = await db.createUser(req.body);
+    
+    const user_id=Server.generateUuid();
+    const result = await db.createUser(user_id,req.body);
     res.status(200).json({id: result[0]});
 });
 
@@ -31,6 +33,30 @@ router.put("/updateUser",async(req,res) =>{
     await db.updateUser(req.body);
     res.status(200).json({success:true})
 });
+
+
+router.get("/displayAttendPostListsOfTheUser", async (req, res) => {
+    const users = await db.displayAttendPostListsOfTheUser(req.query.user_id);
+    res.status(200).json({users})
+});
+
+router.post("/createPostListsOfTheUser", async (req, res) =>{
+    const result = await db.createPostListsOfTheUser(req.query.user_id,req.query.post_id);
+
+    res.status(200).json({id: result[0]});
+});
+router.delete("/deleteAllPostListsOfTheUser", async (req, res) => {
+    // const result = await db.getAllUsers(req.params.id);
+    await db.deleteAllPostListsOfTheUser(req.query.user_id);
+    res.status(200).json({success:true})
+});
+router.delete("/deletePostListsOfTheUser", async (req, res) => {
+    // const result = await db.getAllUsers(req.params.id);
+    await db.deletePostListsOfTheUser(req.query.user_id,req.query.post_id);
+    res.status(200).json({success:true})
+});
+
+
 
 
 

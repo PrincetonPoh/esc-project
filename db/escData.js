@@ -6,7 +6,8 @@ function getAllUsers(){
     return knex("users").select("*");
 };
 
-function createUser(user){
+function createUser(user_id,user){
+    user.user_id=user_id;
     return knex("users").insert(user);
 };
 
@@ -28,6 +29,27 @@ function updateUser(user){
                 });
 };
 
+
+function displayAttendPostListsOfTheUser(user_id){
+    return knex("attendPosts").where("user_id",user_id).join("posts","attendPosts.post_id","=","posts.post_id").select("posts.*");
+};
+
+function createPostListsOfTheUser(user_id,post_id){
+    return knex("attendPosts").insert({
+        "user_id":user_id,
+        "post_id": post_id
+    });
+};
+
+function deleteAllPostListsOfTheUser(user_id){
+    console.log('deleting post list of the user now');
+    return knex("attendPosts").where("user_id", user_id).del();
+};
+
+function deletePostListsOfTheUser(user_id,post_id){
+    console.log('deleting post list of the user now');
+    return knex("attendUsers").where("user_id", user_id).where("post_id",post_id).del();
+};
 
 
 ///////////////////////////////////////////
@@ -87,8 +109,12 @@ function updateUserListsOfThePost(post_id, type, value){
 }
 
 
-function createPost(post){
+function createPost(post_id,post){
     console.log('creating post now');
+     
+    post.post_id=post_id;
+    console.log(post)
+    
     return knex("posts").insert(post);
 };
 
@@ -99,8 +125,6 @@ function deletePost(post_id){
 
 
 function updatePost(post_id, type, value){
-
-
 
     if(type=="owner_id"){   
         return knex("posts").where("post_id",post_id).update({owner_id: value});
@@ -127,7 +151,8 @@ function getParentComments(post_id){
     return knex("childComment").where("post_id",post_id).select("*");
 }
 
-function createParentComment(comment){
+function createParentComment(comment_id,comment){
+    comment.comment_id=comment_id;
     return knex("childComment").insert(comment);
 };
 
@@ -139,7 +164,8 @@ function getChildComments(parent_comment_id){
     return knex("childComment").where("parent_comment_id",parent_comment_id).select("*");
 }
 
-function createChildComment(comment){
+function createChildComment(comment_id,comment){
+    comment.comment_id=comment_id;
     return knex("childComment").insert(comment);
 };
 
@@ -156,6 +182,10 @@ module.exports = {
     getAllUsers,
     deleteUser,
     updateUser,
+    displayAttendPostListsOfTheUser,
+    deletePostListsOfTheUser,
+    deleteAllPostListsOfTheUser,
+    createPostListsOfTheUser,
 
     searchAllPosts,
     searchPostsBasedOn,
