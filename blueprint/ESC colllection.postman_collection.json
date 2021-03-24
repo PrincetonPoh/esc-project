@@ -1,31 +1,36 @@
 {
-	"variables": [],
 	"info": {
-		"name": "ESC colllection copy",
-		"_postman_id": "0f579266-cadc-f471-5e38-9a468c453af1",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"_postman_id": "5c6507a1-62e9-4543-b6cc-9de9a9b7b019",
+		"name": "ESC colllection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "get all users",
 			"request": {
-				"url": "localhost:1337/users/getAllUsers",
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"description": ""
+				"url": {
+					"raw": "localhost:1337/users/getAllUsers",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"users",
+						"getAllUsers"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "search all posts",
+			"name": "search all posts (for dev)",
 			"request": {
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "localhost:1337/posts/searchAllPosts?",
+					"raw": "localhost:1337/posts/searchAllPosts",
 					"host": [
 						"localhost"
 					],
@@ -33,29 +38,21 @@
 					"path": [
 						"posts",
 						"searchAllPosts"
-					],
-					"query": [
-						{
-							"key": "",
-							"value": "",
-							"disabled": true
-						}
-					],
-					"variable": []
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"description": ""
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "search post by owner id/postal code/ date of creation",
+			"name": "search post by owner id/postal code/ date of creation Copy",
 			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "owner_id",
+						"value": "123"
+					}
+				],
 				"url": {
 					"raw": "localhost:1337/posts/SearchPostsBasedOn?owner_id=321&type=owner_id",
 					"host": [
@@ -70,34 +67,28 @@
 						{
 							"key": "owner_id",
 							"value": "321",
-							"equals": true,
 							"description": "put in the value of that type"
 						},
 						{
 							"key": "type",
 							"value": "owner_id",
-							"equals": true,
 							"description": "put in the type"
 						}
-					],
-					"variable": []
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "owner_id",
-						"value": "123",
-						"description": ""
-					}
-				],
-				"body": {},
-				"description": ""
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "get posts details by post id",
 			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "owner_id",
+						"value": "123"
+					}
+				],
 				"url": {
 					"raw": "localhost:1337/posts/DisplayPostsDetails?post_id=1",
 					"host": [
@@ -111,29 +102,23 @@
 					"query": [
 						{
 							"key": "post_id",
-							"value": "1",
-							"equals": true,
-							"description": ""
+							"value": "1"
 						}
-					],
-					"variable": []
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "owner_id",
-						"value": "123",
-						"description": ""
-					}
-				],
-				"body": {},
-				"description": ""
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "DisplayAttendUserListsOfThePost",
 			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "owner_id",
+						"value": "123"
+					}
+				],
 				"url": {
 					"raw": "localhost:1337/posts/DisplayAttendUserListsOfThePost?post_id=2",
 					"host": [
@@ -147,107 +132,216 @@
 					"query": [
 						{
 							"key": "post_id",
-							"value": "2",
-							"equals": true,
-							"description": ""
+							"value": "2"
 						}
-					],
-					"variable": []
-				},
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get parent comment",
+			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "owner_id",
-						"value": "123",
-						"description": ""
-					}
-				],
-				"body": {},
-				"description": ""
+				"header": [],
+				"url": {
+					"raw": "localhost:1337/comments/getParentComments?post_id=4",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"comments",
+						"getParentComments"
+					],
+					"query": [
+						{
+							"key": "post_id",
+							"value": "4"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "createUserListsOfThePost",
+			"name": "get child comment",
 			"request": {
-				"url": "localhost:1337/posts/CreateUserListsOfThePost",
-				"method": "POST",
-				"header": [
-					{
-						"key": "owner_id",
-						"value": "123",
-						"description": ""
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"post_id\": 2,\n    \"userName\":\"Bob\",\n    \"phoneNumber\": 22221111\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "deleteUserListsOfThePost copy",
-			"request": {
-				"url": "localhost:1337/posts/CreateUserListsOfThePost",
-				"method": "POST",
-				"header": [
-					{
-						"key": "owner_id",
-						"value": "123",
-						"description": ""
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"post_id\": 2,\n    \"userName\":\"Bob\",\n    \"phoneNumber\": 22221111\n}"
-				},
-				"description": ""
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1337/comments/getChildComments?parent_comment_id=1",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"comments",
+						"getChildComments"
+					],
+					"query": [
+						{
+							"key": "parent_comment_id",
+							"value": "1"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "create user",
 			"request": {
-				"url": "localhost:1337/users/createUser",
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"user_id\": 1,\n    \"phoneNumber\": 12344321,\n    \"userName\": \"princeton\",\n    \"emailAddress\": \"prince@gmail.com\",\n    \"password\": \"asd123\"\n}"
+					"raw": "{\n    \"user_id\": 1,\n    \"phoneNumber\": 12344321,\n    \"userName\": \"princeton\",\n    \"emailAddress\": \"prince@gmail.com\",\n    \"password\": \"asd123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
-				"description": ""
+				"url": {
+					"raw": "localhost:1337/users/createUser",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"users",
+						"createUser"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "create post",
 			"request": {
-				"url": "localhost:1337/posts/createPost",
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"post_id\": 2,\n    \"owner_id\": 321,\n    \"postTitle\": \"gooood\",\n    \"dateOfCreation\": 888888,\n    \"postalCode\": 670222,\n    \"description\": \"pns is great today!\"\n}"
+					"raw": "{\n    \"post_id\": 4,\n    \"owner_id\": 333,\n    \"postTitle\": \"3treegooood\",\n    \"dateOfCreation\": 33333,\n    \"postalCode\": 670333,\n    \"description\": \"lies\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
-				"description": ""
+				"url": {
+					"raw": "localhost:1337/posts/createPost",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"posts",
+						"createPost"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create parent comment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"parent_comment_id\": 1,\n    \"post_id\": 4,\n    \"text\": \"this is my very first p.commmnett!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:1337/comments/createParentComment",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"comments",
+						"createParentComment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create child comment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"child_comment_id\": 4,\n    \"parent_comment_id\": 1,\n    \"text\": \"moarrrr childreaaan comments\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:1337/comments/createChildComment",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"comments",
+						"createChildComment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createUserListsOfThePost",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "owner_id",
+						"value": "123"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"post_id\": 2,\n    \"userName\":\"Bob\",\n    \"phoneNumber\": 22221111\n}"
+				},
+				"url": {
+					"raw": "localhost:1337/posts/CreateUserListsOfThePost",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"posts",
+						"CreateUserListsOfThePost"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "delete user",
 			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "localhost:1337/users/deleteUser/?user_id=1",
 					"host": [
@@ -264,77 +358,158 @@
 							"key": "user_id",
 							"value": "1"
 						}
-					],
-					"variable": []
-				},
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"description": ""
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "delete post",
 			"request": {
-				"url": {
-					"raw": "localhost:1337/posts/deletePost?post_id=1",
-					"host": [
-						"localhost"
-					],
-					"port": "1337",
-					"path": [
-						"posts",
-						"deletePost"
-					],
-					"query": [
-						{
-							"key": "post_id",
-							"value": "1",
-							"equals": true,
-							"description": ""
-						}
-					],
-					"variable": []
-				},
 				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": ""
 				},
-				"description": ""
+				"url": {
+					"raw": "localhost:1337/posts/deletePost/?post_id=3",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"posts",
+						"deletePost",
+						""
+					],
+					"query": [
+						{
+							"key": "post_id",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete parent comment",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:1337/comments/deleteParentComment/?parent_comment_id=1",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"comments",
+						"deleteParentComment",
+						""
+					],
+					"query": [
+						{
+							"key": "parent_comment_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete childcomment",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:1337/comments/deleteChildComment/?child_comment_id=4",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"comments",
+						"deleteChildComment",
+						""
+					],
+					"query": [
+						{
+							"key": "child_comment_id",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteUserListsOfThePost copy",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "owner_id",
+						"value": "123"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"post_id\": 2,\n    \"userName\":\"Bob\",\n    \"phoneNumber\": 22221111\n}"
+				},
+				"url": {
+					"raw": "localhost:1337/posts/CreateUserListsOfThePost",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"posts",
+						"CreateUserListsOfThePost"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "update user",
 			"request": {
-				"url": "localhost:1337/users/updateUser",
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 3,\r\n    \"username\": \"yoyoman\",\r\n    \"location\": 000000\r\n}"
+					"raw": "{\r\n    \"user_id\": 1,\r\n    \"phoneNumber\": 12344321222,\r\n    \"userName\": \"princeton2\",\r\n    \"emailAddress\": \"prince2@gmail.com\",\r\n    \"password\": \"asd123222\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "update post",
-			"request": {
-				"url": "localhost:1337/users/updatePost/1",
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"description": ""
+				"url": {
+					"raw": "localhost:1337/users/updateUser",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"users",
+						"updateUser"
+					]
+				}
 			},
 			"response": []
 		}
