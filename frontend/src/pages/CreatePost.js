@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import '../styles/CreatePost.css';
 import info_hover from '../media/info_hover.png';
 import plus_icon_circle from '../media/plus_icon_circle.png';
+import {Link} from 'react-router-dom';
+
+/*Uses the one map api to get the planning area to detemine the nearest event occuring */
 
 function CreatePost() {
 
@@ -11,20 +14,61 @@ function CreatePost() {
     const [desc, setDesc] = useState("")
     const [date, setDate] = useState("")
     const [image, setImage] = useState(null)
+    const [locations, setLocations] = useState([]);
+    const [locationSelected, setLocationSelected] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [oneMapToken, setOneMapToken] = useState("");
+
+    useEffect(() => {
+        const fetchLocation = async() => {
+            setIsLoading(true);
+            const result = await axios.get('http://localhost:1337/posts/getAllLocations');
+            setLocations(result.data.posts.locations)
+            setIsLoading(false);
+        }
+        fetchLocation();
+    }, [])
 
     const handleSubmit = (e) => {
         console.log(title, loc, desc, date, image);
+        e.preventDefault();
         axios.post("http://localhost:1337/posts/createPost", 
         {
-            "post_id": Math.floor(Math.random() * 100),
-            "owner_id": Math.random(),
+            "owner_id": Math.random(),//Need to get the userId
             "postTitle": title,
             "dateOfCreation": date,
             "postalCode": loc,
             "description": desc
-        }).then((response) => alert("Successfully posted.")).catch((error) => alert("Error."));
-        
-        e.preventDefault();
+        }).then((response) => {alert("Successfully posted.")}).catch((error) => alert("Error."));
+    }
+
+    const getTokenFromOneMap = async() => {
+        const token = await axios.post("https://developers.onemap.sg/privateapi/auth/post/getToken",{
+            "email": "yikkhuen_kong@mymail.sutd.edu.sg",
+            "password": "P@ssw0rd123SUTD"
+        })
+        setOneMapToken(token.access_token);
+    }
+
+    const getLocationString = async (locationNo) => {
+        const result = await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${locationNo}&returnGeom=Y&getAddrDetails=Y&pageNum=1`)
+        const lat = result.data.results[0].LATITUDE
+        const lon = result.data.results[0].LONGITUDE
+        getTokenFromOneMap();
+        const result2 = await axios.get(`https://developers.onemap.sg/privateapi/popapi/getPlanningarea?token=${oneMapToken}&lat=${lat}&lon=${lon}`)//Get the planning area(require auth)
+        return result2.data[0].pln_area_n
+    }
+
+    const loadOptions = (locations) => {
+        return locations.map((locationNo) => {
+            const locationString = getLocationString(locationNo);
+            return <option>{locationString}</option>
+        })
+    }
+
+    const setLocationChoice = (e) => {
+        setLoc(e);
+        setLocationSelected(true);
     }
 
     const uploadDefaultStyle = {
@@ -61,14 +105,14 @@ function CreatePost() {
                             <img src={info_hover} class="info-icon"/>
                             <span class="info-text"> Where will your offer/event be available or held at? Select a region to help people nearby find your post! </span>
                         </div>
-                        <input id="input-location" name="location" type="text" value={loc} onChange={e => setLoc(e.target.value)}></input>
-                        
-                        <select  id="input-region" name="region">
-                            <option>
-                                //API call for the options
-                            </option>
+                        {locationSelected ? (<label>{loc}</label>) : (<input id="input-location" name="location" type="text" value={loc} onChange={e => setLoc(e.target.value)}></input>)}
+                        <select  id="input-region" name="region" onChange={e => setLocationChoice(e.target.value)}>
+                        {isLoading ? (<option>
+                                ...  loading
+                            </option>) : (<option>
+                                API call for the options
+                            </option>)}
                         </select>
-                        
                     </div>
 
                     <div id="form-description" class="form-item">
@@ -132,9 +176,9 @@ function CreatePost() {
                         </label> 
                     </div>
                 </div>
-
+                <Link to='/user'>
                 <input id="create-post-form-button" type="submit" value="Create Post" />
-                
+                </Link>
             </form>
             
         </div>

@@ -47,9 +47,13 @@ class App extends Component {
         <div className="App">
           <Navbar toggleLogin={this.toggleLogin.bind(this)}/>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/">
+            <Home loginState={this.state.login}/>  
+            </Route>
             <Route exact path="/signup" component={Signup} />
-            <Route path="/user" component={User} />
+            <Route path="/user/:id" >
+              <User></User>
+            </Route>
             <Route path="/createpost" component={CreatePost}/>
             <Route path="/post/:id" component={Post}/>
           </Switch>

@@ -47,6 +47,7 @@ class Navbar extends React.Component {
       profile_dropdown: false
     });
     alert("signed out!")
+    this.props.toggleLogin();
   }
 
   toggleSidebar = () => {

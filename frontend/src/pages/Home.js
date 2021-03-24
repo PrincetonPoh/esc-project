@@ -3,39 +3,54 @@ import '../styles/Home.css';
 import EventCards from '../components/EventCards';
 import axios from 'axios';
 
-function Home() {
+function Home(props) {
 
     const [events, setEvents] = useState([]);
     const [sortResult, setSortResult] = useState(0);
     const [sort, setSort] = useState("newestPosts");
     const [location, setLocation] = useState('anywhere');
     const [tag, setTag] = useState({ offer: true, events: true, ongoing: true, oneoff: true, value: [] });
+    const [isLoading, setIsLoading] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
 
     const locations = ["Clementi", "Tampines", "Bishan", "Woodlands"];
     const tags = ["Offer", "Events", "Ongoing", "OneOff"];
 
     // const callApi = () => { //Template
-    //     axios.get('https://api.github.com/users/mapbox')
-    //     .then((response) => {
-    //         console.log(response);
-    //     })
+    //     console.log("Getting posts.")
+    //     axios.get('http://localhost:1337/posts/searchAllPosts')
+    //         .then((response) => {
+    //             setEvents(response);
+    //             setIsLoading(false);
+    //         })
+    //         .catch(error => alert("Error in getting posts."))
     // }
 
-    const addEvents = () => {for (let i = 0; i < 8; i++) {
-        events.push({
-            id: i,
-            title: "Event " + i,
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            location: locations[i % 4],
-            tag: tags[i % 4]
-        })
-    }}
+    useEffect(() => {
+        const fetchData = async() => {
+            setIsLoading(true);
+            const result = await axios.get('http://localhost:1337/posts/searchAllPosts');
+            setEvents(result.data.posts);
+            setIsLoading(false);
+        };
+        fetchData();
+    }, [isLogin, ])
 
     useEffect(() => {
+        const getLogin = () => {
+            if(props.loginState){
+                setIsLogin(true)
+            }
+        }
+        getLogin();
+    }, [props.loginState])
+
+
+    useEffect(() => {//Got to update this useEffect with respect to the backend Ids
         function handleEventsChange() {
             const newEvent = events.filter(event => {
-                if (location != "anywhere"){
-                return event.location.toLowerCase() === location
+                if (location != "anywhere") {
+                    return true;
                 } else {
                     return true;
                 }
@@ -44,6 +59,7 @@ function Home() {
         }
         return setEvents(handleEventsChange());
     }, [location]);
+
 
     // useEffect(() => {
     //     console.log(tag);
@@ -55,7 +71,7 @@ function Home() {
 
     const cardify = (events) => {
         return events.map((event) => {
-            return <EventCards event={event} />;
+            return <EventCards event={event} isLogin={isLogin}/>;
         });
     };
 
@@ -124,8 +140,7 @@ function Home() {
                 <div id="sortByLocation">Location: {locationDropDown()}</div>
             </div>
             <div id="filters">Filter By: {offersCheckBox()} {eventsCheckBox()} {recurrentCheckBox()} {oneoffCheckBox()} </div>
-            <button onClick={addEvents}>Hello</button>
-            <div id="cardsContainer">{cardify(events)}</div>
+            {isLoading ? (<p>Loading Events</p>) : (<div id="cardsContainer">{cardify(events)}</div>)}
         </div>
     );
 
