@@ -25,7 +25,7 @@ class SigninPopup extends Component {
     this.setState({
         [name]: value
     });
-    console.log("creds: "+this.state.creds+"\npassword: "+this.state.password+"\ncredsWarning: "+this.state.credsWarning);
+    // console.log("creds: "+this.state.creds+"\npassword: "+this.state.password+"\ncredsWarning: "+this.state.credsWarning);
     if (value == '') {
       this.setState({
         [name+"Warning"]: <p class="inputWarning"> This field is required! </p>
@@ -82,7 +82,7 @@ class SigninPopup extends Component {
             
             <label class="popup-contents"> Password </label>
             <a href="#" id="forgot-password"> Forgot Password? </a> 
-            <input type="text" id="signin-password" name="password" onChange={this.handleChange} class="text-fields dropshadow"/>
+            <input type="password" id="signin-password" name="password" onChange={this.handleChange} class="text-fields dropshadow"/>
             {this.state.passwordWarning}
 
             {this.state.formWarning}
