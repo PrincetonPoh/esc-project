@@ -1,69 +1,39 @@
-var http = require('http');
-var querystring = require('querystring');
-var mysql = require('mysql');
- 
-//服务器端接收数据
-var server = http.createServer(function(req,res){
-	if(req.url !== 'favicon.ico'){
-		var params;
-		req.on('data',function(data){
-			//使用querystring模块中的parse方法将字符串转化为对象
-			params = querystring.parse(decodeURIComponent(data));
-		})
-		req.on('end',function(){
-			console.log('The client request data has been received');
-			connect(params);
-		})
-		//使用Access-Control-Allow-Origin解决跨域问题
-		res.setHeader('Access-Control-Allow-Origin','*');
-		//返回JSON数据
-		res.writeHead(200,{'Content-Type' : 'application/json'});
-		res.end(JSON.stringify({status : 1}));
-	}
-}).listen(1337,'127.0.0.1');
- 
-server.on('error',function(e){
-	if(e.code == 'EADDRINUSE'){
-		console.log('Server address and port are already occupied');
-	}
-})
-//设置服务器超时时间为1分钟
-server.setTimeout(60*1000,function(socket){
-	console.log('Server timeout');
-	console.log(socket);
-})
-server.on('close',function(){
-	console.log('server is closed');
-})
- 
-//连接数据库
-function connect(params){
-	var connection = mysql.createConnection({
-		host     : '10.12.3.76',       
-        user     : 'root',              
-        password : 'Wh200128',       
-        port: '3306',                   
-        database: 'ESC_project_DB' 
-	});	
-	connection.connect(function(err){
-		if(err){
-			console.log('Failed to establish connection with mysql database');
-		}else{
-			console.log('Successfully established a connection with the mysql database');
-			connection.query('insert into user set ?',{
-				LastName : params.LastName,
-				FirstName : params.FirstName,
-				phone_num : params.phone_num,
-				post_code : params.post_code,
-                email : params.email
-			},function(err,result){
-				if(err){
-					console.log('Failed to insert data');
-				}else{
-					console.log('Succeed to insert data');
-					connection.end();
-				}
-			})
-		}
-	})
-}
+const express = require("express");
+const app = express();
+const db = require('./db/escData');
+const bodyParser = require('body-parser');
+//const {v4:uuidv4} = require('uuid');
+const cors = require('cors');
+
+app.use(cors());
+
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+
+// app.use(function(req, res, next) {
+// 	res.header("Access-Control-Allow-Origin", "*");
+// 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+// 	res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+// 	next();
+// });
+
+require(`./route_paths/routes`)(app);
+
+
+// set port, listen for requests
+const PORT = process.env.PORT || 1337;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+});
+
+
+generateUuid = function () { 
+    // const newId=uuidv4();
+    // const newId=1234;
+    const newId = Math.floor(Math.random()*10000)
+    return newId;
+};
+
+module.exports = generateUuid;
+
+//https://www.youtube.com/watch?v=cr3pX6fSUpc
