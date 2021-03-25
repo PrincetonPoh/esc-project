@@ -1,6 +1,5 @@
 import React, { Component } from 'react'; 
-import '../styles/ProfileDropdown.css';
-import {Link} from 'react-router-dom';
+import '../styles/ProfileDropdown.css'; 
 
 class ProfileDropdown extends Component {
   handleClick = () => {
@@ -22,10 +21,8 @@ class ProfileDropdown extends Component {
           <div id="profile-dropdown-content"> 
             <a href="#" class="profile-dropdown-items"> My Profile  </a> 
             <a href="#" class="profile-dropdown-items"> My Posts </a>
-            <a href="#" class="profile-dropdown-items"> Settings </a>
-            <Link to='/'>
-            <a href="#" onClick={this.handleLogout} class="profile-dropdown-items">Logout</a>
-            </Link> 
+            <a href="#" class="profile-dropdown-items"> Settings </a> 
+            <a href="#" id="profile-dropdown-logout" onClick={this.handleLogout} class="profile-dropdown-items"> Logout </a>
           </div>
         </div>
       </div>
