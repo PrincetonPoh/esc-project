@@ -91,7 +91,7 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:1337/posts/DisplayPostsDetails?post_id=1",
+					"raw": "localhost:1337/posts/DisplayPostsDetails?post_id=4",
 					"host": [
 						"localhost"
 					],
@@ -103,7 +103,7 @@
 					"query": [
 						{
 							"key": "post_id",
-							"value": "1"
+							"value": "4"
 						}
 					]
 				}
@@ -253,7 +253,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"parent_comment_id\": 1,\n    \"post_id\": 4,\n    \"text\": \"this is my very first p.commmnett!\"\n}",
+					"raw": "{\n    \"post_id\": 4,\n    \"text\": \"this is my very 2nd p.commmnett!\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -317,7 +317,7 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:1337/posts/createUserListsOfThePost?post_id=50bdb0bc-f404-4499-a940-50590d243554&userName=\"yoyoman\"&phoneNumber=121232131212",
+					"raw": "localhost:1337/posts/createUserListsOfThePost?post_id=50bdb0bc-f404-4499-a940-50590d243554&userName=yoyoman&phoneNumber=121232131212",
 					"host": [
 						"localhost"
 					],
@@ -333,7 +333,7 @@
 						},
 						{
 							"key": "userName",
-							"value": "\"yoyoman\""
+							"value": "yoyoman"
 						},
 						{
 							"key": "phoneNumber",
@@ -544,7 +544,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "localhost:1337/users/updatePost/1",
+					"raw": "localhost:1337/users/updatePost/1?post_id=4&type=postTitle&value=somethingsss",
 					"host": [
 						"localhost"
 					],
@@ -553,6 +553,20 @@
 						"users",
 						"updatePost",
 						"1"
+					],
+					"query": [
+						{
+							"key": "post_id",
+							"value": "4"
+						},
+						{
+							"key": "type",
+							"value": "postTitle"
+						},
+						{
+							"key": "value",
+							"value": "somethingsss"
+						}
 					]
 				},
 				"description": "Possible types:\r\n- postTitle\r\n- description\r\n- dateOfcreation\r\n- postal_code\r\n- owner_id"
