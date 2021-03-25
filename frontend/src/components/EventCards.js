@@ -43,12 +43,27 @@ class EventCards extends React.Component {
         this.checkLoggedIn = this.checkLoggedIn.bind(this);
     }
 
-    childCard(postTitle, description, postalCode) {
+    timeConverter(time) {
+        var a = new Date(time * 1000);
+        var year = a.getFullYear();
+        var month = a.getMonth();
+        var date = a.getDate();
+        var time = date + '-' + month + '-' + year;
+        return time
+    }
+
+    childCard(postTitle, description, postalCode, dateOfCreation) {
         return (
             <div>
                 <h2 class="customCardTitle">{postTitle}</h2>
-                <h3 class="customCardDescription">{description}</h3>
-                <h3 class="customCardDescription">{postalCode}</h3>
+                <h3 class="customCardDescription">
+                    {description}
+                </h3>
+                <br />
+                <br />
+                <p>Location: {postalCode}</p>
+                <br />
+                <p>Date: {this.timeConverter(dateOfCreation)}</p>
                 <div>
                     {/* {<Modal
                     show={this.state.popup}
@@ -63,7 +78,7 @@ class EventCards extends React.Component {
     }
 
     checkLoggedIn() {
-        if(!this.props.isLogin){
+        if (!this.props.isLogin) {
             alert("Please login to see the details");
         }
     }
@@ -73,10 +88,10 @@ class EventCards extends React.Component {
             <div class="customCard" onClick={this.checkLoggedIn}>
                 {this.props.isLogin ? (
                     <Link to={this.state.postDetails}>
-                        {this.childCard(this.props.event.postTitle, this.props.event.description, this.props.event.postalCode)}
+                        {this.childCard(this.props.event.postTitle, this.props.event.description, this.props.event.postalCode, this.props.event.dateOfCreation)}
                     </Link>) :
                     (<div>
-                        {this.childCard(this.props.event.postTitle, this.props.event.description, this.props.event.postalCode)}
+                        {this.childCard(this.props.event.postTitle, this.props.event.description, this.props.event.postalCode, this.props.event.dateOfCreation)}
                     </div>)}
             </div >
         )
