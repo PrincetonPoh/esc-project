@@ -7,7 +7,7 @@ const router = express.Router();
 
 // insert date of creation
 router.post("/createPost", async (req, res) =>{
-    const post_id=Server.generateUuid();
+    const post_id= generateUuid();
 
     const result = await db.createPost(post_id, req.body);
     

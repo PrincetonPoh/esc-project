@@ -7,6 +7,13 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
+app.use(function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+	next();
+});
+
 require(`./route_paths/routes`)(app);
 
 
@@ -17,10 +24,13 @@ app.listen(PORT, () => {
 });
 
 
-module.exports.generateUuid = function () { 
+generateUuid = function () { 
     // const newId=uuidv4();
-    const newId=1234;
+    // const newId=1234;
+    const newId = Math.floor(Math.random()*10000)
     return newId;
 };
+
+module.exports = generateUuid;
 
 //https://www.youtube.com/watch?v=cr3pX6fSUpc

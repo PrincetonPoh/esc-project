@@ -18,7 +18,7 @@ router.get("/getUserById", async (req, res) => {
 // note to deal with case where users try to sign up with the same id
 router.post("/createUser", async (req, res) =>{
     
-    const user_id=Server.generateUuid();
+    const user_id= generateUuid();
     const result = await db.createUser(user_id,req.body);
     res.status(200).json({id: result[0]});
 });

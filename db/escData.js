@@ -166,16 +166,16 @@ function updatePost(post_id, type, value){
 ///////////////////////////////////////////
 
 function getParentComments(post_id){
-    return knex("childComment").where("post_id",post_id).select("*");
+    return knex("parentComment").where("post_id",post_id).select("*");
 }
 
 function createParentComment(comment_id,comment){
-    comment.comment_id=comment_id;
-    return knex("childComment").insert(comment);
+    comment.parent_comment_id=comment_id;
+    return knex("parentComment").insert(comment);
 };
 
 function deleteParentComment(comment_id){
-    return knex("childComment").where("parent_comment_id", comment_id).del();
+    return knex("parentComment").where("parent_comment_id", comment_id).del();
 };
 
 function getChildComments(parent_comment_id){
@@ -183,7 +183,7 @@ function getChildComments(parent_comment_id){
 }
 
 function createChildComment(comment_id,comment){
-    comment.comment_id=comment_id;
+    comment.child_comment_id=comment_id;
     return knex("childComment").insert(comment);
 };
 
