@@ -1,5 +1,6 @@
 import React, { Component } from 'react'; 
-import '../styles/ProfileDropdown.css'; 
+import '../styles/ProfileDropdown.css';
+import {Link} from 'react-router-dom';
 
 class ProfileDropdown extends Component {
   handleClick = () => {
@@ -7,7 +8,7 @@ class ProfileDropdown extends Component {
   };
 
   handleLogout = () => {
-    this.props.signout(); 
+    this.props.signout();
   };
 
   render() {
@@ -19,10 +20,10 @@ class ProfileDropdown extends Component {
           <p id="profile-dropdown-username" class="profile-dropdown-items"> Insert Username Here </p>
           <hr/>
           <div id="profile-dropdown-content"> 
-            <a href="#" class="profile-dropdown-items"> My Profile  </a> 
+            <Link to={`/user/${this.props.user.user_id}`} class="profile-dropdown-items"> My Profile  </Link> 
             <a href="#" class="profile-dropdown-items"> My Posts </a>
-            <a href="#" class="profile-dropdown-items"> Settings </a> 
-            <a href="#" id="profile-dropdown-logout" onClick={this.handleLogout} class="profile-dropdown-items"> Logout </a>
+            <a href="#" class="profile-dropdown-items"> Settings </a>
+            <a href="/" id="profile-dropdown-logout" onClick={this.handleLogout} class="profile-dropdown-items">Logout </a>
           </div>
         </div>
       </div>

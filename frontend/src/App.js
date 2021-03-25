@@ -12,6 +12,7 @@ import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import CreatePost from './pages/CreatePost';
 import Post from './pages/Post';
+import axios from 'axios';
 
 class App extends Component {
 
@@ -20,7 +21,8 @@ class App extends Component {
 
     this.state = {
       seen: false,
-      login: false
+      login: false,
+      user: {}
     }
   }
 
@@ -30,9 +32,19 @@ class App extends Component {
     });
   }
 
-  toggleLogin = () => {
+  getUserAPI = async(e) => {
+    console.log("Get User API At APP: ")
+    console.log(e);
+    const result = await axios.get(`http://localhost:1337/users/getUserByUserName?userName=${e}`);
+    console.log(result.data.user[0]);
+    return result.data.user[0];
+  }
+
+  toggleLogin = async (e) => {
+    const user = await this.getUserAPI(e);
     this.setState({
-      login: !this.state.login
+      login: !this.state.login,
+      user: user
     })
   }
 
@@ -45,16 +57,18 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Navbar toggleLogin={this.toggleLogin.bind(this)}/>
+          <Navbar toggleLogin={this.toggleLogin.bind(this)} user={this.state.user}/>
           <Switch>
             <Route exact path="/">
-            <Home loginState={this.state.login}/>  
+            <Home loginState={this.state.login} user={this.state.user}/>  
             </Route>
             <Route exact path="/signup" component={Signup} />
             <Route path="/user/:id" >
-              <User></User>
+              <User user={this.state.user}></User>
             </Route>
-            <Route path="/createpost" component={CreatePost}/>
+            <Route path="/createpost">
+              <CreatePost user={this.state.user}/>
+            </Route>
             <Route path="/post/:id" component={Post}/>
           </Switch>
         </div>

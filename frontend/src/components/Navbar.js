@@ -33,13 +33,14 @@ class Navbar extends React.Component {
     });
   }
 
-  setSignedin = () => {
+  setSignedin = (e) => {
+    console.log(e);
     this.setState({
       signedin: true, // changes nevbar buttons to signed in ones
       seen: false // hides signinPopup
     });
     alert("signed in!")
-    this.props.toggleLogin();
+    this.props.toggleLogin(e);
   }
   setSignedout = () => {
     this.setState({
@@ -97,7 +98,7 @@ class Navbar extends React.Component {
           </form>
 
           <div> {this.state.seen ?  <SigninPopup toggle={this.togglePopup} signin={this.setSignedin} />  : null } </div>
-          <div> {this.state.profile_dropdown ? <ProfileDropdown toggle={this.toggleProfileDropdown} signout={this.setSignedout} />  : null } </div>
+          <div> {this.state.profile_dropdown ? <ProfileDropdown toggle={this.toggleProfileDropdown} signout={this.setSignedout} user={this.props.user} />  : null } </div>
         </div> 
         <div> {this.state.sidebar ?  <Sidebar toggle={this.toggleSidebar} />  : null } </div>
       </div>

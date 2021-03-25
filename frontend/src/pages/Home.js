@@ -12,7 +12,7 @@ function Home(props) {
     const [tag, setTag] = useState({ offer: true, events: true, ongoing: true, oneoff: true, value: [] });
     const [isLoading, setIsLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
-
+    const [user, setUser] = useState([]);
     const locations = ["Clementi", "Tampines", "Bishan", "Woodlands"];
     const tags = ["Offer", "Events", "Ongoing", "OneOff"];
 
@@ -30,6 +30,7 @@ function Home(props) {
         const fetchData = async() => {
             setIsLoading(true);
             const result = await axios.get('http://localhost:1337/posts/searchAllPosts');
+            console.log(result.data.posts);
             setEvents(result.data.posts);
             setIsLoading(false);
         };
@@ -39,7 +40,8 @@ function Home(props) {
     useEffect(() => {
         const getLogin = () => {
             if(props.loginState){
-                setIsLogin(true)
+                setIsLogin(true);
+                setUser(props.user);
             }
         }
         getLogin();

@@ -4,6 +4,13 @@ import CommentCards from "./CommentCards";
 
 class Comment extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            parentComment: []
+        }
+    }
+
     postParentComment = (post_id) => {
         const text = document.getElementById("pComment").value;
         axios.post("http://localhost:1337/comments/createParentComment", {
@@ -38,9 +45,8 @@ class Comment extends React.Component {
                     <textarea id="pComment" placeholder="Type here to post a comment..." maxLength="280" style={{width: "40vw"}}></textarea>
                     <input type="submit" value="Post comment" onSubmit={() => this.postParentComment(this.props.post_id)}></input>
                 </div>
-
                 <div>
-                    {this.getParentComments(this.props.post_id)}
+                    {(this.state.parentComment.length != 0) ? (this.getParentComments(this.props.post_id)): null}
                 </div>
             </div>
         )

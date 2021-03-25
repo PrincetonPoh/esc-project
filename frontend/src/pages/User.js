@@ -3,20 +3,6 @@ import React, { useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom'; 
 import EventCards from '../components/EventCards';
 
-// class User extends Component {//get all post from user
-
-
-
-
-
-//     render(){
-//         return (
-//             <h1>User Page</h1>
-//         );
-//     }
-// }
-// export default User;
-
 function User(){
 
     let {id} = useParams();
@@ -27,7 +13,8 @@ function User(){
     useEffect(() => {
         const fetchEvents = async() => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/posts/searchPostsBasedOn/?type="owner_id"&value=${id}`)
+            const result = await axios.get(`http://localhost:1337/posts/SearchPostsBasedOn?type=owner_id&value=${id}`)
+            console.log(result.data.posts);
             setEvents(result.data.posts);
             setIsLoading(false);
         }

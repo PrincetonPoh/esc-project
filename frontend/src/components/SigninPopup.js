@@ -54,7 +54,7 @@ class SigninPopup extends Component {
     if (credsValid && passwordValid) {
       var signin_auth_success = true; // add auth here maybe 
       if (signin_auth_success) {
-        this.props.signin();
+        this.props.signin(this.state.creds);
       } else { 
         alert("auth failed!"); 
       }   
