@@ -1,11 +1,14 @@
 const knex = require("./knex");
 
-
-
 function getAllUsers(){
     return knex("users").select("*");
 };
-
+function getUserById(user_id){
+    return knex("users").where("user_id",user_id).select("*");
+};
+function getUserByUserName(userName){
+    return knex("users").where("userName", userName).select("*");
+};
 function createUser(user){
     return knex("users").insert(user);
 };
@@ -28,6 +31,40 @@ function updateUser(user){
                 });
 };
 
+function getPrimaryCodeByPostalCode(postalCode){
+    return knex("primaryCode").where("postalCode",postalCode).select("primaryCode");
+};
+
+function createPrimaryCode(primaryPostalCode){
+    return knex("primaryCode").insert(primaryPostalCode);
+};
+ 
+function updatePrimaryCodeByPostalCode(postalCode,primaryCode){
+    return knex("primaryCode")
+            .where("postalCode", postalCode)
+                .update({
+                    "primaryCode": primaryCode
+                });
+};
+
+
+function displayAttendPostListsOfTheUser(user_id){
+    return knex("attendPosts").where("user_id",user_id).join("posts","attendPosts.post_id","=","posts.post_id").select("posts.*");
+};
+
+function createPostListsOfTheUser(postList){
+    return knex("attendPosts").insert(postList);
+};
+
+function deleteAllPostListsOfTheUser(user_id){
+    console.log('deleting post list of the user now');
+    return knex("attendPosts").where("user_id", user_id).del();
+};
+
+function deletePostListsOfTheUser(user_id,post_id){
+    console.log('deleting post list of the user now');
+    return knex("attendUsers").where("user_id", user_id).where("post_id",post_id).del();
+};
 
 
 ///////////////////////////////////////////
@@ -123,6 +160,7 @@ function updatePost(post_id, type, value){
 function getParentComments(post_id){
     return knex("parentComment").where("post_id",post_id).select("*");
 }
+
 function createParentComment(comment){
     return knex("parentComment").insert(comment);
 };
@@ -148,8 +186,17 @@ function deleteChildComment(child_comment_id){
 module.exports = {
     createUser,
     getAllUsers,
+    getUserById,
+    getUserByUserName,
     deleteUser,
     updateUser,
+    getPrimaryCodeByPostalCode,
+    createPrimaryCode,
+    updatePrimaryCodeByPostalCode,
+    displayAttendPostListsOfTheUser,
+    deletePostListsOfTheUser,
+    deleteAllPostListsOfTheUser,
+    createPostListsOfTheUser,
 
     searchAllPosts,
     searchPostsBasedOn,
