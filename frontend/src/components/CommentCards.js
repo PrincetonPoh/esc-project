@@ -37,7 +37,7 @@ class CommentCards extends React.Component {
                 {this.getChildComments(this.props.parent_comment_id)}
                 <div className="row" id="replyBox">
                     <textarea id="cComment" placeholder="Type here to post a reply..." maxLength="280" style={{width: "20vw"}}></textarea>
-                    <input type="submit" value="Post reoky" onSubmit={this.postChildComment(this.props.parent_comment_id)}></input>
+                    <input type="submit" value="Post reoky" onSubmit={() => this.postChildComment(this.props.parent_comment_id)}></input>
                 </div>
             </div>
         )

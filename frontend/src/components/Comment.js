@@ -36,7 +36,7 @@ class Comment extends React.Component {
                 <p>Comments</p>
                 <div className="row" id="commentBox">
                     <textarea id="pComment" placeholder="Type here to post a comment..." maxLength="280" style={{width: "40vw"}}></textarea>
-                    <input type="submit" value="Post comment" onSubmit={this.postParentComment(this.props.post_id)}></input>
+                    <input type="submit" value="Post comment" onSubmit={() => this.postParentComment(this.props.post_id)}></input>
                 </div>
 
                 <div>
