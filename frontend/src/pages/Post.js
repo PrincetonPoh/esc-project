@@ -25,7 +25,7 @@ function Post() {
     return (
         <div>
         <h1>Welcome to event {id}</h1>
-        <Comment></Comment>
+        <Comment id={id}></Comment>
         </div>
     )
 }
