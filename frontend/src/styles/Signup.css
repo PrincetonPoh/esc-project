@@ -16,7 +16,12 @@
 } 
 
 #signup-form label {
-  padding-top: 20px; 
+  margin-top: 10px; 
+  font-size: larger;
+}
+#signup-form label::after {
+  content: "*";
+  color: red;
 }
 
 #signup-form-button {
