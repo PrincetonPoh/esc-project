@@ -5,6 +5,9 @@ const knex = require("./knex");
 function getAllUsers(){
     return knex("users").select("*");
 };
+function getUserById(user_id){
+    return knex("users").where("user_id",user_id).select("*");
+};
 
 function createUser(user_id,user){
     user.user_id=user_id;
@@ -30,15 +33,30 @@ function updateUser(user){
 };
 
 
+function getPrimaryCodeByPostalCode(postalCode){
+    return knex("primaryCode").where("postalCode",postalCode).select("primaryCode");
+};
+
+function createPrimaryCode(primaryPostalCode){
+    return knex("primaryCode").insert(primaryPostalCode);
+};
+ 
+function updatePrimaryCodeByPostalCode(postalCode,primaryCode){
+    return knex("primaryCode")
+            .where("postalCode", postalCode)
+                .update({
+                    "primaryCode": primaryCode
+                });
+};
+
+
+
 function displayAttendPostListsOfTheUser(user_id){
     return knex("attendPosts").where("user_id",user_id).join("posts","attendPosts.post_id","=","posts.post_id").select("posts.*");
 };
 
-function createPostListsOfTheUser(user_id,post_id){
-    return knex("attendPosts").insert({
-        "user_id":user_id,
-        "post_id": post_id
-    });
+function createPostListsOfTheUser(postList){
+    return knex("attendPosts").insert(postList);
 };
 
 function deleteAllPostListsOfTheUser(user_id){
@@ -180,8 +198,12 @@ function deleteChildComment(child_comment_id){
 module.exports = {
     createUser,
     getAllUsers,
+    getUserById,
     deleteUser,
     updateUser,
+    getPrimaryCodeByPostalCode,
+    createPrimaryCode,
+    updatePrimaryCodeByPostalCode,
     displayAttendPostListsOfTheUser,
     deletePostListsOfTheUser,
     deleteAllPostListsOfTheUser,

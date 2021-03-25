@@ -11,8 +11,10 @@ router.get("/getAllUsers", async (req, res) => {
     const users = await db.getAllUsers();
     res.status(200).json({users})
 });
-
-
+router.get("/getUserById", async (req, res) => {
+    const user = await db.getUserById(req.query.user_id);
+    res.status(200).json({user})
+});
 // note to deal with case where users try to sign up with the same id
 router.post("/createUser", async (req, res) =>{
     
@@ -20,19 +22,33 @@ router.post("/createUser", async (req, res) =>{
     const result = await db.createUser(user_id,req.body);
     res.status(200).json({id: result[0]});
 });
-
-
 router.delete("/deleteUser", async (req, res) => {
     // const result = await db.getAllUsers(req.params.id);
     await db.deleteUser(req.query.user_id);
     res.status(200).json({success:true})
 });
-
-
 router.put("/updateUser",async(req,res) =>{
     await db.updateUser(req.body);
     res.status(200).json({success:true})
 });
+
+
+
+router.get("/getPrimaryCodeByPostalCode", async (req, res) => {
+    const primaryCode = await db.getPrimaryCodeByPostalCode(req.query.postalCode);
+    res.status(200).json({primaryCode})
+});
+// note to deal with case where users try to sign up with the same id
+router.post("/createPrimaryCode", async (req, res) =>{
+    const result = await db.createPrimaryCode(req.body);
+    res.status(200).json({id: result[0]});
+});
+router.put("/updatePrimaryCodeByPostalCode",async(req,res) =>{
+    await db.updatePrimaryCodeByPostalCode(req.query.postalCode,req.query.primaryCode);
+    res.status(200).json({success:true})
+});
+
+
 
 
 router.get("/displayAttendPostListsOfTheUser", async (req, res) => {
@@ -41,8 +57,7 @@ router.get("/displayAttendPostListsOfTheUser", async (req, res) => {
 });
 
 router.post("/createPostListsOfTheUser", async (req, res) =>{
-    const result = await db.createPostListsOfTheUser(req.query.user_id,req.query.post_id);
-
+    const result = await db.createPostListsOfTheUser(req.body);
     res.status(200).json({id: result[0]});
 });
 router.delete("/deleteAllPostListsOfTheUser", async (req, res) => {

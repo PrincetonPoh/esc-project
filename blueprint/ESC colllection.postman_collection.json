@@ -22,6 +22,34 @@
 			"response": []
 		},
 		{
+			"name": "get user by user id",
+			"request": {
+				"url": "localhost:1337/users/getAllUsers",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get primary code by postal code",
+			"request": {
+				"url": "localhost:1337/users/getAllUsers",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "search all posts",
 			"request": {
 				"url": {
@@ -193,7 +221,7 @@
 			"response": []
 		},
 		{
-			"name": "deleteUserListsOfThePost copy",
+			"name": "createPostsListsOfTheUser",
 			"request": {
 				"url": "localhost:1337/posts/CreateUserListsOfThePost",
 				"method": "POST",
@@ -218,7 +246,71 @@
 			"response": []
 		},
 		{
+			"name": "deleteUserListsOfThePost",
+			"request": {
+				"url": {
+					"raw": "localhost:1337/posts/deleteUserListsOfThePost?post_id=2&userName=\"www\"",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"posts",
+						"deleteUserListsOfThePost"
+					],
+					"query": [
+						{
+							"key": "post_id",
+							"value": "2",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "userName",
+							"value": "\"www\"",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "owner_id",
+						"value": "123",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"post_id\": 2,\n    \"userName\":\"Bob\",\n    \"phoneNumber\": 22221111\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "create user",
+			"request": {
+				"url": "localhost:1337/users/createUser",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": 1,\n    \"phoneNumber\": 12344321,\n    \"userName\": \"princeton\",\n    \"emailAddress\": \"prince@gmail.com\",\n    \"password\": \"asd123\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "create primary code",
 			"request": {
 				"url": "localhost:1337/users/createUser",
 				"method": "POST",
@@ -326,6 +418,20 @@
 		},
 		{
 			"name": "update post",
+			"request": {
+				"url": "localhost:1337/users/updatePost/1",
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "update primary code of postal code",
 			"request": {
 				"url": "localhost:1337/users/updatePost/1",
 				"method": "PUT",
