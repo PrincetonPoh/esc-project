@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require('../db/escData');
+const uuid = require('../middleware/uuid');
 const bodyParser = require('body-parser');
 const router = express.Router();
 
@@ -12,9 +13,10 @@ router.get("/getParentComments", async (req, res) => {
 
 // insert date of creation
 router.post("/createParentComment", async (req, res) =>{
-    const comment_id=Server.generateUuid();
-    const result = await db.createParentComment(comment_id, req.body);
-    res.status(200).json({id: result[0]});
+    const parent_comment_id= uuid.generateUuid();
+    req.body.parent_comment_id = parent_comment_id;
+    const result = await db.createParentComment(req.body);
+    res.status(200).json({success_parent_comment_id: parent_comment_id});
 });
 
 router.delete("/deleteParentComment", async (req, res) => {
@@ -32,9 +34,10 @@ router.get("/getChildComments", async (req, res) => {
 
 // insert date of creation
 router.post("/createChildComment", async (req, res) =>{
-    const comment_id=Server.generateUuid();
-    const result = await db.createChildComment(comment_id,req.body);
-    res.status(200).json({id: result[0]});
+    const child_comment_id= uuid.generateUuid();
+    req.body.child_comment_id = child_comment_id;
+    const result = await db.createChildComment(req.body);
+    res.status(200).json({success_child_comment_id: child_comment_id});
 });
 
 router.delete("/deleteChildComment", async (req, res) => {

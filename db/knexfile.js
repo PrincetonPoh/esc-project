@@ -5,11 +5,12 @@ module.exports = {
   development: {
     client: "sqlite3",
     connection: {
-      filename: "demo.db"
+      filename: "escData.sqlite3"
     },
     useNullAsDefault: true,
     migrations: {
-      directory: path.join(__dirname, "migrations")
+      directory: ("../")
+      // directory: path.join(__dirname, "migrations")
     },
     seeds: {
       directory: path.join(__dirname, "seeds")

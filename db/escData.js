@@ -38,15 +38,15 @@ function searchAllPosts(){
 };
 
 function searchPostsBasedOn(type, value){
-    
    if(type=="owner_id"){   
         return knex("posts").where("owner_id", value).select("postTitle");
-    }else if(type=="postalCode"){
+    } else if (type=="postalCode"){
         return knex("posts").where("postalCode",value).select("postTitle");
-    }else if(type=="dateOfcreation"){
+    } else if (type=="dateOfcreation"){
         return knex("posts").where("dateOfCreation",value).select("postTitle");
+    } else if (type=="post_id"){
+        return knex("posts").where("post_id",value).select("postTitle");
     }
-    
 };
 
 
@@ -99,9 +99,6 @@ function deletePost(post_id){
 
 
 function updatePost(post_id, type, value){
-
-
-
     if(type=="owner_id"){   
         return knex("posts").where("post_id",post_id).update({owner_id: value});
     }
@@ -124,25 +121,22 @@ function updatePost(post_id, type, value){
 ///////////////////////////////////////////
 
 function getParentComments(post_id){
-    return knex("childComment").where("post_id",post_id).select("*");
+    return knex("parentComment").where("post_id",post_id).select("*");
 }
-
 function createParentComment(comment){
-    return knex("childComment").insert(comment);
+    return knex("parentComment").insert(comment);
+};
+function deleteParentComment(comment_id){
+    return knex("parentComment").where("parent_comment_id", comment_id).del();
 };
 
-function deleteParentComment(comment_id){
-    return knex("childComment").where("parent_comment_id", comment_id).del();
-};
 
 function getChildComments(parent_comment_id){
     return knex("childComment").where("parent_comment_id",parent_comment_id).select("*");
 }
-
 function createChildComment(comment){
     return knex("childComment").insert(comment);
 };
-
 function deleteChildComment(child_comment_id){
     return knex("childComment").where("child_comment_id", child_comment_id).del();
 };

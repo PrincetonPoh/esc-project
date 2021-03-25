@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require('../db/escData');
+const uuid = require('../middleware/uuid');
 const bodyParser = require('body-parser');
 const router = express.Router();
 
@@ -12,15 +13,14 @@ router.get("/getAllUsers", async (req, res) => {
     res.status(200).json({users})
 });
 
-
 // note to deal with case where users try to sign up with the same id
 router.post("/createUser", async (req, res) =>{
-    // const user_id=Server.generateUuid();
-    // const result = await db.createUser(user_id,req.body);
-    const result = await db.createUser(req.body);
-    res.status(200).json({id: result[0]});
-});
+    const user_id = uuid.generateUuid();
+    req.body.user_id = user_id;
 
+    const result = await db.createUser(req.body);
+    res.status(200).json({success_user_id: user_id});
+});
 
 router.delete("/deleteUser", async (req, res) => {
     // const result = await db.getAllUsers(req.params.id);
@@ -28,11 +28,12 @@ router.delete("/deleteUser", async (req, res) => {
     res.status(200).json({success:true})
 });
 
-
 router.put("/updateUser",async(req,res) =>{
     await db.updateUser(req.body);
     res.status(200).json({success:true})
 });
+
+
 
 
 router.get("/displayAttendPostListsOfTheUser", async (req, res) => {
