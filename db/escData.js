@@ -1,14 +1,14 @@
 const knex = require("./knex");
 
-
-
 function getAllUsers(){
     return knex("users").select("*");
 };
 function getUserById(user_id){
     return knex("users").where("user_id",user_id).select("*");
 };
-
+function getUserByUserName(userName){
+    return knex("users").where("userName", userName).select("*");
+};
 function createUser(user_id,user){
     user.user_id=user_id;
     return knex("users").insert(user);
@@ -32,7 +32,6 @@ function updateUser(user){
                 });
 };
 
-
 function getPrimaryCodeByPostalCode(postalCode){
     return knex("primaryCode").where("postalCode",postalCode).select("primaryCode");
 };
@@ -48,7 +47,6 @@ function updatePrimaryCodeByPostalCode(postalCode,primaryCode){
                     "primaryCode": primaryCode
                 });
 };
-
 
 
 function displayAttendPostListsOfTheUser(user_id){
@@ -80,7 +78,7 @@ function searchAllPosts(){
 function searchPostsBasedOn(type, value){
     
    if(type=="owner_id"){   
-        return knex("posts").where("owner_id", value).select("postTitle");
+        return knex("posts").where("owner_id", value).select("*");
     }else if(type=="postalCode"){
         return knex("posts").where("postalCode",value).select("postTitle");
     }else if(type=="dateOfcreation"){
@@ -199,6 +197,7 @@ module.exports = {
     createUser,
     getAllUsers,
     getUserById,
+    getUserByUserName,
     deleteUser,
     updateUser,
     getPrimaryCodeByPostalCode,

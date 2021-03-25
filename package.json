@@ -4,7 +4,7 @@
   "description": "Welcome to the backend :) How do you run our program? 1. go to the backendPrinceton branch 2. type 'npm install' 3. type 'npm start' 4. go to the file 'blueprint' and insert that json file into postman 5. test the apis on postman :)",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "install": "node-gyp rebuild",
     "start-dev": "nodemon index.js",
     "migrate": "npx sequelize-cli db:migrate",
@@ -31,8 +31,10 @@
   "homepage": "https://github.com/PrincetonPoh/esc-project#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "knex": "^0.21.18",
+    "nodemon": "^2.0.7",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0",
     "sqlite3": "^5.0.2"
