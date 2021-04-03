@@ -1,3 +1,5 @@
+const knex = require("knex");
+
 exports.up = function(knex) {
     knex.schema
         .createTable("users", (table) => {

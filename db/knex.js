@@ -1,13 +1,13 @@
 const knex = require("knex");
 const config = require("./knexfile")
 
-//// setup dummy db
-let db = null
-if (process.env.NODE_ENV === "test") {
-  db = knex(config.test)
-} else {
-  db = knex(config.development)
-}
+// //// setup dummy db
+// let db = null
+// if (process.env.NODE_ENV === "test") {
+//   db = knex(config.test)
+// } else {
+//   db = knex(config.development)
+// }
 
 const connectedKnex = knex({
     client: "sqlite3",
@@ -36,4 +36,4 @@ module.exports = {
 }
 
 module.exports = connectedKnex;
-module.exports = db;
+// module.exports = db;
