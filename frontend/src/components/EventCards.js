@@ -4,6 +4,8 @@ import '../styles/modal.css'
 import EventPopup from './EventPopup';
 import Modal from './modal'
 import { Link, useHistory } from 'react-router-dom';
+import calendar_icon from '../media/calendar_icon.png';
+import location_icon from '../media/location_icon.png';
 
 
 // function EventsCards(event) {//Need covert to class for instance property
@@ -54,16 +56,19 @@ class EventCards extends React.Component {
 
     childCard(postTitle, description, postalCode, dateOfCreation) {
         return (
-            <div>
+            <div class="customCardContainer">
                 <h2 class="customCardTitle">{postTitle}</h2>
-                <h3 class="customCardDescription">
-                    {description}
-                </h3>
-                <br />
-                <br />
-                <p>Location: {postalCode}</p>
-                <br />
-                <p>Date: {this.timeConverter(dateOfCreation)}</p>
+                {/* <h3 class="customCardDescription">{description}</h3> */} {/* removing this cuz I think its too lengthy and defeats the purpose of logging in if can see details */}
+                
+                <div> 
+                    <img src={location_icon} class="customCardIcon"/>
+                    <p class="customCardDetails"> <span>Location:</span> {postalCode}</p>
+                </div>
+                <div>
+                    <img src={calendar_icon} class="customCardIcon"/>
+                    <p class="customCardDetails"> <span>Date:</span> {this.timeConverter(dateOfCreation)}</p>
+                </div>
+                
                 <div>
                     {/* {<Modal
                     show={this.state.popup}

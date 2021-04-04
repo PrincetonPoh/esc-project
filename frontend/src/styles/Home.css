@@ -21,13 +21,25 @@
   box-shadow:  4px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.customCardDescription {
-  height: 8em;
-  overflow: hidden;
-}
 .customCardTitle {
-  margin-bottom: 0;
+  margin-bottom: 10px;
 }
+.customCardDetails {
+  overflow: hidden;
+  margin-bottom: 0;
+  color: #7BA3D7;
+  display: inline-block;
+}
+.customCardDetails span {
+  font-weight: bold;
+}
+
+.customCardIcon {
+  height: 25px;
+  display: inline-block;
+  margin-right: 5px;
+}
+
 #cardsContainer {
   display:flex;
   flex-wrap: wrap;
@@ -100,3 +112,4 @@ select {
   /* width: 100px; */
   margin: 0 5px;
 }
+
