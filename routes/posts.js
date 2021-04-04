@@ -1,6 +1,7 @@
 const express = require("express");
 const db = require('../db/escData');
 const uuid = require('../middleware/uuid');
+const checkAuth = require('../middleware/check-auth');
 const bodyParser = require('body-parser');
 const router = express.Router();
 
@@ -10,7 +11,7 @@ const Fuse = require('fuse.js');
 
 
 // insert date of creation
-router.post("/createPost", async (req, res) =>{
+router.post("/createPost",checkAuth, async (req, res) =>{
     const post_id = uuid.generateUuid();
     const now = new Date()  
     const secondsSinceEpoch = Math.round(now.getTime() / 1000)
@@ -22,13 +23,13 @@ router.post("/createPost", async (req, res) =>{
 });
 
 // for dev use only
-router.get("/searchAllPosts", async (req, res) =>{
+router.get("/searchAllPosts",checkAuth, async (req, res) =>{
     const posts = await db.searchAllPosts();
 
     res.status(200).json({posts})
 })
 
-router.get("/searchPostsBasedOn", async (req, res) => {
+router.get("/searchPostsBasedOn",checkAuth, async (req, res) => {
     var posts = await db.searchPostsBasedOn(req.query.type, req.query.value);
     if(req.query.type == "title"){
         const postsJson=JSON.parse(JSON.stringify((posts)))
@@ -43,7 +44,7 @@ router.get("/searchPostsBasedOn", async (req, res) => {
 
 
 
-router.get("/displayPostsDetails", async (req, res) => {
+router.get("/displayPostsDetails",checkAuth, async (req, res) => {
     const posts = await db.displayPostsDetailsBasedOnPost_id(req.query.post_id);
     res.status(200).json({posts})
 });
@@ -51,22 +52,22 @@ router.get("/displayPostsDetails", async (req, res) => {
 
 
 
-router.get("/displayAttendUserListsOfThePost", async (req, res) => {
+router.get("/displayAttendUserListsOfThePost",checkAuth, async (req, res) => {
     const users = await db.displayAttendUserListsOfThePost(req.query.post_id);
     res.status(200).json({users})
 });
 
-router.post("/createUserListsOfThePost", async (req, res) =>{
+router.post("/createUserListsOfThePost",checkAuth, async (req, res) =>{
     const result = await db.createUserListsOfThePost(req.query.post_id,req.query.userName,req.query.phoneNumber);
 
     res.status(200).json({id: result[0]});
 });
-router.delete("/deleteAllUserListsOfThePost", async (req, res) => {
+router.delete("/deleteAllUserListsOfThePost",checkAuth, async (req, res) => {
     // const result = await db.getAllUsers(req.params.id);
     await db.deleteUserListsOfThePost(req.query.post_id);
     res.status(200).json({success:true})
 });
-router.delete("/deleteUserListsOfThePost", async (req, res) => {
+router.delete("/deleteUserListsOfThePost",checkAuth, async (req, res) => {
     // const result = await db.getAllUsers(req.params.id);
     await db.deleteUserListsOfThePost(req.query.post_id,req.query.userName);
     res.status(200).json({success:true})
@@ -74,7 +75,7 @@ router.delete("/deleteUserListsOfThePost", async (req, res) => {
 
 
 
-router.put("/updateUserListsOfThePost",async(req,res) =>{
+router.put("/updateUserListsOfThePost",checkAuth, async(req,res) =>{
     await db.updateUserListsOfThePost(req.query.post_id,req.query.userName, req.query.type, req.query.value);
     res.status(200).json({success:true})
 });
@@ -82,14 +83,14 @@ router.put("/updateUserListsOfThePost",async(req,res) =>{
 
 
 
-router.delete("/deletePost", async (req, res) => {
+router.delete("/deletePost",checkAuth, async (req, res) => {
     await db.deletePost(req.query.post_id);
     res.status(200).json({success:true})
 });
 
 
 
-router.put("/updatePost",async(req,res) =>{
+router.put("/updatePost",checkAuth, async(req,res) =>{
     await db.updatePost(post_id=req.query.post_id,
                         type=req.query.type, 
                         value=req.query.value);
