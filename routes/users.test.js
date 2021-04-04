@@ -5,6 +5,6 @@ const request = supertest(app);
 it('testing to see if Jest works', async done => {
     const response = await request.get('/users/getAllUsers')
 
-    expect(response.status).toBe(200)
+    expect(response.status).toBe(300)
     done()
 })
