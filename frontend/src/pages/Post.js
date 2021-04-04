@@ -54,7 +54,7 @@ function Post(props) {
             <div id="event-owner-container">
                 <h3>Posted By</h3>
                 {owner != null ? (<p>{owner.userName}</p>) : <p>Unknown</p>}
-                <p>Unknown</p>
+                {/* <p>Unknown</p> */}
             </div>
             <div id="event-comments-container">
                 <h3>Comments</h3>

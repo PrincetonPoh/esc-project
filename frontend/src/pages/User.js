@@ -31,7 +31,7 @@ function User(){
         <div>
             <h1>User Details</h1>
             <div>
-                {isLoading ? (<div><p>Events loadings</p></div>) :(<div>{cardify(events)}</div>)}
+                {isLoading ? (<p>Events loading... </p>) :(<div>{cardify(events)}</div>)}
             </div>
         </div>
     );

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'; 
 import '../styles/Popup.css'; 
 import cross_icon from '../media/cross_icon.png';
+import ReCAPTCHA from 'react-google-recaptcha'; // npm install --save react-google-recaptcha 
 
 class SigninPopup extends Component {
   constructor(props) {
@@ -10,7 +11,9 @@ class SigninPopup extends Component {
       password: '',
       credsWarning: null,
       passwordWarning: null,
-      formWarning: null
+      formWarning: null,
+      captchaSuccess: false,
+      captchaWarning: null
     };
   }
 
@@ -32,7 +35,8 @@ class SigninPopup extends Component {
       });
     } else {
       this.setState({
-        [name+"Warning"]: null
+        [name+"Warning"]: null,
+        formWarning: null
       });
     }
   }
@@ -51,13 +55,19 @@ class SigninPopup extends Component {
   handleSignin = (e) => {
     var credsValid = this.checkValidity("creds");
     var passwordValid = this.checkValidity("password");
-    if (credsValid && passwordValid) {
-      var signin_auth_success = true; // add auth here maybe 
-      if (signin_auth_success) {
-        this.props.signin(this.state.creds);
-      } else { 
-        alert("auth failed!"); 
-      }   
+    if (credsValid && passwordValid) { // first check validity of fields
+      if (this.state.captchaSuccess == true) { 
+        var signin_auth_success = true; // add auth here maybe 
+        if (signin_auth_success) {
+          this.props.signin(this.state.creds);
+        } else { 
+          alert("auth failed!"); 
+        }   
+      } else {
+        this.setState({
+          captchaWarning: <p class="formWarning"> Please pass the ReCAPTCHA to sign in! </p>
+        });
+      }
     } else {
       this.setState({
         formWarning: <p class="formWarning"> Please fill in the required fields to sign in! </p>
@@ -66,10 +76,26 @@ class SigninPopup extends Component {
     e.preventDefault();
   };
 
+  onRecaptcha = (value) => {
+    console.log("Captcha value: ", value); 
+    if (value == null) {
+      this.setState({
+        captchaSuccess: false,
+        captchaWarning: <p class="formWarning"> Please pass the ReCAPTCHA to sign in! </p>
+      });
+    } else {
+      this.setState({
+        captchaSuccess: true,
+        captchaWarning: null
+      });
+    }
+    console.log("captchaSuccess: ", this.state.captchaSuccess); 
+  } 
+
   render() {
     
     return ( 
-      <div>
+      <div if="popup-container">
         <div id="signinpopup-background" onClick={this.handleClick}> </div>
         <div id="signin-popup" class="dropshadow">
           <img id="popup-cross-icon" src={cross_icon} onClick={this.handleClick} class="navbar-icons dropshadow"/>
@@ -86,6 +112,8 @@ class SigninPopup extends Component {
             {this.state.passwordWarning}
 
             {this.state.formWarning}
+            <ReCAPTCHA id="captcha" sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" secretkey="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe" onChange={this.onRecaptcha} onExpired={this.onRecaptcha} badge="inline"/>
+            {this.state.captchaWarning}
             <input id="signin-popup-button" type="submit" value="Sign in"  class="dropshadow"/>
           </form>
  
