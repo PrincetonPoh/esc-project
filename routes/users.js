@@ -6,27 +6,9 @@ const router = express.Router();
 
 
 
-function convert(obj) {
-    return Object.keys(obj).map(key => ({
-        name: key,
-        value: obj[key],
-        type: "foo"
-    }));
-}
-
-// const myObj = {
-//     key_1: "value_1",
-//     key_2: "value_2",
-//     key_3: "value_3",
-// };
-
-
 
 router.get("/getAllUsers", async (req, res) => {
     const users = await db.getAllUsers();
-
-    console.log(typeof JSON.stringify(users))
-
     res.status(200).json({users})
 });
 router.get("/getUserById", async (req, res) => {
@@ -39,7 +21,8 @@ router.get("/getUserByUserName", async (req, res) => {
     res.status(200).json({user})
 });
 
-router.post("/createUser", async (req, res) =>{
+// for developer use only
+router.post("/createUserDeveloper", async (req, res) =>{
     const user_id = uuid.generateUuid();
     req.body.user_id = user_id;
 
