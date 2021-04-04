@@ -4,6 +4,10 @@ const uuid = require('../middleware/uuid');
 const bodyParser = require('body-parser');
 const router = express.Router();
 
+const Fuse = require('fuse.js');
+
+
+
 
 // insert date of creation
 router.post("/createPost", async (req, res) =>{
@@ -20,13 +24,24 @@ router.post("/createPost", async (req, res) =>{
 // for dev use only
 router.get("/searchAllPosts", async (req, res) =>{
     const posts = await db.searchAllPosts();
+
     res.status(200).json({posts})
 })
 
 router.get("/searchPostsBasedOn", async (req, res) => {
-    const posts = await db.searchPostsBasedOn(req.query.type, req.query.value);
+    var posts = await db.searchPostsBasedOn(req.query.type, req.query.value);
+    if(req.query.type == "title"){
+        const postsJson=JSON.parse(JSON.stringify((posts)))
+        const fuse = new Fuse(postsJson, {
+            keys: [
+            'postTitle'],
+      });
+    posts= fuse.search(req.query.value)}
+
     res.status(200).json({posts})
 });
+
+
 
 router.get("/displayPostsDetails", async (req, res) => {
     const posts = await db.displayPostsDetailsBasedOnPost_id(req.query.post_id);
