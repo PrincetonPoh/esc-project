@@ -98,7 +98,16 @@ router.put("/updatePost",checkAuth, async(req,res) =>{
 });
 
 
+router.get("/getPostTags", async (req, res) => {
+    const tags = await db.getPostTags(req.query.post_id)
+    res.status(200).json({tags})
+});
 
+router.post("/addPostTags",checkAuth, async (req, res) =>{
+    console.log(req.body)
+    const result = await db.addPostTags(req.body)
+    res.status(200).json({"tags added": req.body});
+});
 
 
 

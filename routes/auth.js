@@ -35,7 +35,11 @@ router.post('/createUser', async (req, res) => {
     req.body.user_id = user_id;
     uuidList.push(user_id)
 
-    const result = await db.createUser(req.body);
+    try {
+        const result = await db.createUser(req.body);
+    } catch {
+        res.status(409).json({message: "invalid data fills. probably non-unique phonenumber/username"})
+    }
     
     const accessToken = generateAccessToken(req.body)
     const refreshToken = jwt.sign(req.body, process.env.REFRESH_TOKEN_SECRET)
@@ -44,6 +48,21 @@ router.post('/createUser', async (req, res) => {
     res.json({ success_user_id: user_id, accessToken: accessToken, refreshToken: refreshToken })
 })
 
+
+router.get('/login', async (req, res) => {
+    const userName = req.query.userName
+    const password = req.query.password
+    const userData = await db.getUserByUserName(userName)
+    if (userData[0].password != password) return res.status(409).json({message:"incorrect password"})
+
+
+    const accessToken = generateAccessToken(req.body)
+    const refreshToken = jwt.sign(req.body, process.env.REFRESH_TOKEN_SECRET)
+    refreshTokens.push(refreshToken)
+    console.log(refreshTokens)
+    
+    res.json({ userName: userName, accessToken: accessToken, refreshToken: refreshToken })
+})
 
 router.post('/token', async (req, res) => {
     const refreshToken = req.query.token
@@ -66,7 +85,7 @@ router.use(authenticateToken)
 
 
 function generateAccessToken(user){
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn : '20m'})
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn : '35m'})
 }
 
 

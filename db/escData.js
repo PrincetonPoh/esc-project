@@ -2,6 +2,7 @@ const knex = require("./knex");
 const Fuse = require('fuse.js');
 
 
+/////////////////////////////////////////// users
 
 function getAllUsers(){
     return knex("users").select("*");
@@ -70,7 +71,7 @@ function deletePostListsOfTheUser(user_id,post_id){
 };
 
 
-///////////////////////////////////////////
+/////////////////////////////////////////// posts
 
 
 function searchAllPosts(){
@@ -267,7 +268,16 @@ function updatePost(post_id, type, value){
     
 }
 
-///////////////////////////////////////////
+function getPostTags(post_id){
+    return knex("postTagging").where("post_id", post_id).select("*");
+}
+
+function addPostTags(postTags){
+    console.log('mdade it to db')
+    return knex("postTagging").insert(postTags);
+}
+
+/////////////////////////////////////////// comments
 
 function getParentComments(post_id){
     return knex("parentComment").where("post_id",post_id).select("*");
@@ -292,8 +302,15 @@ function deleteChildComment(child_comment_id){
 };
 
 
+/////////////////////////////////////////// auth
 
+function addRefreshToken(token){
+    return knex("refreshToken").insert({"refreshToken" : token});
+};
 
+function getRefreshTokenList(){
+    return knex("refreshToken").select("*");
+}
 
 module.exports = {
     createUser,
@@ -330,5 +347,10 @@ module.exports = {
 
     getChildComments,
     createChildComment,
-    deleteChildComment
+    deleteChildComment,
+    addRefreshToken,
+    getRefreshTokenList,
+
+    getPostTags,
+    addPostTags
 }
