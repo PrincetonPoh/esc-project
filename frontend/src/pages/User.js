@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react'; 
 import {useParams} from 'react-router-dom'; 
 import EventCards from '../components/EventCards';
+import '../styles/Home.css';
 
 function User(){
 
@@ -9,6 +10,8 @@ function User(){
     const [isLoading, setIsLoading] = useState(false);
     const [events, setEvents] = useState([]);
     const [user, setUser] = useState([]);
+    const [sortResult, setSortResult] = useState(0);
+    const [sort, setSort] = useState("newestPosts");
 
     useEffect(() => {
         const fetchEvents = async() => {
@@ -27,12 +30,27 @@ function User(){
         })
     }
 
+    const sortDropDown = () => {
+        return <form>
+            <select value={sort} onChange={(e) => { setSort(e.target.value) }}>
+                <option value="newestPosts">Newest Posts</option>
+                <option value="oldestPosts">Oldest Posts</option>
+                <option value="eventDate">Event Date</option>
+                <option value="distance">Distance</option>
+                <option value="cost">Cost</option>
+            </select>
+        </form>
+    };
+
     return (
         <div  id="user-posts-container">
             <h1> Your Posts </h1>
-            <div>
-                {isLoading ? (<p>Events loading... </p>) :(<div>{cardify(events)}</div>)}
+            <div class="sort-container">
+                <div id="sortResults">{sortResult} Results</div>
+                <span>Sort by: </span>
+                <div id="sortBy">{sortDropDown()} </div>
             </div>
+            {isLoading ? (<p>Events loading... </p>) :(<div class="cards-container">{cardify(events)}</div>)}
         </div>
     );
 }

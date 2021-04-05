@@ -136,15 +136,14 @@ function Home(props) {
     return (
         <div id="home-container">
             <h1> Posts from People Nearby </h1>
-            <div id="sort-container">
+            <div class="sort-container">
                 <div id="sortResults">{sortResult} Results</div>
                 <div id="sortBy">Sort by: {sortDropDown()} </div>
                 <div id="sortByLocation">Location: {locationDropDown()}</div>
             </div>
             <div id="filters">Filter By: {offersCheckBox()} {eventsCheckBox()} {recurrentCheckBox()} {oneoffCheckBox()} </div>
-            {isLoading ? (<p>Loading Events</p>) : (<div id="cardsContainer">{cardify(events)}</div>)}
+            {isLoading ? (<p>Events Loading...</p>) : (<div class="cards-container">{cardify(events)}</div>)}
         </div>
     );
-
 }
 export default Home;
