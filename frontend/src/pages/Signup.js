@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 // import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import '../styles/Signup.css';
+import ReCAPTCHA from 'react-google-recaptcha'; // npm install --save react-google-recaptcha 
 
 class Signup extends Component {
     constructor(props) {
@@ -25,7 +26,10 @@ class Signup extends Component {
             emailWarning: null,
             passwordWarning: null,
             confirmPasswordWarning: null,
-            formWarning: null
+            formWarning: null,
+
+            captchaSuccess: false,
+            captchaWarning: null
         };
     }
 
@@ -44,7 +48,8 @@ class Signup extends Component {
           });
         } else {
           this.setState({
-            [name+"Warning"]: null
+            [name+"Warning"]: null,
+            formWarning: null
           });
         }
       }
@@ -61,7 +66,7 @@ class Signup extends Component {
     }
 
     handleSubmit = (e) => {
-        e.preventDefault(); //Disable refresh/relaod 
+        e.preventDefault(); //Disable refresh/reload 
         var firstNameValid = this.checkValidity("firstName");
         var lastNameValid = this.checkValidity("lastName");
         var usernameValid = this.checkValidity("username");
@@ -69,41 +74,61 @@ class Signup extends Component {
         var emailValid = this.checkValidity("email");
         var passwordValid = this.checkValidity("password");
         var confirmPasswordValid = this.checkValidity("confirmPassword");
-        if (firstNameValid && lastNameValid && usernameValid && hpValid && emailValid && passwordValid && confirmPasswordValid) {
-            if (this.state.password != this.state.confirmPassword) { // all fields filled, check if passwords match
-                this.setState({
-                    confirmPasswordWarning: <p class="inputWarning"> The passwords you entered do not match! </p>
-                });
-            } else { // all fields filled, passwords match
+        if (firstNameValid && lastNameValid && usernameValid && hpValid && emailValid && passwordValid && confirmPasswordValid) { // check all fields valid
+            if (this.state.password == this.state.confirmPassword) { // all fields filled, check if passwords match
                 this.setState({ 
                     confirmPasswordWarning: null
                 });
-                const data = {
-                    first_name: this.state.firstName,
-                    last_name: this.state.lastName,
-                    username: this.state.username,
-                    hp: this.state.hp,
-                    email: this.state.email,
-                    password: this.state.password,
-                    // confirm_password: this.state.confirmPassword // already checked if passwords match before triggering this
-                };
-                console.log(data);
-                axios.post("http://localhost:1337/users/createUser", {
-                    "user_id": Math.floor(Math.random() * 1000),
-                    "phoneNumber": data.hp,
-                    "userName": data.username,
-                    "emailAddress": data.email,
-                    "password": data.password
-                }).then((response) => alert("Sign-up successful.")).catch(error => alert("Error."))
-                // this.props.history.push('/');//Force push
+                if (this.state.captchaSuccess == true) { // all is good, post to backend
+                    const data = {
+                        first_name: this.state.firstName,
+                        last_name: this.state.lastName,
+                        username: this.state.username,
+                        hp: this.state.hp,
+                        email: this.state.email,
+                        password: this.state.password,
+                    };
+                    console.log(data);
+                    axios.post("http://localhost:1337/users/createUser", {
+                        "user_id": Math.floor(Math.random() * 1000),
+                        "phoneNumber": data.hp,
+                        "userName": data.username,
+                        "emailAddress": data.email,
+                        "password": data.password
+                    }).then((response) => alert("Sign-up successful.")).catch(error => alert("Error."))
+                    // this.props.history.push('/');//Force push
+                } else { // captcha not successful
+                    this.setState({
+                        captchaWarning: <p class="formWarning form-item"> Please pass the ReCAPTCHA to sign in! </p>
+                    });
+                }
+            } else { // all fields filled, passwords do not match
+                this.setState({
+                    confirmPasswordWarning: <p class="inputWarning"> The passwords you entered do not match! </p>
+                });
             }
         } else { // at least one field empty 
             this.setState({
                 formWarning: <p class="formWarning form-item"> Please fill in the required fields to sign in! </p>
-              });
-        }
-        
+            });
+        }   
     }
+
+    onRecaptcha = (value) => {
+        console.log("Captcha value: ", value); 
+        if (value == null) {
+            this.setState({
+                captchaSuccess: false,
+                captchaWarning: <p class="formWarning form-item"> Please pass the ReCAPTCHA to sign in! </p>
+            });
+        } else {
+            this.setState({
+                captchaSuccess: true,
+                captchaWarning: null
+            });
+        }
+        console.log("captchaSuccess: ", this.state.captchaSuccess); 
+    } 
 
     render() {
         return (
@@ -160,62 +185,15 @@ class Signup extends Component {
                         {this.state.confirmPasswordWarning}
                     </div>
                     
+                    <div>
                     {this.state.formWarning}
+                    <ReCAPTCHA id="captcha" sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" secretkey="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe" onChange={this.onRecaptcha} onExpired={this.onRecaptcha} badge="inline"/>
+                    {this.state.captchaWarning}
+                    </div>
                     <input id="signup-form-button" type="submit" value="Create Account"/>
                 </form>
             </div>
         );
     }
-
-    // render() {
-    //     return (
-    //         <div style={{width: "30%", padding: "30px 0px"}}>
-    //             <form onSubmit={this.handleSubmit}>
-    //                 <h3>Sign up</h3>
-    //                 <div controlId="formPlaintextEmail"  className="text-left">
-    //                     <label style={{padding:"0px 15px"}}>
-    //                         First Name
-    //                     </label>
-
-    //                         <input type="firstName" placeholder="First Name" onChange={e => this.firstName = e.target.value} />
-
-    //                 </div>
-    //                 <div controlId="formGroupLastName" className="text-left">
-    //                     <label style={{padding:"0px 15px"}}>
-    //                         Last Name
-    //                     </label>
-
-    //                         <input type="lastName" placeholder="Last Name" onChange={e => this.lastName = e.target.value} />
-
-    //                 </div>
-    //                 <div controlId="formGroupEmail" className="text-left">
-    //                     <label style={{padding:"0px 15px"}}>
-    //                         Email
-    //                     </label>
-
-    //                         <input type="email" placeholder="Email" onChange={e => this.email = e.target.value} />
-
-    //                 </div>
-    //                 <div controlId="formGroupPassword" className="text-left">
-    //                     <label style={{padding:"0px 15px"}}>
-    //                         Password
-    //                     </label>
-
-    //                         <input type="password" placeholder="Password" onChange={e => this.password = e.target.value} />
-
-    //                 </div>
-    //                 <div controlId="formGroupConfirmPassword" className="text-left">
-    //                     <label style={{padding:"0px 15px"}}>
-    //                         Confirm Password
-    //                     </label>
-
-    //                         <input type="confirmPassword" placeholder="Confirm Password" onChange={e => this.confirmPassword = e.target.value} />
-
-    //                 </div>
-    //                 <input variant="primary" type="submit">Sign up</input>
-    //             </form>
-    //         </div>
-    //     );
-    // }
 }
 export default Signup;
