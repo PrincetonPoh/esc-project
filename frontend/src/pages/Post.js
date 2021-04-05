@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom'; 
 import axios from 'axios';
 import Comment from '../components/Comment';
+import CommentBox from '../components/CommentBox'
 import '../styles/Post.css';
 
 function Post(props) {
@@ -58,7 +59,7 @@ function Post(props) {
             </div>
             <div id="event-comments-container">
                 <h3>Comments</h3>
-                <Comment id={id}></Comment>
+                <CommentBox/>
             </div>
         </div>
     )
