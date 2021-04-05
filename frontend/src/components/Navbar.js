@@ -74,8 +74,8 @@ class Navbar extends React.Component {
       <div className="Navbar">
         <div class="navbar"> 
           <img id="nav-menu-icon" src={menu_icon} onClick={this.toggleSidebar} class="navbar-icons"/>
-          <img id="nav-logo" src={logo_rect} class="navbar-icons"/> 
-          <p id="nav-brand" class="navbar-icons dropshadow"><Link to="/">Scratchbac</Link></p>
+          <Link to="/"><img id="nav-logo" src={logo_rect} class="navbar-icons dropshadow"/></Link>
+          <Link to="/"><p id="nav-brand" class="navbar-icons dropshadow">Scratchbac</p></Link>
           
           <div> 
             {this.state.signedin ? 

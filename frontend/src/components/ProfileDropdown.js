@@ -20,8 +20,7 @@ class ProfileDropdown extends Component {
           <p id="profile-dropdown-username" class="profile-dropdown-items"> Insert Username Here </p>
           <hr/>
           <div id="profile-dropdown-content"> 
-            <Link to={`/user/${this.props.user.user_id}`} class="profile-dropdown-items"> My Profile  </Link> 
-            <a href="#" class="profile-dropdown-items"> My Posts </a>
+            <Link to={`/user/${this.props.user.user_id}`} class="profile-dropdown-items"> My Posts </Link> 
             <a href="#" class="profile-dropdown-items"> Settings </a>
             <a href="/" id="profile-dropdown-logout" onClick={this.handleLogout} class="profile-dropdown-items">Logout </a>
           </div>

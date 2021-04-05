@@ -31,6 +31,7 @@ function Home(props) {
             setIsLoading(true);
             const result = await axios.get('http://localhost:1337/posts/searchAllPosts');
             console.log(result.data.posts);
+            setSortResult(result.data.posts.length);
             setEvents(result.data.posts);
             setIsLoading(false);
         };
@@ -101,9 +102,18 @@ function Home(props) {
         </form>
     };
 
+    const checkedFilterStyle = {
+        color: "white", 
+        backgroundColor: "#7BA3D7"
+    }
+    const uncheckedFilterStyle = {
+        color: "#7BA3D7", 
+        backgroundColor: "white"
+    }
+
     const offersCheckBox = () => {
         return <form>
-            <label class="filter-checkbox-label" style={tag.offer ? { color: "white", backgroundColor: "#7BA3D7" } : { color: "#7BA3D7", backgroundColor: "white" }}>
+            <label class="filter-checkbox-label" style={tag.offer ? checkedFilterStyle : uncheckedFilterStyle}>
                 Offers
                 <input type="checkbox" class="filter-checkbox" checked={tag.offer} onChange={(e) => { e.target.checked ? setTag({ ...tag, value: [...tag.value, "offer"], offer: e.target.checked }) : setTag({ ...tag, value: tag.value.filter(item => item !== "offer"), offer: e.target.checked }) }} />
             </label>
@@ -111,7 +121,7 @@ function Home(props) {
     }
     const eventsCheckBox = () => {
         return <form>
-            <label class="filter-checkbox-label" style={tag.events ? { color: "white", backgroundColor: "#7BA3D7" } : { color: "#7BA3D7", backgroundColor: "white" }}>
+            <label class="filter-checkbox-label" style={tag.events ? checkedFilterStyle : uncheckedFilterStyle}>
                 Events
                 <input type="checkbox" class="filter-checkbox" checked={tag.events} onChange={(e) => { e.target.checked ? setTag({ ...tag, value: [...tag.value, "events"], events: e.target.checked }) : setTag({ ...tag, value: tag.value.filter(item => item !== "events"), events: e.target.checked }) }} />
             </label>
@@ -119,7 +129,7 @@ function Home(props) {
     }
     const recurrentCheckBox = () => {
         return <form>
-            <label class="filter-checkbox-label" style={tag.ongoing ? { color: "white", backgroundColor: "#7BA3D7" } : { color: "#7BA3D7", backgroundColor: "white" }}>
+            <label class="filter-checkbox-label" style={tag.ongoing ? checkedFilterStyle : uncheckedFilterStyle}>
                 Recurrent/Ongoing
                 <input type="checkbox" class="filter-checkbox" checked={tag.ongoing} onChange={(e) => { e.target.checked ? setTag({ ...tag, value: [...tag.value, "ongoing"], ongoing: e.target.checked }) : setTag({ ...tag, value: tag.value.filter(item => item !== "ongoing"), ongoing: e.target.checked }) }} />
             </label>
@@ -127,7 +137,7 @@ function Home(props) {
     }
     const oneoffCheckBox = () => {
         return <form>
-            <label class="filter-checkbox-label" style={tag.oneoff ? { color: "white", backgroundColor: "#7BA3D7" } : { color: "#7BA3D7", backgroundColor: "white" }}>
+            <label class="filter-checkbox-label" style={tag.oneoff ? checkedFilterStyle : uncheckedFilterStyle}>
                 One-Off
                 <input type="checkbox" class="filter-checkbox" checked={tag.oneoff} onChange={(e) => { e.target.checked ? setTag({ ...tag, value: [...tag.value, "oneoff"], oneoff: e.target.checked }) : setTag({ ...tag, value: tag.value.filter(item => item !== "oneoff"), oneoff: e.target.checked }) }} />
             </label>

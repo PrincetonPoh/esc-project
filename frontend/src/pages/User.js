@@ -18,6 +18,7 @@ function User(){
             setIsLoading(true);
             const result = await axios.get(`http://localhost:1337/posts/SearchPostsBasedOn?type=owner_id&value=${id}`)
             console.log(result.data.posts);
+            setSortResult(result.data.posts.length);
             setEvents(result.data.posts);
             setIsLoading(false);
         }
