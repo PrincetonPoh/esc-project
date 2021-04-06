@@ -8,7 +8,7 @@ class CommentForm extends React.Component  {
             text: ""
         }
     }
-    
+
     postParentComment = (e, post_id) => {
         e.preventDefault();
         var text = this.state.text.trim();
@@ -22,11 +22,12 @@ class CommentForm extends React.Component  {
     handleTextChange = (e) => {
         this.setState({text: e.target.value});
     }
-    
-    
+
+
     render() {
         return(
             <form className="row" id="commentForm" onSubmit={(e) => this.postParentComment(e, this.props.post_id)}>
+                {/* <textarea id="pComment" placeholder="Type here to post a comment..." maxLength="280" style={{width: "40vw"}}></textarea> */}
                 <input id="pComment" class="textarea" role="textbox" contentEditable onChange={this.handleTextChange} value={this.state.text}></input>
                 <input id="pComment-button" type="submit" value="Post Comment"></input>
             </form>

@@ -2,7 +2,7 @@ import React from 'react';
 import ChildComments from './ChildComments'
 
 class CommentList extends React.Component  {
-    
+
     render() {
         return(
             <div className="commentList">

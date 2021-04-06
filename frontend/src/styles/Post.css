@@ -38,7 +38,7 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 .textarea {
-    display:block; 
+    display: inline-block; 
     /* width: 100%;  */
     overflow: hidden; 
     resize: both; 
@@ -52,13 +52,13 @@
 #pComment-button {
     background-color: #7BA3D7;
     color: white;
-    display: block;
+    display: inline-block;
     cursor: pointer;
     height: 30px;
     border: #7BA3D7 solid 3px;
     padding: 0 10px;
     font-size: 15px;
-    margin: 15px 0;
+    margin: 15px;
     filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.4));
 }
 #pComment-button:hover {
@@ -72,3 +72,40 @@
     filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.4));
 }
 
+.childComments {
+    border: rgba(0, 0, 0, 0.25) 1px solid;
+    border-radius: 16px;
+    box-shadow : 4px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 5px 10px;
+    margin: 15px 0;
+}
+
+.profile-pic {
+    height: 34px;
+    width: 34px;
+    border: white solid 3px;
+    margin: 10px 10px 0px 10px;
+    padding: 0px;
+    border-radius: 50%;
+    background-color: #7BA3D7;
+    float: left;
+}
+
+.og-commenter-username {
+    display: inline-block;
+    margin: 0;
+    padding-top: 15px;
+    color: black; 
+}
+
+.childComments-inner {
+    padding-left: 60px;
+    padding-right: 20px;
+}
+.childComments-header{
+    width: 100%;
+    height: 60px;
+}
+.og-comment {
+
+}

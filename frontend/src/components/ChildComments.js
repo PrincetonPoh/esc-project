@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import ChildCommentForm from './ChildCommentForm'
+import placeholderProfilePic from '../media/logo_round.png'
 
 class ChildComments extends React.Component {
 
@@ -25,7 +26,7 @@ class ChildComments extends React.Component {
 
         }).catch(error => alert("Could not post reply."))
     }
-    
+
     getChildComments = (parent_id) => {
         axios.get("http://localhost:1337/comments/getChildComments?parent_comment_id=" + parent_id)
         .then((response => this.setState({childComment: response.data.posts})))
@@ -40,15 +41,23 @@ class ChildComments extends React.Component {
     render() {
         return(
             <div className="childComments">
-                {this.props.text}
-                {this.state.childComment.map(element => {
-                    return (
-                        <div key={element.id}>
-                            {element.text}
-                        </div>
-                    )
-                })}
-                <ChildCommentForm parent_id={this.state.parentID} postChild={this.postChildComment}/>
+                <div class="childComments-header"> 
+                    <img src={placeholderProfilePic} class="profile-pic"/> 
+                    <h3 class="og-commenter-username"> exampleUsername </h3>
+                </div>
+                <div class="childComments-inner"> 
+                    
+                    <p class="og-comment">{this.props.text}</p>
+                    {this.state.childComment.map(element => {
+                        return (
+                            <div key={element.id}>
+                                {element.text}
+                            </div>
+                        )
+                    })}
+                    <ChildCommentForm parent_id={this.state.parentID} postChild={this.postChildComment}/>
+                </div>
+                
             </div>
         )
     }
