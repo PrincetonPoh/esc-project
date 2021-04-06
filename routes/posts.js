@@ -3,11 +3,12 @@ const db = require('../db/escData');
 const uuid = require('../middleware/uuid');
 const checkAuth = require('../middleware/check-auth');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 const router = express.Router();
 
 const Fuse = require('fuse.js');
 
-
+router.use(fileUpload());
 
 
 // insert date of creation
@@ -98,6 +99,8 @@ router.put("/updatePost",checkAuth, async(req,res) =>{
 });
 
 
+///////////////////////////// tags
+
 router.get("/getPostTags", async (req, res) => {
     const tags = await db.getPostTags(req.query.post_id)
     res.status(200).json({tags})
@@ -107,6 +110,32 @@ router.post("/addPostTags",checkAuth, async (req, res) =>{
     console.log(req.body)
     const result = await db.addPostTags(req.body)
     res.status(200).json({"tags added": req.body});
+});
+
+///////////////////////////// tags
+
+router.get("/getPostPhoto", async (req, res) => {
+    const img = await db.getPostPhoto(req.query.post_id)
+    if (img){
+        res.status(200).json({photo:img})
+    } else {
+        res.sendStatus(400).json({message : "photo not found"})
+    }
+});
+
+router.post("/postPhoto",checkAuth, async (req, res) =>{
+    console.log('posting photos')
+    const post_id = req.query.post_id
+    const {name, data} = req.files.pic
+
+    const photoData = {
+        post_id : post_id,
+        name : name,
+        data : data
+    }
+
+    const img = await db.postPhoto(photoData)
+    res.status(200).json({"message": "message added"});
 });
 
 
