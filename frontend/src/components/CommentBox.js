@@ -8,8 +8,9 @@ class CommentBox extends React.Component  {
     constructor(props) {
         super(props);
         this.state = {
-            postID: 404,
-            parentComment: []
+            post_id: 404,
+            parentComment: [],
+            username: ''
         }
     }
 
@@ -24,25 +25,26 @@ class CommentBox extends React.Component  {
         .then((response) => {
             var updatedComments = this.state.parentComment;
             updatedComments.push({
-                "parent_comment_id": response.data.successful_parent_comment_id,
+                "parent_comment_id": response.data.success_parent_comment_id,
                 "post_id": newComment.post_id,
-                "text": newComment.text
+                "text": newComment.text,
+                "ownerName": this.state.username
             });
             this.setState({parentComment: updatedComments});
         }).catch(error => alert("Could not post comment."))
     }
 
     componentDidMount = () => {
-        const postId = window.location.pathname.slice(6);
-        this.setState({postID: postId});
-        this.getParentComments(postId);
+        this.setState({post_id: this.props.post_id});
+        this.getParentComments(this.props.post_id);
+        this.props.username != null ? this.setState({username: this.props.username}) : this.setState({username: "Unknown User"})
     }
 
     render() {
         return(
             <div className="commentBox">
-                <CommentForm post_id={this.state.postID} updateParentComments={this.updateParentComments}/>
-                <CommentList data={this.state.parentComment}/>
+                <CommentForm post_id={this.state.post_id} updateParentComments={this.updateParentComments} username={this.state.username}/>
+                <CommentList data={this.state.parentComment} username={this.state.username}/>
             </div>
         )
     }

@@ -8,7 +8,7 @@ class ChildComments extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            parentID: 404,
+            parent_id: 404,
             childComment: []
         }
     }
@@ -19,14 +19,15 @@ class ChildComments extends React.Component {
             var updatedChildren = this.state.childComment;
             updatedChildren.push({
                 "child_comment_id": response.data.success_child_comment_id,
-                "parent_comment_id": this.state.parentID,
-                "text": newChild.text
+                "parent_comment_id": this.state.parent_id,
+                "text": newChild.text,
+                "ownerName": this.props.username
             });
             this.setState({childComment: updatedChildren})
 
         }).catch(error => alert("Could not post reply."))
     }
-
+    
     getChildComments = (parent_id) => {
         axios.get("http://localhost:1337/comments/getChildComments?parent_comment_id=" + parent_id)
         .then((response => this.setState({childComment: response.data.posts})))
@@ -34,7 +35,7 @@ class ChildComments extends React.Component {
     }
 
     componentDidMount = () => {
-        this.setState({parentID: this.props.parent_id});
+        this.setState({parent_id: this.props.parent_id});
         this.getChildComments(this.props.parent_id);
     }
 
@@ -43,21 +44,21 @@ class ChildComments extends React.Component {
             <div className="childComments">
                 <div class="childComments-header"> 
                     <img src={placeholderProfilePic} class="profile-pic"/> 
-                    <h3 class="og-commenter-username"> exampleUsername </h3>
+                    <h3 class="og-commenter-username"> {this.props.ownerName} </h3>
                 </div>
                 <div class="childComments-inner"> 
                     
                     <p class="og-comment">{this.props.text}</p>
-                    {this.state.childComment.map(element => {
+                    {this.state.childComment.map((element, index) => {
                         return (
-                            <div key={element.id}>
+                            <div key={index}>
+                                <h6>{element.ownerName}</h6>
                                 {element.text}
                             </div>
                         )
                     })}
-                    <ChildCommentForm parent_id={this.state.parentID} postChild={this.postChildComment}/>
+                    <ChildCommentForm parent_id={this.state.parent_id} postChild={this.postChildComment} username={this.props.username}/>
                 </div>
-                
             </div>
         )
     }

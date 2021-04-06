@@ -58,7 +58,7 @@ function Post(props) {
             </div>
             <div id="event-comments-container">
                 <h3>Comments</h3>
-                <CommentBox/>
+                <CommentBox post_id={id}/>
             </div>
         </div>
     )
