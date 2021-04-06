@@ -74,7 +74,7 @@ class SigninPopup extends Component {
     console.log(result.data);
   }
 
-  handleSignin = (e) => {
+  handleSignin = async (e) => {
     var credsValid = this.checkValidity("creds");
     var passwordValid = this.checkValidity("password");
     if (credsValid && passwordValid) { // first check validity of fields
