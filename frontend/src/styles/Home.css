@@ -17,6 +17,7 @@
   transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
   border-radius:16px;
   overflow: hidden;
+  cursor: pointer;
   -webkit-box-shadow:  4px 4px 4px rgba(0, 0, 0, 0.25);
   box-shadow:  4px 4px 4px rgba(0, 0, 0, 0.25);
 }
@@ -112,4 +113,9 @@ select {
 #filters form {
   /* width: 100px; */
   margin: 0 5px;
+}
+
+.loading-message {
+  padding: 0 35px;
+  color:#7BA3D7;
 }

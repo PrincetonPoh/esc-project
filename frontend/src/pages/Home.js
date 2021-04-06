@@ -192,7 +192,7 @@ function Home(props) {
                 <div id="sortByLocation">Location: {locationDropDown()}</div>
             </div>
             <div id="filters">Filter By: {offersCheckBox()} {eventsCheckBox()} {recurrentCheckBox()} {oneoffCheckBox()} </div>
-            {isLoading ? (<p>Events Loading...</p>) : (<div class="cards-container">{cardify(events)}</div>)}
+            {isLoading ? (<p class="loading-message">Events Loading...</p>) : (<div class="cards-container">{cardify(events)}</div>)}
         </div>
     );
 }

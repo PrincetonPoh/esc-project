@@ -1,8 +1,8 @@
 import React, { Component } from 'react'; 
 import '../styles/Popup.css'; 
 import cross_icon from '../media/cross_icon.png';
-import ReCAPTCHA from 'react-google-recaptcha'; // npm install --save react-google-recaptcha 
 import axios from 'axios';
+// import ReCAPTCHA from 'react-google-recaptcha'; // npm install --save react-google-recaptcha 
 
 class SigninPopup extends Component {
   constructor(props) {
@@ -13,8 +13,8 @@ class SigninPopup extends Component {
       credsWarning: null,
       passwordWarning: null,
       formWarning: null,
-      captchaSuccess: false,
-      captchaWarning: null
+      // captchaSuccess: false,
+      // captchaWarning: null
     };
   }
 
@@ -63,18 +63,18 @@ class SigninPopup extends Component {
     var credsValid = this.checkValidity("creds");
     var passwordValid = this.checkValidity("password");
     if (credsValid && passwordValid) { // first check validity of fields
-      if (this.state.captchaSuccess == true) { 
-        var signin_auth_success = true; // add auth here maybe 
-        if (signin_auth_success) {
-          this.props.signin(this.state.creds);
-        } else { 
-          alert("auth failed!"); 
-        }   
-      } else {
-        this.setState({
-          captchaWarning: <p class="formWarning"> Please pass the ReCAPTCHA to sign in! </p>
-        });
-      }
+      //if (this.state.captchaSuccess == true) { 
+      var signin_auth_success = true; // add auth here maybe 
+      if (signin_auth_success) {
+        this.props.signin(this.state.creds);
+      } else { 
+        alert("auth failed!"); 
+      }   
+      // } else {
+      //   this.setState({
+      //     captchaWarning: <p class="formWarning"> Please pass the ReCAPTCHA to sign in! </p>
+      //   });
+      // }
     } else {
       this.setState({
         formWarning: <p class="formWarning"> Please fill in the required fields to sign in! </p>
@@ -83,21 +83,21 @@ class SigninPopup extends Component {
     e.preventDefault();
   };
 
-  onRecaptcha = (value) => {
-    console.log("Captcha value: ", value); 
-    if (value == null) {
-      this.setState({
-        captchaSuccess: false,
-        captchaWarning: <p class="formWarning"> Please pass the ReCAPTCHA to sign in! </p>
-      });
-    } else {
-      this.setState({
-        captchaSuccess: true,
-        captchaWarning: null
-      });
-    }
-    console.log("captchaSuccess: ", this.state.captchaSuccess); 
-  } 
+  // onRecaptcha = (value) => {
+  //   console.log("Captcha value: ", value); 
+  //   if (value == null) {
+  //     this.setState({
+  //       captchaSuccess: false,
+  //       captchaWarning: <p class="formWarning"> Please pass the ReCAPTCHA to sign in! </p>
+  //     });
+  //   } else {
+  //     this.setState({
+  //       captchaSuccess: true,
+  //       captchaWarning: null
+  //     });
+  //   }
+  //   console.log("captchaSuccess: ", this.state.captchaSuccess); 
+  // } 
 
   render() {
     
@@ -109,8 +109,8 @@ class SigninPopup extends Component {
           <h2> Sign in to Scratchbac </h2>
 
           <form id="signin-form" name="signin-form" onSubmit={this.handleSignin}> 
-            <label class="popup-contents"> Username / Email / Mobile Number </label>
-            <input type="text" id="signin-creds" name="creds" onChange={this.handleChange} class="text-fields dropshadow"/>
+            <label class="popup-contents"> Username </label>
+            <input type="username" id="signin-creds" name="creds" onChange={this.handleChange} class="text-fields dropshadow"/>
             {this.state.credsWarning}
             
             <label class="popup-contents"> Password </label>
@@ -119,8 +119,8 @@ class SigninPopup extends Component {
             {this.state.passwordWarning}
 
             {this.state.formWarning}
-            <ReCAPTCHA id="captcha" sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" secretkey="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe" onChange={this.onRecaptcha} onExpired={this.onRecaptcha} badge="inline"/>
-            {this.state.captchaWarning}
+            {/* <ReCAPTCHA id="captcha" sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" secretkey="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe" onChange={this.onRecaptcha} onExpired={this.onRecaptcha} badge="inline"/>
+            {this.state.captchaWarning} */}
             <input id="signin-popup-button" type="submit" value="Sign in"  class="dropshadow"/>
           </form>
  

@@ -4,6 +4,7 @@ import '../styles/CreatePost.css';
 import info_hover from '../media/info_hover.png';
 import plus_icon_circle from '../media/plus_icon_circle.png';
 import { Link, Redirect } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha'; // npm install --save react-google-recaptcha 
 
 /*Uses the one map api to get the planning area to detemine the nearest event occuring */
 
@@ -20,7 +21,8 @@ function CreatePost(props) {
     const [oneMapToken, setOneMapToken] = useState("");
     const [redirectSubmit, setRedirectSubmit] = useState(false);
     const dateRegex = new RegExp('([0-3][0-9]\.[0-1][0-9]\.[0-9][0-9][0-9][0-9])');
-
+    const [captchaSuccess, setCaptchaSuccess] = useState(false)
+    // const [warnings, setWarnings] = useState([null,null,null,null,null,null,null]) 
     // useEffect(() => {
     //     const fetchLocation = async() => {
     //         setIsLoading(true);
@@ -32,30 +34,50 @@ function CreatePost(props) {
     // }, [])
 
     const handleSubmit = (e) => {
-        console.log(title, loc, desc, date, image);
-        let newDate = "";
-        let owner_id = props.user.user_id;
-        try {
-            newDate = convertDate(date);
-            axios.post("http://localhost:1337/posts/createPost",
-            {
-                "owner_id": owner_id,
-                "postTitle": title,
-                "dateOfCreation": newDate,
-                "postalCode": loc,
-                "description": desc
-            }).then((response) => {
-                console.log(response);
-                alert("Successful Posted Event")
-                setRedirectSubmit(true);
-            }, (error) => {
-                console.log(error);
-                alert("Unable to post the event");
-            })
-        } catch (e) {
-            alert(e);
-        }
         e.preventDefault();
+        console.log(title, loc, desc, date, image);
+        // if (title=="") {
+        //     console.log(warnings);
+        //     warnings[0] = <span class="inputWarning"> This field is required!</span>;
+        //     console.log(warnings);
+        // }
+        // if (loc=="") {
+        //     warnings[1] = <span class="inputWarning"> This field is required!</span>;
+        //     console.log(warnings);
+        // }
+        if (title=="" || loc=="" || desc=="" || date=="") { // checks if any of the compulsory fields are empty 
+            alert("Please fill in the required fields!");
+        } else if (captchaSuccess != true) {
+            alert("Please pass the ReCAPTCHA to sign in!");
+        } else { // all compulsory fields are filled in, try post to backend
+            let newDate = "";
+            let owner_id = props.user.user_id;
+            try {
+                newDate = convertDate(date);
+                axios.post("http://localhost:1337/posts/createPost",
+                {
+                    "owner_id": owner_id,
+                    "postTitle": title,
+                    "dateOfCreation": newDate,
+                    "postalCode": loc,
+                    "description": desc
+                }).then((response) => {
+                    console.log(response);
+                    alert("Successful Posted Event")
+                    setRedirectSubmit(true);
+                }, (error) => {
+                    console.log(error);
+                    alert("Unable to post the event");
+                })
+            } catch (e) {
+                alert(e);
+            }
+        }
+
+
+        
+        
+
     }
 
     const convertDate = (date) => {
@@ -95,6 +117,16 @@ function CreatePost(props) {
         setLocationSelected(true);
     }
 
+    const onRecaptcha = (value) => {
+        console.log("Captcha value: ", value); 
+        if (value == null) {
+            setCaptchaSuccess(false);
+        } else {
+            setCaptchaSuccess(true);
+        }
+        console.log("captchaSuccess: ", this.state.captchaSuccess); 
+    } 
+
     const uploadDefaultStyle = {
         display: "block",
         margin: "auto",
@@ -116,20 +148,23 @@ function CreatePost(props) {
             <form id="create-post-form" onSubmit={handleSubmit}>
                 <div id="form-container">
                     <div id="form-posttitle" class="form-item">
-                        <label>Post Title</label>
+                        <label class="mandatory-fields">Post Title</label>
                         <div class="info">
                             <img src={info_hover} class="info-icon" />
                             <span class="info-text"> Summarize your event/offer in as few words as possible. </span>
                         </div>
+                        {/* {warnings[0] ? <span class="inputWarning"> This field is required!</span> : null} */}
+                        {/* {warnings[0]} */}
                         <input id="input-posttitle" name="title" type="text" value={title} onChange={e => setTitle(e.target.value)}></input>
                     </div>
 
                     <div id="form-location" class="form-item">
-                        <label>Location</label>
+                        <label class="mandatory-fields">Location</label>
                         <div class="info">
                             <img src={info_hover} class="info-icon" />
                             <span class="info-text"> Where will your offer/event be available or held at? Select a region to help people nearby find your post! </span>
                         </div>
+                        {/* {warnings[1] ? <span class="inputWarning"> This field is required!</span> : null} */}
                         {locationSelected ? (<label>{loc}</label>) : (<input id="input-location" name="location" type="text" value={loc} onChange={e => setLoc(e.target.value)}></input>)}
                         <select id="input-region" name="region" onChange={e => setLocationChoice(e.target.value)}>
                             {isLoading ? (<option>
@@ -141,7 +176,7 @@ function CreatePost(props) {
                     </div>
 
                     <div id="form-description" class="form-item">
-                        <label>Description</label>
+                        <label class="mandatory-fields">Description</label>
                         <div class="info">
                             <img src={info_hover} class="info-icon" />
                             <span class="info-text"> Give more details on what your offer/event is about. Who can join in? What will participants be doing? </span>
@@ -150,7 +185,7 @@ function CreatePost(props) {
                     </div>
 
                     <div id="form-posttype" class="form-item">
-                        <label>Post Type</label>
+                        <label class="mandatory-fields">Post Type</label>
                         <div class="info">
                             <img src={info_hover} class="info-icon" />
                             <span class="info-text"> Specify this to help others find your post more easily. </span>
@@ -166,7 +201,7 @@ function CreatePost(props) {
                     </div>
 
                     <div id="form-datetime" class="form-item">
-                        <label>Date and Time</label>
+                        <label class="mandatory-fields">Date and Time</label>
                         <div class="info">
                             <img src={info_hover} class="info-icon" />
                             <span class="info-text"> Will you offer/event be recurring (eg. every Wednesday etc) or one-off (a specific date and time)? </span>
@@ -188,7 +223,6 @@ function CreatePost(props) {
                                 <img src={info_hover} class="info-icon" />
                                 <span class="info-text"> Add an image which represents your offer/event and make your post more interesting! </span>
                             </div>
-                            {/* <UploadBox /> */}
                             <div id="upload-box">
                                 {image == null ?
                                     <img id="upload-image" src={plus_icon_circle} style={uploadDefaultStyle} />
@@ -201,6 +235,7 @@ function CreatePost(props) {
                         </label>
                     </div>
                 </div>
+                <ReCAPTCHA id="captcha" sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" secretkey="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe" onChange={onRecaptcha} onExpired={onRecaptcha} badge="inline"/>
                 <input id="create-post-form-button" type="submit" value="Create Post" />
             </form>
 
