@@ -19,6 +19,12 @@ class Navbar extends React.Component {
   createPost() {
     alert("go to create post page"); // may use router or href instead of onClick
   }
+  
+  componentDidUpdate(prevProps){
+    if (this.props.login !== prevProps.login){
+      this.setState({signedin: this.props.login})
+    }
+  }
 
   state = {
     seen: false,
@@ -46,8 +52,8 @@ class Navbar extends React.Component {
       signedin: false, // changes nevbar buttons to signed in ones
       profile_dropdown: false
     });
+    this.props.toggleLogout();
     alert("signed out!")
-    this.props.toggleLogin();
   }
 
   toggleSidebar = () => {
