@@ -1,5 +1,5 @@
 import React from 'react';
-import Comments from './Comments'
+import ChildComments from './ChildComments'
 
 class CommentList extends React.Component  {
     
@@ -9,7 +9,7 @@ class CommentList extends React.Component  {
                 {
                     this.props.data.map((element) => {
                         return (
-                            <Comments text={element.text} key={element.parent_comment_id}/>
+                            <ChildComments text={element.text} parent_id={element.parent_comment_id} key={element.id}/>
                         )
                     })
                 }

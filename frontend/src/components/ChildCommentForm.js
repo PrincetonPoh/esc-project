@@ -1,6 +1,6 @@
 import React from 'react';
 
-class CommentForm extends React.Component  {
+class ChildCommentForm extends React.Component  {
 
     constructor(props) {
         super(props);
@@ -9,13 +9,13 @@ class CommentForm extends React.Component  {
         }
     }
     
-    postParentComment = (e, post_id) => {
+    postChildComment = (e, parent_id) => {
         e.preventDefault();
         var text = this.state.text.trim();
         if (!text){
             return;
         }
-        this.props.updateParentComments({"post_id": post_id, "text": text});
+        this.props.postChild({"parent_comment_id": parent_id, "text": text});
         this.setState({text: ""});
     }
 
@@ -26,7 +26,7 @@ class CommentForm extends React.Component  {
     
     render() {
         return(
-            <form className="row" id="commentForm" onSubmit={(e) => this.postParentComment(e, this.props.post_id)}>
+            <form className="row" id="commentForm" onSubmit={(e) => this.postChildComment(e, this.props.parent_id)}>
                 <input id="pComment" class="textarea" role="textbox" contentEditable onChange={this.handleTextChange} value={this.state.text}></input>
                 <input id="pComment-button" type="submit" value="Post Comment"></input>
             </form>
@@ -34,4 +34,4 @@ class CommentForm extends React.Component  {
     }
 }
 
-export default CommentForm
+export default ChildCommentForm

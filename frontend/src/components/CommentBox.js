@@ -15,17 +15,13 @@ class CommentBox extends React.Component  {
 
     getParentComments = (post_id) => {
         axios.get("http://localhost:1337/comments/getParentComments?post_id=" + post_id)
-        .then((response) => {
-            this.setState({parentComment: response.data.posts});
-        })
+        .then((response) => { this.setState({parentComment: response.data.posts});})
         .catch(error => alert("Error fetching parent comments."))
     }
 
     updateParentComments = (newComment) => {
-        console.log(newComment);
         axios.post("http://localhost:1337/comments/createParentComment", newComment)
         .then((response) => {
-            console.log("Updating!");
             var updatedComments = this.state.parentComment;
             updatedComments.push({
                 "parent_comment_id": response.data.successful_parent_comment_id,
@@ -38,7 +34,7 @@ class CommentBox extends React.Component  {
 
     componentDidMount = () => {
         const postId = window.location.pathname.slice(6);
-        this.setState({postID: postId})
+        this.setState({postID: postId});
         this.getParentComments(postId);
     }
 
