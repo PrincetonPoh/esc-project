@@ -22,7 +22,8 @@ class App extends Component {
     this.state = {
       seen: false,
       login: false,
-      user: {}
+      user: {},
+      config: {}
     }
   }
 
@@ -35,7 +36,8 @@ class App extends Component {
   getUserAPI = async(e) => {
     console.log("Get User API At APP: ")
     console.log(e);
-    const result = await axios.get(`http://localhost:1337/users/getUserByUserName?userName=${e}`);
+    this.setState({config: {headers: {'Authorization': `Bearer ` + e.accessToken}}})
+    const result = await axios.get(`http://localhost:1337/users/getUserByUserName?userName=${e.userName}`, this.state.config);
     console.log(result.data.user[0]);
     return result.data.user[0];
   }
@@ -64,10 +66,10 @@ class App extends Component {
             </Route>
             <Route exact path="/signup" component={Signup} />
             <Route path="/user/:id" >
-              <User user={this.state.user}></User>
+              <User user={this.state.user} config={this.state.config}></User>
             </Route>
             <Route path="/createpost">
-              <CreatePost user={this.state.user}/>
+              <CreatePost user={this.state.user} config={this.state.config}/>
             </Route>
             <Route path="/post/:id" component={Post}/>
           </Switch>

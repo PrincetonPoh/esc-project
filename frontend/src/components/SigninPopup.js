@@ -1,6 +1,8 @@
 import React, { Component } from 'react'; 
 import '../styles/Popup.css'; 
 import cross_icon from '../media/cross_icon.png';
+import axios from 'axios';
+import {withRouter} from 'react-router-dom';
 
 class SigninPopup extends Component {
   constructor(props) {
@@ -10,7 +12,9 @@ class SigninPopup extends Component {
       password: '',
       credsWarning: null,
       passwordWarning: null,
-      formWarning: null
+      formWarning: null,
+      token: '',
+      errorMessage: ''
     };
   }
 
@@ -48,15 +52,30 @@ class SigninPopup extends Component {
     }
   }
 
-  handleSignin = (e) => {
+  postLogin = async () => {
+    try{
+      const result = await axios.get(`http://localhost:1337/auth/login?userName=${this.state.creds}&password=${this.state.password}`)
+      this.setState({token: result.data});
+      return true;
+    }catch(err){
+      console.log(err.response.data);
+      this.setState({errorMessage: err.response.data.message});
+      return false;
+    }
+  }
+
+  handleSignin = async (e) => {
     var credsValid = this.checkValidity("creds");
     var passwordValid = this.checkValidity("password");
     if (credsValid && passwordValid) {
-      var signin_auth_success = true; // add auth here maybe 
+      //var signin_auth_success = false; // add auth here maybe 
+      var signin_auth_success = await this.postLogin();
       if (signin_auth_success) {
-        this.props.signin(this.state.creds);
-      } else { 
-        alert("auth failed!"); 
+        this.props.signin(this.state.token);
+      } else {
+        const { history: { push } } = this.props;
+        alert(this.state.errorMessage);
+        push('/');
       }   
     } else {
       this.setState({
@@ -74,8 +93,7 @@ class SigninPopup extends Component {
         <div id="signin-popup" class="dropshadow">
           <img id="popup-cross-icon" src={cross_icon} onClick={this.handleClick} class="navbar-icons dropshadow"/>
           <h2> Sign in to Scratchbac </h2>
-
-          <form id="signin-form" name="signin-form" onSubmit={this.handleSignin}> 
+          <form id="signin-form" name="signin-form"> 
             <label class="popup-contents"> Username / Email / Mobile Number </label>
             <input type="text" id="signin-creds" name="creds" onChange={this.handleChange} class="text-fields dropshadow"/>
             {this.state.credsWarning}
@@ -86,7 +104,7 @@ class SigninPopup extends Component {
             {this.state.passwordWarning}
 
             {this.state.formWarning}
-            <input id="signin-popup-button" type="submit" value="Sign in"  class="dropshadow"/>
+            <input id="signin-popup-button" value="Sign in"  class="dropshadow" onClick={this.handleSignin}/>
           </form>
  
         </div>
@@ -95,4 +113,4 @@ class SigninPopup extends Component {
   }
 }
 
-export default SigninPopup; 
+export default withRouter(SigninPopup); 

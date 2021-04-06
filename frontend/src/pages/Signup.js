@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-// import Container from 'react-bootstrap/Container';
-// import Form from 'react-bootstrap/Form';
-// import Col from 'react-bootstrap/Col';
-// import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import '../styles/Signup.css';
+import {Redirect} from 'react-router-dom';
 
 class Signup extends Component {
     constructor(props) {
@@ -17,6 +14,7 @@ class Signup extends Component {
             email: '',
             password: '',
             confirmPassword: '',
+            success: false,
             
             firstNameWarning: null,
             lastNameWarning: null,
@@ -88,13 +86,12 @@ class Signup extends Component {
                     // confirm_password: this.state.confirmPassword // already checked if passwords match before triggering this
                 };
                 console.log(data);
-                axios.post("http://localhost:1337/users/createUser", {
-                    "user_id": Math.floor(Math.random() * 1000),
+                axios.post("http://localhost:1337/auth/createUser", {
                     "phoneNumber": data.hp,
                     "userName": data.username,
                     "emailAddress": data.email,
                     "password": data.password
-                }).then((response) => alert("Sign-up successful.")).catch(error => alert("Error."))
+                }).then((response) => {alert("Sign-up successful.");this.setState({success: true})}).catch(error => alert("Error."))
                 // this.props.history.push('/');//Force push
             }
         } else { // at least one field empty 
@@ -107,7 +104,8 @@ class Signup extends Component {
 
     render() {
         return (
-            <div> 
+            <div>
+                {this.state.success ? <Redirect to="/"/>:null}
                 <h1>Sign up</h1>
                 <form id="signup-form" onSubmit={this.handleSubmit}>
                     <div id="formPlaintextEmail" class="form-item">

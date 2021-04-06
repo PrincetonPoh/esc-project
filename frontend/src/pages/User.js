@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom'; 
 import EventCards from '../components/EventCards';
 
-function User(){
+function User(props){
 
     let {id} = useParams();
     const [isLoading, setIsLoading] = useState(false);
@@ -13,7 +13,8 @@ function User(){
     useEffect(() => {
         const fetchEvents = async() => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/posts/SearchPostsBasedOn?type=owner_id&value=${id}`)
+            console.log(props.config);
+            const result = await axios.get(`http://localhost:1337/posts/SearchPostsBasedOn?type=owner_id&value=${id}`, props.config)
             console.log(result.data.posts);
             setEvents(result.data.posts);
             setIsLoading(false);

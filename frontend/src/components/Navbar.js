@@ -34,7 +34,6 @@ class Navbar extends React.Component {
   }
 
   setSignedin = (e) => {
-    console.log(e);
     this.setState({
       signedin: true, // changes nevbar buttons to signed in ones
       seen: false // hides signinPopup

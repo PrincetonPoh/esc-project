@@ -3,17 +3,21 @@ import axios from 'axios';
 import '../styles/CreatePost.css';
 import info_hover from '../media/info_hover.png';
 import plus_icon_circle from '../media/plus_icon_circle.png';
-import { Link, Redirect } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 
 /*Uses the one map api to get the planning area to detemine the nearest event occuring */
 
 function CreatePost(props) {
 
+    let history = useHistory();
+
     const [title, setTitle] = useState("")
     const [loc, setLoc] = useState("")
     const [desc, setDesc] = useState("")
     const [date, setDate] = useState("")
-    const [image, setImage] = useState(null)
+    const [image, setImage] = useState(null);
+    const [postType, setPostType] = useState("offer");
+    const [dateType, setDateType] = useState("ongoing");
     const [locations, setLocations] = useState([]);
     const [locationSelected, setLocationSelected] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -31,27 +35,38 @@ function CreatePost(props) {
     //     fetchLocation();
     // }, [])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         console.log(title, loc, desc, date, image);
         let newDate = "";
         let owner_id = props.user.user_id;
         try {
             newDate = convertDate(date);
-            axios.post("http://localhost:1337/posts/createPost",
-            {
-                "owner_id": owner_id,
-                "postTitle": title,
-                "dateOfCreation": newDate,
-                "postalCode": loc,
-                "description": desc
-            }).then((response) => {
-                console.log(response);
-                alert("Successful Posted Event")
-                setRedirectSubmit(true);
-            }, (error) => {
-                console.log(error);
-                alert("Unable to post the event");
-            })
+            await axios.post("http://localhost:1337/posts/createPost",
+                {
+                    "owner_id": owner_id,
+                    "postTitle": title,
+                    "dateOfCreation": newDate,
+                    "postalCode": loc,
+                    "description": desc
+                }, props.config).then(async (response) => {
+                    console.log(response.data);
+                    let body = {
+                        post_id: response.data.success_post.post_id,
+                        tags: postType + ',' + dateType
+                    }
+                    try{
+                        const result = await axios.post("http://localhost:1337/posts/addPostTags", body, props.config);
+                        console.log(result);
+                        alert("Successful Posted Event")
+                        history.push(`/user/${owner_id}`)
+                    } catch(err){
+                        console.log(err);
+                        alert("Unable to post the event");
+                    }
+                }, (error) => {
+                    console.log(error);
+                    alert("Unable to post the event");
+                })
         } catch (e) {
             alert(e);
         }
@@ -111,9 +126,8 @@ function CreatePost(props) {
 
     return (
         <div>
-            {redirectSubmit ? (<Redirect to={`/user/${props.user.user_id}`} />) : null}
             <h1>Create a post</h1>
-            <form id="create-post-form" onSubmit={handleSubmit}>
+            <form id="create-post-form">
                 <div id="form-container">
                     <div id="form-posttitle" class="form-item">
                         <label>Post Title</label>
@@ -156,11 +170,11 @@ function CreatePost(props) {
                             <span class="info-text"> Specify this to help others find your post more easily. </span>
                         </div>
                         <label class="form-radio-label"> {/*TODO: api call for radio fields*/}
-                            <input class="form-radio" id="input-posttype" name="posttype" type="radio" value="Offer" /*checked={this.state.posttype === "Offer"} onChange={this.handleChange}*/ />
+                            <input class="form-radio" id="input-posttype" name="posttype" type="radio" value="Offer" checked={postType === 'offer'} onClick={() => setPostType('offer')} />
                             Offer
                         </label>
                         <label class="form-radio-label">
-                            <input class="form-radio" id="input-posttype" name="posttype" type="radio" value="Event" /*checked={this.state.posttype === "Event"} onChange={this.handleChange}*/ />
+                            <input class="form-radio" id="input-posttype" name="posttype" type="radio" value="Event" checked={postType === "event"} onChange={() => setPostType('event')} />
                             Event
                         </label>
                     </div>
@@ -172,11 +186,11 @@ function CreatePost(props) {
                             <span class="info-text"> Will you offer/event be recurring (eg. every Wednesday etc) or one-off (a specific date and time)? </span>
                         </div>
                         <label class="form-radio-label"> {/*TODO: api call for radio fields*/}
-                            <input class="form-radio" id="input-datetimetype" name="datetimetype" type="radio" value="Recurrent/Ongoing" /*checked={this.state.datetimetype === "Recurrent/Ongoing"} onChange={this.handleChange}*/ />
+                            <input class="form-radio" id="input-datetimetype" name="datetimetype" type="radio" value="Recurrent/Ongoing" checked={dateType === "ongoing"} onChange={() => setDateType('ongoing')} />
                             Recurrent/Ongoing
                         </label>
                         <label class="form-radio-label">
-                            <input class="form-radio" id="input-datetimetype" name="datetimetype" type="radio" value="One-Off" /*checked={this.state.datetimetype === "One-Off"} onChange={this.handleChange}*/ />
+                            <input class="form-radio" id="input-datetimetype" name="datetimetype" type="radio" value="One-Off" checked={dateType === "oneoff"} onChange={() => setDateType('oneoff')} />
                             One-Off
                         </label>
                         <textarea id="input-datetimedetails" name="datetimedetails" type="text" value={date} onChange={e => setDate(e.target.value)} placeholder="Date format: DD.MM.YYYY"></textarea>
@@ -201,7 +215,7 @@ function CreatePost(props) {
                         </label>
                     </div>
                 </div>
-                <input id="create-post-form-button" type="submit" value="Create Post" />
+                <input id="create-post-form-button" value="Create Post" onClick={handleSubmit}/>
             </form>
 
         </div>
