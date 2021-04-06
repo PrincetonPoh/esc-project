@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../styles/Popup.css'; 
 import cross_icon from '../media/cross_icon.png';
 import ReCAPTCHA from 'react-google-recaptcha'; // npm install --save react-google-recaptcha 
+import axios from 'axios';
 
 class SigninPopup extends Component {
   constructor(props) {
@@ -50,6 +51,12 @@ class SigninPopup extends Component {
     } else {
       return true;
     }
+  }
+
+  checkAuth = (username, password) => {
+    let body = {username: username, password: password};
+    const result = axios.post('http://localhost:1337/auth/login', body)
+    console.log(result.data);
   }
 
   handleSignin = (e) => {

@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-// import Container from 'react-bootstrap/Container';
-// import Form from 'react-bootstrap/Form';
-// import Col from 'react-bootstrap/Col';
-// import Button from 'react-bootstrap/Button';
+import {Redirect} from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Signup.css';
 
@@ -17,6 +14,7 @@ class Signup extends Component {
             email: '',
             password: '',
             confirmPassword: '',
+            signupSuccess: false,
             
             firstNameWarning: null,
             lastNameWarning: null,
@@ -88,13 +86,16 @@ class Signup extends Component {
                     // confirm_password: this.state.confirmPassword // already checked if passwords match before triggering this
                 };
                 console.log(data);
-                axios.post("http://localhost:1337/users/createUser", {
+                axios.post("http://localhost:1337/auth/createUser", {
                     "user_id": Math.floor(Math.random() * 1000),
                     "phoneNumber": data.hp,
                     "userName": data.username,
                     "emailAddress": data.email,
                     "password": data.password
-                }).then((response) => alert("Sign-up successful.")).catch(error => alert("Error."))
+                }).then((response) =>{
+                    this.setState({signupSuccess: true});
+                    alert("Successfully Signup!")
+                 }).catch(error => alert("Error."))
                 // this.props.history.push('/');//Force push
             }
         } else { // at least one field empty 
@@ -107,7 +108,8 @@ class Signup extends Component {
 
     render() {
         return (
-            <div> 
+            <div>
+                {this.state.signupSuccess ? <Redirect to="/"/>: null} 
                 <h1>Sign up</h1>
                 <form id="signup-form" onSubmit={this.handleSubmit}>
                     <div id="formPlaintextEmail" class="form-item">
