@@ -16,8 +16,8 @@ function User(props){
     useEffect(() => {
         const fetchEvents = async() => {
             setIsLoading(true);
-            console.log(props.config);
-            const result = await axios.get(`http://localhost:1337/posts/SearchPostsBasedOn?type=owner_id&value=${id}`, props.config)
+            console.log(id);
+            const result = await axios.get(`http://localhost:1337/posts/searchPostsBasedOn?type=owner_id&value=${id}`, props.config)
             console.log(result.data.posts);
             setSortResult(result.data.posts.length);
             setEvents(result.data.posts);

@@ -22,7 +22,6 @@ function Home(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const [user, setUser] = useState([]);
-    const [searchText, setSearchText] = useState("");
     const locations = ["Clementi", "Tampines", "Bishan", "Woodlands"];
     const tags = ["Offer", "Events", "Ongoing", "OneOff"];   
 
@@ -37,9 +36,9 @@ function Home(props) {
     }
 
     useEffect(() => {
-        const fetchSearchData = async() => {
+        const fetchSearchData = async(searchText) => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/posts/searchPostsBasedOn?value=${searchText}`)
+            const result = await axios.get(`http://localhost:1337/posts/searchPostsText?value=${searchText}`)
             console.log("Filtered result \n");
             console.log(result.data.posts);
             setSortResult(result.data.posts.length);
@@ -55,11 +54,10 @@ function Home(props) {
             setEvents(result.data.posts);
             setIsLoading(false);
         };
-        let searchText = queryString.parse(history.location.search).search;
-        if(searchText != null){
-            console.log(searchText);
-            setSearchText(searchText);
-            fetchSearchData();
+        let searchResult = queryString.parse(history.location.search).search;
+        if(searchResult != null && searchResult.replace(/\s+/g, '') != ""){
+            console.log(searchResult);
+            fetchSearchData(searchResult);
         }else{
             fetchData();
         }

@@ -55,12 +55,11 @@ function CreatePost(props) {
             alert("Please pass the ReCAPTCHA to sign in!");
         } else { // all compulsory fields are filled in, try post to backend
             let newDate = "";
-            let owner_id = props.user.user_id;
             try {
                 newDate = convertDate(date);
                 axios.post("http://localhost:1337/posts/createPost",
                     {
-                        "owner_id": owner_id,
+                        "owner_id": props.user.user_id,
                         "postTitle": title,
                         "dateOfCreation": newDate,
                         "postalCode": loc,
@@ -75,7 +74,7 @@ function CreatePost(props) {
                             const result = await axios.post("http://localhost:1337/posts/addPostTags", body, props.config);
                             console.log(result);
                             alert("Successful Posted Event")
-                            history.push(`/user/${owner_id}`)
+                            history.push(`/user/${props.user.user_id}`)
                         } catch (err) {
                             console.log(err);
                             alert("Unable to post the event");
