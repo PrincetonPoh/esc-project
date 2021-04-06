@@ -1,4 +1,8 @@
 const knex = require("./knex");
+const Fuse = require('fuse.js');
+
+
+/////////////////////////////////////////// users
 
 function getAllUsers(){
     return knex("users").select("*");
@@ -9,8 +13,7 @@ function getUserById(user_id){
 function getUserByUserName(userName){
     return knex("users").where("userName", userName).select("*");
 };
-function createUser(user_id,user){
-    user.user_id=user_id;
+function createUser(user){
     return knex("users").insert(user);
 };
 
@@ -68,24 +71,133 @@ function deletePostListsOfTheUser(user_id,post_id){
 };
 
 
-///////////////////////////////////////////
+/////////////////////////////////////////// posts
 
 
 function searchAllPosts(){
     return knex("posts").select("*");
 };
 
-function searchPostsBasedOn(type, value){
-    
-   if(type=="owner_id"){   
-        return knex("posts").where("owner_id", value).select("*");
-    }else if(type=="postalCode"){
-        return knex("posts").where("postalCode",value).select("postTitle");
-    }else if(type=="dateOfcreation"){
-        return knex("posts").where("dateOfCreation",value).select("postTitle");
+
+function simpleStringify (object){
+    var simpleObject = {};
+    for (var prop in object ){
+        if (!object.hasOwnProperty(prop)){
+            continue;
+        }
+        if (typeof(object[prop]) == 'object'){
+            continue;
+        }
+        if (typeof(object[prop]) == 'function'){
+            continue;
+        }
+        simpleObject[prop] = object[prop];
     }
-    
+    return JSON.stringify(simpleObject); // returns cleaned up JSON
 };
+
+
+
+function searchPostsBasedOn(type, value){
+   
+
+   if(type=="owner_id"){   
+        return knex("posts").where("owner_id", value).select("postTitle");
+    } else if (type=="postalCode"){
+        return knex("posts").where("postalCode",value).select("postTitle");
+    } else if (type=="dateOfcreation"){
+        return knex("posts").where("dateOfCreation",value).select("postTitle");
+    } else if (type=="post_id"){
+        return knex("posts").where("post_id",value).select("postTitle");
+    } else if(type == "title"){
+/*
+        var cache = [];
+		const posts = JSON.stringify( knex("posts").select("*") , function(key, value) {
+            if (typeof value === 'object' && value !== null) {
+                if (cache.indexOf(value) !== -1) {
+                    return;
+                }
+                cache.push(value);
+            }
+            return value;
+        });
+        cache = null;
+*/
+
+
+
+     /*  
+       const posts={
+        "posts": [
+            {
+                "post_id": "2",
+                "owner_id": "321",
+                "postTitle": "gooood",
+                "dateOfCreation": 888888,
+                "postalCode": 670222,
+                "description": "pns is great today!"
+            },
+            {
+                "post_id": "4",
+                "owner_id": "333",
+                "postTitle": "3treegooood",
+                "dateOfCreation": 33333,
+                "postalCode": 670333,
+                "description": "lies"
+            },
+            {
+                "post_id": "100",
+                "owner_id": "80",
+                "postTitle": "gooo13eq3od",
+                "dateOfCreation": 88128998,
+                "postalCode": 671322,
+                "description": "check uuid!"
+            },
+            {
+                "post_id": "456",
+                "owner_id": "80",
+                "postTitle": "gooo13eq3od",
+                "dateOfCreation": 88128998,
+                "postalCode": 671322,
+                "description": "check uuid!"
+            },
+            {
+                "post_id": "1234",
+                "owner_id": "80123",
+                "postTitle": "gooo13eq3od",
+                "dateOfCreation": 88128998,
+                "postalCode": 671322,
+                "description": "check uuid131!"
+            },
+            {
+                "post_id": "9c012ab3-5685-471e-b9e2-862baf7096f8",
+                "owner_id": "333",
+                "postTitle": "3treegooood",
+                "dateOfCreation": 1616713269,
+                "postalCode": 670333,
+                "description": "lies"
+            }
+        ]
+    }*/
+
+   /*     const fuse = new Fuse(posts, {
+            keys: [
+              'postTitle'
+            ],
+            includeScore: true
+          });
+
+        const results = fuse.search(value);*/
+
+      //  const posts=JSON.stringify(postsObject);//undefined type
+
+       
+
+        return knex("posts").select("*");;
+    }
+};
+
+
 
 
 function displayPostsDetailsBasedOnPost_id(post_id){
@@ -125,12 +237,8 @@ function updateUserListsOfThePost(post_id, type, value){
 }
 
 
-function createPost(post_id,post){
+function createPost(post){
     console.log('creating post now');
-     
-    post.post_id=post_id;
-    console.log(post)
-    
     return knex("posts").insert(post);
 };
 
@@ -141,7 +249,6 @@ function deletePost(post_id){
 
 
 function updatePost(post_id, type, value){
-
     if(type=="owner_id"){   
         return knex("posts").where("post_id",post_id).update({owner_id: value});
     }
@@ -161,37 +268,58 @@ function updatePost(post_id, type, value){
     
 }
 
-///////////////////////////////////////////
+// tags
+function getPostTags(post_id){
+    return knex("postTagging").where("post_id", post_id).select("*");
+}
+
+function addPostTags(postTags){
+    return knex("postTagging").insert(postTags);
+}
+
+// photo
+function getPostPhoto(post_id){
+    return knex("photos").where("post_id", post_id).select("*");
+}
+
+function postPhoto(postTags){
+    return knex("photos").insert(postTags);
+}
+
+/////////////////////////////////////////// comments
 
 function getParentComments(post_id){
     return knex("parentComment").where("post_id",post_id).select("*");
 }
 
-function createParentComment(comment_id,comment){
-    comment.parent_comment_id=comment_id;
+function createParentComment(comment){
     return knex("parentComment").insert(comment);
 };
-
 function deleteParentComment(comment_id){
     return knex("parentComment").where("parent_comment_id", comment_id).del();
 };
 
+
 function getChildComments(parent_comment_id){
     return knex("childComment").where("parent_comment_id",parent_comment_id).select("*");
 }
-
-function createChildComment(comment_id,comment){
-    comment.child_comment_id=comment_id;
+function createChildComment(comment){
     return knex("childComment").insert(comment);
 };
-
 function deleteChildComment(child_comment_id){
     return knex("childComment").where("child_comment_id", child_comment_id).del();
 };
 
 
+/////////////////////////////////////////// auth
 
+function addRefreshToken(token){
+    return knex("refreshToken").insert({"refreshToken" : token});
+};
 
+function getRefreshTokenList(){
+    return knex("refreshToken").select("*");
+}
 
 module.exports = {
     createUser,
@@ -228,5 +356,13 @@ module.exports = {
 
     getChildComments,
     createChildComment,
-    deleteChildComment
+    deleteChildComment,
+    addRefreshToken,
+    getRefreshTokenList,
+
+    getPostTags,
+    addPostTags,
+
+    getPostPhoto,
+    postPhoto
 }

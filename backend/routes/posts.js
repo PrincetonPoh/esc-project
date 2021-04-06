@@ -1,82 +1,152 @@
 const express = require("express");
 const db = require('../db/escData');
-const Server=require('../server.js');
+const uuid = require('../middleware/uuid');
+const checkAuth = require('../middleware/check-auth');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 const router = express.Router();
+
+const Fuse = require('fuse.js');
+
+router.use(fileUpload());
 
 
 // insert date of creation
-router.post("/createPost", async (req, res) =>{
-    const post_id= generateUuid();
+router.post("/createPost", checkAuth, async (req, res) => {
+    const post_id = uuid.generateUuid();
+    const now = new Date()
+    const secondsSinceEpoch = Math.round(now.getTime() / 1000)
+    req.body.post_id = post_id;
+    req.body.dateOfCreation = secondsSinceEpoch;
 
-    const result = await db.createPost(post_id, req.body);
-    
-    res.status(200).json({id: result[0]});
+    const result = await db.createPost(req.body);
+    res.status(200).json({ success_post: req.body });
 });
 
 // for dev use only
-router.get("/searchAllPosts", async (req, res) =>{
+router.get("/searchAllPosts", async (req, res) => {
     const posts = await db.searchAllPosts();
-    res.status(200).json({posts})
+
+    res.status(200).json({ posts })
 })
 
-router.get("/searchPostsBasedOn", async (req, res) => {
-    const posts = await db.searchPostsBasedOn(req.query.type, req.query.value);
+router.get("/searchPostsBasedOn",checkAuth, async (req, res) => {
+    var posts = await db.searchPostsBasedOn(req.query.type, req.query.value);
+    if(req.query.type == "title"){
+        const postsJson=JSON.parse(JSON.stringify((posts)))
+        const fuse = new Fuse(postsJson, {
+            keys: [
+            'postTitle'],
+      });
+    posts= fuse.search(req.query.value)}
+
     res.status(200).json({posts})
 });
 
 
+router.get("/searchPostsText", async (req, res) => {
+    var posts = await db.searchAllPosts();
+    const postsJson = JSON.parse(JSON.stringify((posts)))
+    const fuse = new Fuse(postsJson, { keys: ['postTitle'] })
+    posts = fuse.search(req.query.value)
+    console.log(posts);
+    res.status(200).json({ posts })
+});
 
-router.get("/displayPostsDetails", async (req, res) => {
+
+
+router.get("/displayPostsDetails", checkAuth, async (req, res) => {
     const posts = await db.displayPostsDetailsBasedOnPost_id(req.query.post_id);
-    res.status(200).json({posts})
+    res.status(200).json({ posts })
 });
-router.get("/displayAttendUserListsOfThePost", async (req, res) => {
+
+
+
+
+router.get("/displayAttendUserListsOfThePost", checkAuth, async (req, res) => {
     const users = await db.displayAttendUserListsOfThePost(req.query.post_id);
-    res.status(200).json({users})
+    res.status(200).json({ users })
 });
 
-router.post("/createUserListsOfThePost", async (req, res) =>{
-    const result = await db.createUserListsOfThePost(req.query.post_id,req.query.userName,req.query.phoneNumber);
+router.post("/createUserListsOfThePost", checkAuth, async (req, res) => {
+    const result = await db.createUserListsOfThePost(req.query.post_id, req.query.userName, req.query.phoneNumber);
 
-    res.status(200).json({id: result[0]});
+    res.status(200).json({ id: result[0] });
 });
-router.delete("/deleteAllUserListsOfThePost", async (req, res) => {
+router.delete("/deleteAllUserListsOfThePost", checkAuth, async (req, res) => {
     // const result = await db.getAllUsers(req.params.id);
     await db.deleteUserListsOfThePost(req.query.post_id);
-    res.status(200).json({success:true})
+    res.status(200).json({ success: true })
 });
-router.delete("/deleteUserListsOfThePost", async (req, res) => {
+router.delete("/deleteUserListsOfThePost", checkAuth, async (req, res) => {
     // const result = await db.getAllUsers(req.params.id);
-    await db.deleteUserListsOfThePost(req.query.post_id,req.query.userName);
-    res.status(200).json({success:true})
+    await db.deleteUserListsOfThePost(req.query.post_id, req.query.userName);
+    res.status(200).json({ success: true })
 });
 
 
 
-router.put("/updateUserListsOfThePost",async(req,res) =>{
-    await db.updateUserListsOfThePost(req.query.post_id,req.query.userName, req.query.type, req.query.value);
-    res.status(200).json({success:true})
+router.put("/updateUserListsOfThePost", checkAuth, async (req, res) => {
+    await db.updateUserListsOfThePost(req.query.post_id, req.query.userName, req.query.type, req.query.value);
+    res.status(200).json({ success: true })
 });
 
 
 
 
-router.delete("/deletePost", async (req, res) => {
-    // const result = await db.getAllUsers(req.params.id);
+router.delete("/deletePost", checkAuth, async (req, res) => {
     await db.deletePost(req.query.post_id);
-    res.status(200).json({success:true})
+    res.status(200).json({ success: true })
 });
 
 
 
-router.put("/updatePost",async(req,res) =>{
-    await db.updatePost(req.query.post_id, req.query.type, req.query.value);
-    res.status(200).json({success:true})
+router.put("/updatePost", checkAuth, async (req, res) => {
+    await db.updatePost(post_id = req.query.post_id,
+        type = req.query.type,
+        value = req.query.value);
+    res.status(200).json({ success: true })
 });
 
 
+///////////////////////////// tags
 
+router.get("/getPostTags", async (req, res) => {
+    const tags = await db.getPostTags(req.query.post_id)
+    res.status(200).json({ tags })
+});
+
+router.post("/addPostTags", checkAuth, async (req, res) => {
+    console.log(req.body)
+    const result = await db.addPostTags(req.body)
+    res.status(200).json({ "tags added": req.body });
+});
+
+///////////////////////////// tags
+
+router.get("/getPostPhoto", async (req, res) => {
+    const img = await db.getPostPhoto(req.query.post_id)
+    if (img){
+        res.status(200).json({photo:img})
+    } else {
+        res.sendStatus(400).json({message : "photo not found"})
+    }
+});
+
+router.post("/postPhoto",checkAuth, async (req, res) =>{
+    console.log('posting photos')
+    const post_id = req.query.post_id
+    const {name, data} = req.files.pic
+
+    const photoData = {
+        post_id : post_id,
+        name : name,
+        data : data
+    }
+
+    const img = await db.postPhoto(photoData)
+    res.status(200).json({"message": "message added"});
+});
 
 
 

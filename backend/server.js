@@ -2,11 +2,9 @@ const express = require("express");
 const app = express();
 const db = require('./db/escData');
 const bodyParser = require('body-parser');
-//const {v4:uuidv4} = require('uuid');
-const cors = require('cors');
+const cors = require("cors");
 
 app.use(cors());
-
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
@@ -27,13 +25,5 @@ app.listen(PORT, () => {
 });
 
 
-generateUuid = function () { 
-    // const newId=uuidv4();
-    // const newId=1234;
-    const newId = Math.floor(Math.random()*10000)
-    return newId;
-};
 
-module.exports = generateUuid;
-
-//https://www.youtube.com/watch?v=cr3pX6fSUpc
+module.exports = app;

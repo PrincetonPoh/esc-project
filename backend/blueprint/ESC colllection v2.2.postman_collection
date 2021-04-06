@@ -1,0 +1,830 @@
+{
+	"info": {
+		"_postman_id": "7b6dee5a-9397-40b6-b515-585df7944383",
+		"name": "ESC colllection v2.0",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "authorization",
+			"item": [
+				{
+					"name": "generate token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:1337/auth/token?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTc2NTA2ODh9.GWbJ6oTnBw5-gBbXVlMuW5XdiTU8D6-ohuO9oCgoRIU",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"auth",
+								"token"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTc2NTA2ODh9.GWbJ6oTnBw5-gBbXVlMuW5XdiTU8D6-ohuO9oCgoRIU"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Regular api calls",
+			"item": [
+				{
+					"name": "get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:1337/users/getAllUsers",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"users",
+								"getAllUsers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get User By UserName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:1337/users/getUserByUserName?userName=princeton5",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"users",
+								"getUserByUserName"
+							],
+							"query": [
+								{
+									"key": "userName",
+									"value": "princeton5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search all posts (for dev)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:1337/posts/searchAllPosts",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"posts",
+								"searchAllPosts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search post by owner id/postal code/ date of creation Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "owner_id",
+								"value": "123"
+							}
+						],
+						"url": {
+							"raw": "localhost:1337/posts/SearchPostsBasedOn?value=4&type=post_id",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"posts",
+								"SearchPostsBasedOn"
+							],
+							"query": [
+								{
+									"key": "value",
+									"value": "4",
+									"description": "put in the value of that type"
+								},
+								{
+									"key": "type",
+									"value": "post_id",
+									"description": "put in the type"
+								}
+							]
+						},
+						"description": "Possible types:\r\n- owner_id\r\n- post_id\r\n- text (not up yet)"
+					},
+					"response": []
+				},
+				{
+					"name": "get posts details by post id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "owner_id",
+								"value": "123"
+							}
+						],
+						"url": {
+							"raw": "localhost:1337/posts/DisplayPostsDetails?post_id=4",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"posts",
+								"DisplayPostsDetails"
+							],
+							"query": [
+								{
+									"key": "post_id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get parent comment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:1337/comments/getParentComments?post_id=4",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"comments",
+								"getParentComments"
+							],
+							"query": [
+								{
+									"key": "post_id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get child comment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:1337/comments/getChildComments?parent_comment_id=50bdb0bc-f404-4499-a940-50590d243554",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"comments",
+								"getChildComments"
+							],
+							"query": [
+								{
+									"key": "parent_comment_id",
+									"value": "50bdb0bc-f404-4499-a940-50590d243554"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DisplayAttendUserListsOfThePost",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "owner_id",
+								"value": "123"
+							}
+						],
+						"url": {
+							"raw": "localhost:1337/posts/DisplayAttendUserListsOfThePost?post_id=50bdb0bc-f404-4499-a940-50590d243554",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"posts",
+								"DisplayAttendUserListsOfThePost"
+							],
+							"query": [
+								{
+									"key": "post_id",
+									"value": "50bdb0bc-f404-4499-a940-50590d243554"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user (for developer use)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phoneNumber\": 16,\n    \"userName\": \"princeton\",\n    \"emailAddress\": \"prince@gmail.com\",\n    \"password\": \"asd123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:1337/users/createUserDeveloper",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"users",
+								"createUserDeveloper"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phoneNumber\": 16,\r\n    \"userName\": \"princeton\",\r\n    \"emailAddress\": \"prince@gmail.com\",\r\n    \"password\": \"asd123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:1337/auth/createUser",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"auth",
+								"createUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:1337/auth/login?userName=princeton5&password=asd1234",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "userName",
+									"value": "princeton5"
+								},
+								{
+									"key": "password",
+									"value": "asd1234"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:1337/auth/logout?token",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"auth",
+								"logout"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post ----- dummy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:1337/auth/posts?username=Kyle",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"auth",
+								"posts"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "Kyle"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"owner_id\": \"333\",\n    \"postTitle\": \"3treegooood\",\n    \"postalCode\": 670333,\n    \"description\": \"lies\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:1337/posts/createPost",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"posts",
+								"createPost"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add post tags",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"post_id\": \"4yu213iu12o3iu12oi3u12o3u\",\n    \"tags\" : \"string of tags insert here pls\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:1337/posts/addPostTags",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"posts",
+								"addPostTags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get post tags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:1337/posts/getPostTags?post_id=4yu213iu12o3iu12oi3u12o33",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"posts",
+								"getPostTags"
+							],
+							"query": [
+								{
+									"key": "post_id",
+									"value": "4yu213iu12o3iu12oi3u12o33"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create parent comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"post_id\": 4,\n    \"text\": \"this is my very 2nd p.commmnett!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:1337/comments/createParentComment",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"comments",
+								"createParentComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUserListsOfThePost",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "owner_id",
+								"value": "123"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:1337/posts/createUserListsOfThePost?post_id=50bdb0bc-f404-4499-a940-50590d243554&userName=yoyoman&phoneNumber=121232131212",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"posts",
+								"createUserListsOfThePost"
+							],
+							"query": [
+								{
+									"key": "post_id",
+									"value": "50bdb0bc-f404-4499-a940-50590d243554"
+								},
+								{
+									"key": "userName",
+									"value": "yoyoman"
+								},
+								{
+									"key": "phoneNumber",
+									"value": "121232131212"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create child comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"parent_comment_id\": \"50bdb0bc-f404-4499-a940-50590d243554\",\n    \"text\": \"moarrrr childreaaan comments\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:1337/comments/createChildComment",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"comments",
+								"createChildComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:1337/users/deleteUser/?user_id=1",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"users",
+								"deleteUser",
+								""
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete post",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:1337/posts/deletePost/?post_id=3",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"posts",
+								"deletePost",
+								""
+							],
+							"query": [
+								{
+									"key": "post_id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete parent comment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:1337/comments/deleteParentComment/?parent_comment_id=219601f2-9460-4a4e-ab2f-d06ed2a07e6a",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"comments",
+								"deleteParentComment",
+								""
+							],
+							"query": [
+								{
+									"key": "parent_comment_id",
+									"value": "219601f2-9460-4a4e-ab2f-d06ed2a07e6a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete childcomment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:1337/comments/deleteChildComment/?child_comment_id=029473fb-9942-4e56-840d-96a86159069b",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"comments",
+								"deleteChildComment",
+								""
+							],
+							"query": [
+								{
+									"key": "child_comment_id",
+									"value": "029473fb-9942-4e56-840d-96a86159069b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUserListsOfThePost",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "owner_id",
+								"value": "123"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:1337/posts/deleteUserListsOfThePost?post_id=029473fb-9942-4e56-840d-96a86159069b&userName=yoyoman&phoneNumber=121232131212",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"posts",
+								"deleteUserListsOfThePost"
+							],
+							"query": [
+								{
+									"key": "post_id",
+									"value": "029473fb-9942-4e56-840d-96a86159069b"
+								},
+								{
+									"key": "userName",
+									"value": "yoyoman"
+								},
+								{
+									"key": "phoneNumber",
+									"value": "121232131212"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"801093be-8390-4366-9e49-d932a008309e\",\r\n    \"phoneNumber\": 1234432121222,\r\n    \"userName\": \"princeton2\",\r\n    \"emailAddress\": \"prince2@gmail.com\",\r\n    \"password\": \"asd123222\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:1337/users/updateUser",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"users",
+								"updateUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update post (not working)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:1337/users/updatePost/1?post_id=4&type=postTitle&value=somethingsss",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"users",
+								"updatePost",
+								"1"
+							],
+							"query": [
+								{
+									"key": "post_id",
+									"value": "4"
+								},
+								{
+									"key": "type",
+									"value": "postTitle"
+								},
+								{
+									"key": "value",
+									"value": "somethingsss"
+								}
+							]
+						},
+						"description": "Possible types:\r\n- postTitle\r\n- description\r\n- dateOfcreation\r\n- postal_code\r\n- owner_id"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTc2NTA3MTAsImV4cCI6MTYxNzY1MjgxMH0.-Z4v3IR-dpOonNhywyz_f7GcsDkHhiFKWpMXNWDhg60",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

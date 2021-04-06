@@ -62,7 +62,7 @@ class SigninPopup extends Component {
       this.setState({ token: result.data });
       return true;
     } catch (err) {
-      console.log(err.response.data);
+      console.log(err);
       this.setState({ errorMessage: err.response.data.message });
       return false;
     }
