@@ -61,9 +61,6 @@ class App extends Component {
         <div className="App">
           <Navbar toggleLogin={this.toggleLogin.bind(this)} user={this.state.user}/>
           <Switch>
-            <Route exact path="/">
-            <Home loginState={this.state.login} user={this.state.user}/>  
-            </Route>
             <Route exact path="/signup" component={Signup} />
             <Route path="/user/:id" >
               <User user={this.state.user} config={this.state.config}></User>
@@ -72,6 +69,9 @@ class App extends Component {
               <CreatePost user={this.state.user} config={this.state.config}/>
             </Route>
             <Route path="/post/:id" component={Post}/>
+            <Route eaxct path="/">
+            <Home loginState={this.state.login} user={this.state.user}/>  
+            </Route>
           </Switch>
         </div>
       </Router>

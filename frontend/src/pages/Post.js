@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom'; 
 import axios from 'axios';
-import Comment from '../components/Comment';
+import CommentBox from '../components/CommentBox'
+import '../styles/Post.css';
 
 function Post(props) {
 
@@ -40,23 +41,24 @@ function Post(props) {
     //     </div>
     // )
     return (
-        <div>
-            <h1>Welcome to event {event.postTitle}</h1>
-            <div>
-                <h3>Tag 1</h3>
-                <h3>Tag 2</h3>
+        <div id="event-container">
+            <h1 class="event-header">Welcome to event {event.postTitle}</h1>
+            <div id="event-tags-container">
+                <div><p>Tag 1</p></div>
+                <div><p>Tag 2</p></div>
             </div>
-            <div>
+            <div id="event-description-container">
                 <h3>Event Description</h3>
-                <p>{event.description}</p>
+                <p>{event.description} test</p>
             </div>
-            <div>
+            <div id="event-owner-container">
                 <h3>Posted By</h3>
-                {owner != null ? (<p>{owner.userName}</p>) : null}                
+                {owner != null ? (<p>{owner.userName}</p>) : <p>Unknown</p>}
+                {/* <p>Unknown</p> */}
             </div>
-            <div>
-                <h1>Comment Section</h1>
-                <Comment id={id}></Comment>
+            <div id="event-comments-container">
+                <h3>Comments</h3>
+                <CommentBox/>
             </div>
         </div>
     )

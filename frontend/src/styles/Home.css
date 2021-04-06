@@ -17,18 +17,31 @@
   transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
   border-radius:16px;
   overflow: hidden;
+  cursor: pointer;
   -webkit-box-shadow:  4px 4px 4px rgba(0, 0, 0, 0.25);
   box-shadow:  4px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.customCardDescription {
-  height: 8em;
-  overflow: hidden;
-}
 .customCardTitle {
-  margin-bottom: 0;
+  margin-bottom: 10px;
 }
-#cardsContainer {
+.customCardDetails {
+  overflow: hidden;
+  margin-bottom: 0;
+  color: #7BA3D7;
+  display: inline-block;
+}
+.customCardDetails span {
+  font-weight: bold;
+}
+
+.customCardIcon {
+  height: 25px;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.cards-container {
   display:flex;
   flex-wrap: wrap;
   -ms-flex-direction:row;
@@ -36,24 +49,25 @@
   position:relative;
   padding: 0 20px;
 } 
-#cardsContainer>* {
+.cards-container>* {
   flex: 1 1 14em;
 }
 
-#sort-container, #filters {
+.sort-container, #filters {
   padding: 0 35px;
   margin-bottom: 10px;
 }
 
-#sort-container div {
+.sort-container div {
   display: inline-block; 
   margin-right: 30px;
 }
 
-#home-container input, #home-container select, #home-container form, #home-container label {
+#home-container input, #home-container select, #home-container form, #home-container label, #user-posts-container select {
   display: inline-block;
   outline: none;
   box-sizing: border-box;
+  cursor: pointer;
 } 
 
 select {
@@ -99,4 +113,9 @@ select {
 #filters form {
   /* width: 100px; */
   margin: 0 5px;
+}
+
+.loading-message {
+  padding: 0 35px;
+  color:#7BA3D7;
 }

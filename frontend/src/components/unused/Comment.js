@@ -40,10 +40,10 @@ class Comment extends React.Component {
     render() {
         return (
             <div>
-                <p>Comments</p>
                 <div className="row" id="commentBox">
-                    <textarea id="pComment" placeholder="Type here to post a comment..." maxLength="280" style={{width: "40vw"}}></textarea>
-                    <input type="submit" value="Post comment" onSubmit={() => this.postParentComment(this.props.post_id)}></input>
+                    {/* <textarea id="pComment" placeholder="Type here to post a comment..." maxLength="280" style={{width: "40vw"}}></textarea> */}
+                    <span id="pComment" class="textarea" role="textbox" contentEditable></span>
+                    <input id="pComment-button" type="submit" value="Post Comment" onSubmit={() => this.postParentComment(this.props.post_id)}></input>
                 </div>
                 <div>
                     {(this.state.parentComment.length != 0) ? (this.getParentComments(this.props.post_id)): null}

@@ -1,22 +1,3 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  min-height: 300px;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-.dropshadow {
-  filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.4));
-}
-
 p {
   margin: 0;
 }
@@ -75,6 +56,7 @@ p {
   font-size: 15px;
   outline: none;
   border: none;
+  cursor: pointer;
 }
 
 #popup-cross-icon {
@@ -82,9 +64,6 @@ p {
   cursor: pointer;
 }
 
-#signin-popup-button {
-  cursor: pointer;
-}
 #signin-popup-button:hover, #popup-cross-icon:hover {
   position: relative;
 	bottom: 2px;
