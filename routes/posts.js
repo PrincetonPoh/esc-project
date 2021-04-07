@@ -119,23 +119,33 @@ router.get("/getPostPhoto", async (req, res) => {
     if (img){
         res.status(200).json({photo:img})
     } else {
-        res.sendStatus(400).json({message : "photo not found"})
+        res.status(400).json({message : "photo not found"})
     }
 });
 
 router.post("/postPhoto",checkAuth, async (req, res) =>{
     console.log('posting photos')
     const post_id = req.query.post_id
-    const {name, data} = req.files.pic
-
-    const photoData = {
-        post_id : post_id,
-        name : name,
-        data : data
+    // const photoData = null;
+    try{
+        const {name, data} = req.files.pic
+        const photoData = {
+            post_id : post_id,
+            name : name,
+            data : data
+        }
+        try{
+            const img = await db.postPhoto(photoData)
+            res.status(200).json({"message": "message added"});
+        } catch (error){
+            // console.log(error)
+            res.status(409).json({"message": "probably non-unique post_id"})
+        }
+    } catch {
+        res.status(409).json({message: "upload failed"})
     }
 
-    const img = await db.postPhoto(photoData)
-    res.status(200).json({"message": "message added"});
+
 });
 
 

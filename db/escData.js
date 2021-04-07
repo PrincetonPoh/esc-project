@@ -321,6 +321,16 @@ function getRefreshTokenList(){
     return knex("refreshToken").select("*");
 }
 
+
+function verifyTheUser(user){
+    return knex("emailVerification").insert(user);
+};
+
+function checkVerifiedUser(userName){
+    return knex("emailVerification").where('userName', userName).select("*");
+}
+
+
 module.exports = {
     createUser,
     getAllUsers,
@@ -364,5 +374,8 @@ module.exports = {
     addPostTags,
 
     getPostPhoto,
-    postPhoto
+    postPhoto,
+
+    verifyTheUser,
+    checkVerifiedUser
 }
