@@ -268,13 +268,22 @@ function updatePost(post_id, type, value){
     
 }
 
+// tags
 function getPostTags(post_id){
     return knex("postTagging").where("post_id", post_id).select("*");
 }
 
 function addPostTags(postTags){
-    console.log('mdade it to db')
     return knex("postTagging").insert(postTags);
+}
+
+// photo
+function getPostPhoto(post_id){
+    return knex("photos").where("post_id", post_id).select("*");
+}
+
+function postPhoto(postTags){
+    return knex("photos").insert(postTags);
 }
 
 /////////////////////////////////////////// comments
@@ -352,5 +361,8 @@ module.exports = {
     getRefreshTokenList,
 
     getPostTags,
-    addPostTags
+    addPostTags,
+
+    getPostPhoto,
+    postPhoto
 }
