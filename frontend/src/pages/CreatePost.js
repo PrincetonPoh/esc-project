@@ -20,22 +20,23 @@ function CreatePost(props) {
     const [postType, setPostType] = useState("offer");
     const [dateType, setDateType] = useState("ongoing");
     const [locations, setLocations] = useState([]);
-    const [locationSelected, setLocationSelected] = useState(false);
+    const [locationSelected, setLocationSelected] = useState("ANG MO KIO");
     const [isLoading, setIsLoading] = useState(true);
-    const [oneMapToken, setOneMapToken] = useState("");
     const [redirectSubmit, setRedirectSubmit] = useState(false);
     const dateRegex = new RegExp('([0-3][0-9]\.[0-1][0-9]\.[0-9][0-9][0-9][0-9])');
     const [captchaSuccess, setCaptchaSuccess] = useState(false)
     // const [warnings, setWarnings] = useState([null,null,null,null,null,null,null]) 
-    // useEffect(() => {
-    //     const fetchLocation = async() => {
-    //         setIsLoading(true);
-    //         const result = await axios.get('http://localhost:1337/posts/getAllLocations');
-    //         setLocations(result.data.posts.locations)
-    //         setIsLoading(false);
-    //     }
-    //     fetchLocation();
-    // }, [])
+
+
+    useEffect(() => {
+        const fetchLocation = async () => {
+            setIsLoading(true);
+            const result = await axios.get(`http://localhost:1337/locations/getAllLocations`)
+            setLocations(result.data.result);
+            setIsLoading(false);
+        }
+        fetchLocation();
+    }, [ ])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -63,16 +64,23 @@ function CreatePost(props) {
                         "postTitle": title,
                         "dateOfCreation": newDate,
                         "postalCode": loc,
-                        "description": desc
+                        "description": desc,
+                        "location": locationSelected
                     }, props.config).then(async (response) => {
                         console.log(response.data);
                         let body = {
                             post_id: response.data.success_post.post_id,
                             tags: postType + ',' + dateType
                         }
+                        let body2 = {
+                            post_id: response.data.success_post.post_id,
+                            locationArea: locationSelected
+                        }
                         try {
                             const result = await axios.post("http://localhost:1337/posts/addPostTags", body, props.config);
+                            const result2 = await axios.post("http://localhost:1337/locations/createPostLocation", body2, props.config);
                             console.log(result);
+                            console.log(result2);
                             alert("Successful Posted Event")
                             history.push(`/user/${props.user.user_id}`)
                         } catch (err) {
@@ -97,33 +105,28 @@ function CreatePost(props) {
         return result;
     }
 
-    // const getTokenFromOneMap = async() => {
-    //     const token = await axios.post("https://developers.onemap.sg/privateapi/auth/post/getToken",{
-    //         "email": "yikkhuen_kong@mymail.sutd.edu.sg",
-    //         "password": "P@ssw0rd123SUTD"
-    //     })
-    //     setOneMapToken(token.access_token);
-    // }
+    const getTokenFromOneMap = async () => {
+        const token = await axios.post("https://developers.onemap.sg/privateapi/auth/post/getToken", {
+            email: "yikkhuen_kong@mymail.sutd.edu.sg",
+            password: "P@ssw0rd123SUTD"
+        })
+        return token.access_token;
+    }
 
     // const getLocationString = async (locationNo) => {
     //     const result = await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${locationNo}&returnGeom=Y&getAddrDetails=Y&pageNum=1`)
-    //     const lat = result.data.results[0].LATITUDE
-    //     const lon = result.data.results[0].LONGITUDE
-    //     getTokenFromOneMap();
-    //     const result2 = await axios.get(`https://developers.onemap.sg/privateapi/popapi/getPlanningarea?token=${oneMapToken}&lat=${lat}&lon=${lon}`)//Get the planning area(require auth)
+    //     const lat = await result.data.results[0].LATITUDE
+    //     const lon = await result.data.results[0].LONGITUDE
+    //     const token = await getTokenFromOneMap();
+    //     setOneMapToken(token);
+    //     const result2 = await axios.get(`https://developers.onemap.sg/privateapi/popapi/getPlanningarea?token=${token}&lat=${lat}&lng=${lon}`)//Get the planning area(require auth)
     //     return result2.data[0].pln_area_n
     // }
 
-    // const loadOptions = (locations) => {
-    //     return locations.map((locationNo) => {
-    //         const locationString = getLocationString(locationNo);
-    //         return <option>{locationString}</option>
-    //     })
-    // }
-
-    const setLocationChoice = (e) => {
-        setLoc(e);
-        setLocationSelected(true);
+    const loadOptions = (locations) => {
+        return locations.map((item) => {
+            return <option>{item.location}</option>
+        })
     }
 
     const onRecaptcha = (value) => {
@@ -173,13 +176,11 @@ function CreatePost(props) {
                             <span class="info-text"> Where will your offer/event be available or held at? Select a region to help people nearby find your post! </span>
                         </div>
                         {/* {warnings[1] ? <span class="inputWarning"> This field is required!</span> : null} */}
-                        {locationSelected ? (<label>{loc}</label>) : (<input id="input-location" name="location" type="text" value={loc} onChange={e => setLoc(e.target.value)}></input>)}
-                        <select id="input-region" name="region" onChange={e => setLocationChoice(e.target.value)}>
+                        <input id="input-location" name="location" type="text" value={loc} onChange={e => setLoc(e.target.value)}></input>
+                        <select id="input-region" name="region" onChange={(e) => setLocationSelected(e.target.value)}>
                             {isLoading ? (<option>
                                 ...  loading
-                            </option>) : (<option>
-                                API call for the options
-                            </option>)}
+                            </option>) : loadOptions(locations)}
                         </select>
                     </div>
 
