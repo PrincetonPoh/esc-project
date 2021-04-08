@@ -102,7 +102,7 @@ router.get('/verifyEmail', async (req, res) => {
             
             let mailOptions = {
                 from: "randomran9898@gmail.com",
-                to: "niceprinceton@gmail.com",
+                to: req.query.email,
                 subject: 'Confirm Email',
                 text: `Please click this email to confirm your email: ${url}`,
             }
