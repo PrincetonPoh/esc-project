@@ -4,6 +4,7 @@ import '../styles/Home.css';
 import EventCards from '../components/EventCards';
 import axios from 'axios';
 import queryString from 'query-string';
+import {BrowserRouter as Router, Link} from 'react-router-dom';
 
 function Home(props) {
 
@@ -22,7 +23,6 @@ function Home(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const [user, setUser] = useState([]);
-    const [searchText, setSearchText] = useState("");
     const locations = ["Clementi", "Tampines", "Bishan", "Woodlands"];
     const tags = ["Offer", "Events", "Ongoing", "OneOff"];   
 
@@ -37,9 +37,9 @@ function Home(props) {
     }
 
     useEffect(() => {
-        const fetchSearchData = async() => {
+        const fetchSearchData = async(searchText) => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/posts/searchPostsBasedOn?value=${searchText}`)
+            const result = await axios.get(`http://localhost:1337/posts/searchPostsText?value=${searchText}`)
             console.log("Filtered result \n");
             console.log(result.data.posts);
             setSortResult(result.data.posts.length);
@@ -55,11 +55,10 @@ function Home(props) {
             setEvents(result.data.posts);
             setIsLoading(false);
         };
-        let searchText = queryString.parse(history.location.search).search;
-        if(searchText != null){
-            console.log(searchText);
-            setSearchText(searchText);
-            fetchSearchData();
+        let searchResult = queryString.parse(history.location.search).search;
+        if(searchResult != null && searchResult.replace(/\s+/g, '') != ""){
+            console.log(searchResult);
+            fetchSearchData(searchResult);
         }else{
             fetchData();
         }
@@ -192,7 +191,18 @@ function Home(props) {
                 <div id="sortByLocation">Location: {locationDropDown()}</div>
             </div>
             <div id="filters">Filter By: {offersCheckBox()} {eventsCheckBox()} {recurrentCheckBox()} {oneoffCheckBox()} </div>
-            {isLoading ? (<p class="loading-message">Events Loading...</p>) : (<div class="cards-container">{cardify(events)}</div>)}
+            {isLoading ? (<p class="loading-message">Events Loading...</p>) 
+            : (sortResult==0) ? 
+                <div class="empty-container"> 
+                    <h2> We couldn't find anything that matches your query ;( </h2> 
+                    <p> Here's what you can try: </p>
+                    <ul>
+                        <li>Refine your filters applied</li>
+                        <li>Select "Anywhere" for location</li>
+                        <li><Link to="/createpost">Create your own post!</Link></li>
+                    </ul>
+                </div> 
+            : (<div class="cards-container">{cardify(events)}</div>)}
         </div>
     );
 }

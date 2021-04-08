@@ -88,12 +88,11 @@ class Signup extends Component {
                     };
                     console.log(data);
                     axios.post("http://localhost:1337/auth/createUser", {
-                        "user_id": Math.floor(Math.random() * 1000),
                         "phoneNumber": data.hp,
                         "userName": data.username,
                         "emailAddress": data.email,
                         "password": data.password
-                    }).then((response) => alert("Sign-up successful.")).catch(error => alert("Error."))
+                    }).then((response) => {alert("Sign-up successful."); this.setState({signupSuccess: true})}).catch(error => alert("Error."))
                     // this.props.history.push('/');//Force push
                 } else { // captcha not successful
                     this.setState({

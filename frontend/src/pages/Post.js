@@ -49,7 +49,7 @@ function Post(props) {
             </div>
             <div id="event-description-container">
                 <h3>Event Description</h3>
-                <p>{event.description} test</p>
+                {event.description!=null ? <p>{event.description}</p> : <p>No Description Added</p> }
             </div>
             <div id="event-owner-container">
                 <h3>Posted By</h3>

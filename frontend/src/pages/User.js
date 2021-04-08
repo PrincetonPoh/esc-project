@@ -4,7 +4,7 @@ import {useParams} from 'react-router-dom';
 import EventCards from '../components/EventCards';
 import '../styles/Home.css';
 
-function User(){
+function User(props){
 
     let {id} = useParams();
     const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +16,8 @@ function User(){
     useEffect(() => {
         const fetchEvents = async() => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/posts/SearchPostsBasedOn?type=owner_id&value=${id}`)
+            console.log(id);
+            const result = await axios.get(`http://localhost:1337/posts/searchPostsBasedOn?type=owner_id&value=${id}`, props.config)
             console.log(result.data.posts);
             setSortResult(result.data.posts.length);
             setEvents(result.data.posts);

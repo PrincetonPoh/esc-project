@@ -11,13 +11,11 @@ import ProfileDropdown from './ProfileDropdown';
 import {BrowserRouter as Router, Link} from 'react-router-dom';
 
 class Navbar extends React.Component {
-
-  signup() {
-    alert("go to sign up page"); // may use router or href instead of onClick
-
-  }
-  createPost() {
-    alert("go to create post page"); // may use router or href instead of onClick
+  
+  componentDidUpdate(prevProps){
+    if (this.props.login !== prevProps.login){
+      this.setState({signedin: this.props.login})
+    }
   }
 
   state = {
@@ -34,7 +32,6 @@ class Navbar extends React.Component {
   }
 
   setSignedin = (e) => {
-    console.log(e);
     this.setState({
       signedin: true, // changes nevbar buttons to signed in ones
       seen: false // hides signinPopup
@@ -47,8 +44,8 @@ class Navbar extends React.Component {
       signedin: false, // changes nevbar buttons to signed in ones
       profile_dropdown: false
     });
+    this.props.toggleLogout();
     alert("signed out!")
-    this.props.toggleLogin();
   }
 
   toggleSidebar = () => {
