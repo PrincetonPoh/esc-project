@@ -7,6 +7,8 @@ const fileUpload = require('express-fileupload');
 const router = express.Router();
 
 const Fuse = require('fuse.js');
+const { Router } = require("express");
+const { route } = require("./users");
 
 router.use(fileUpload());
 
@@ -43,7 +45,7 @@ router.get("/searchPostsBasedOn",checkAuth, async (req, res) => {
     res.status(200).json({posts})
 });
 
-
+//Search using fuse js with all search result
 router.get("/searchPostsText", async (req, res) => {
     var posts = await db.searchAllPosts();
     const postsJson = JSON.parse(JSON.stringify((posts)))
@@ -53,14 +55,30 @@ router.get("/searchPostsText", async (req, res) => {
     res.status(200).json({ posts })
 });
 
+//Trying to bundle up all the filter as one api call
+// router.post("/searchPostsFiltered", async(req, res) => {
+//     var posts = await db.searchAllPosts();
+//     if(req.body.searchBoolean){
+//         const postsJson = JSON.parse(JSON.stringify((posts)))
+//         const fuse = new Fuse(postsJson, { keys: ['postTitle'] })
+//         posts = fuse.search(req.body.searchText);
+//     }
+//     const result = posts.map(event => req.body.filter.map(async (tag) => {
+//         const tags = await db.getPostTags(req.query.post_id)
+//     }))
+// })
+
+//Search users all post
+router.get("/searchUsersPosts", checkAuth, async(req, res) => {
+    var posts = await db.searchUserPosts(req.query.user_id);
+    res.status(200).json({posts});
+})
 
 
 router.get("/displayPostsDetails", checkAuth, async (req, res) => {
     const posts = await db.displayPostsDetailsBasedOnPost_id(req.query.post_id);
     res.status(200).json({ posts })
 });
-
-
 
 
 router.get("/displayAttendUserListsOfThePost", checkAuth, async (req, res) => {
@@ -129,23 +147,33 @@ router.get("/getPostPhoto", async (req, res) => {
     if (img){
         res.status(200).json({photo:img})
     } else {
-        res.sendStatus(400).json({message : "photo not found"})
+        res.status(400).json({message : "photo not found"})
     }
 });
 
 router.post("/postPhoto",checkAuth, async (req, res) =>{
     console.log('posting photos')
     const post_id = req.query.post_id
-    const {name, data} = req.files.pic
-
-    const photoData = {
-        post_id : post_id,
-        name : name,
-        data : data
+    // const photoData = null;
+    try{
+        const {name, data} = req.files.pic
+        const photoData = {
+            post_id : post_id,
+            name : name,
+            data : data
+        }
+        try{
+            const img = await db.postPhoto(photoData)
+            res.status(200).json({"message": "message added"});
+        } catch (error){
+            // console.log(error)
+            res.status(409).json({"message": "probably non-unique post_id"})
+        }
+    } catch {
+        res.status(409).json({message: "upload failed"})
     }
 
-    const img = await db.postPhoto(photoData)
-    res.status(200).json({"message": "message added"});
+
 });
 
 

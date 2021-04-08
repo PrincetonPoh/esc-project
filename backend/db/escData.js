@@ -35,6 +35,10 @@ function updateUser(user){
                 });
 };
 
+function getAllPostalCode(){
+    return knex("primaryCode").select("*");
+}
+
 function getPrimaryCodeByPostalCode(postalCode){
     return knex("primaryCode").where("postalCode",postalCode).select("primaryCode");
 };
@@ -192,13 +196,13 @@ function searchPostsBasedOn(type, value){
       //  const posts=JSON.stringify(postsObject);//undefined type
 
        
-
         return knex("posts").select("*");;
     }
 };
 
-
-
+function searchUserPosts(owner_id){
+    return knex("posts").where("owner_id", owner_id).select("*");
+};
 
 function displayPostsDetailsBasedOnPost_id(post_id){
     return knex("posts").where("post_id",post_id).select("*");
@@ -321,6 +325,28 @@ function getRefreshTokenList(){
     return knex("refreshToken").select("*");
 }
 
+
+function verifyTheUser(user){
+    return knex("emailVerification").insert(user);
+};
+
+function checkVerifiedUser(userName){
+    return knex("emailVerification").where('userName', userName).select("*");
+}
+
+/////////////////////////////////////////// Locations
+function getAllLocations(){
+    return knex("locations").select("*");
+}
+
+function getPostLocation(post_id){
+    return knex("postLocation").where("post_id", post_id).select("locationArea")
+}
+
+function createPostLocation(data){
+    return knex("postLocation").insert(data);
+}
+
 module.exports = {
     createUser,
     getAllUsers,
@@ -328,6 +354,7 @@ module.exports = {
     getUserByUserName,
     deleteUser,
     updateUser,
+    getAllPostalCode,
     getPrimaryCodeByPostalCode,
     createPrimaryCode,
     updatePrimaryCodeByPostalCode,
@@ -338,6 +365,7 @@ module.exports = {
 
     searchAllPosts,
     searchPostsBasedOn,
+    searchUserPosts,
 
     displayPostsDetailsBasedOnPost_id,
     displayAttendUserListsOfThePost,
@@ -364,5 +392,12 @@ module.exports = {
     addPostTags,
 
     getPostPhoto,
-    postPhoto
+    postPhoto,
+
+    verifyTheUser,
+    checkVerifiedUser,
+
+    getAllLocations,
+    getPostLocation,
+    createPostLocation
 }
