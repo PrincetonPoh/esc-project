@@ -17,6 +17,12 @@ class Navbar extends React.Component {
       this.setState({signedin: this.props.login})
     }
   }
+  
+  componentDidUpdate(prevProps){
+    if (this.props.login !== prevProps.login){
+      this.setState({signedin: this.props.login})
+    }
+  }
 
   state = {
     seen: false,

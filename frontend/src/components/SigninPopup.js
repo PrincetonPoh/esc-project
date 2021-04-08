@@ -128,6 +128,7 @@ class SigninPopup extends Component {
           <form id="signin-form" name="signin-form">
             <label class="popup-contents"> Username </label>
             <input type="username" id="signin-creds" name="creds" onChange={this.handleChange} class="text-fields dropshadow" />
+
             {this.state.credsWarning}
 
             <label class="popup-contents"> Password </label>

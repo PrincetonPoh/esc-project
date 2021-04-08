@@ -18,68 +18,98 @@ function Home(props) {
     const [events, setEvents] = useState([]);
     const [sortResult, setSortResult] = useState(0);
     const [sort, setSort] = useState("newestPosts");
-    const [location, setLocation] = useState('anywhere');
-    const [tag, setTag] = useState({ offer: true, events: true, ongoing: true, oneoff: true, value: [] });
+    const [locations, setLocations] = useState([{location: "ALL"}]);
+    const [locationSelected, setLocationSelected] = useState("ALL");
+    const [tag, setTag] = useState({ offer: true, events: true, ongoing: true, oneoff: true, value: ["offer", "event", "ongoing", "oneoff"] });
     const [isLoading, setIsLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const [user, setUser] = useState([]);
-    const locations = ["Clementi", "Tampines", "Bishan", "Woodlands"];
-    const tags = ["Offer", "Events", "Ongoing", "OneOff"];   
 
-
-    const getFilteredPosts = (filteredPosts) => {
-        let tempPosts = [];
-        console.log("Filtered Posts being here");
-        for (let i=0; i<filteredPosts.length; i++){
-            tempPosts.push(filteredPosts[i].item);
-        }
-        return tempPosts;
-    }
 
     useEffect(() => {
-        const fetchSearchData = async(searchText) => {
-            setIsLoading(true);
+        const getFilteredPosts = (filteredPosts) => {
+            let tempPosts = [];
+            console.log("Filtered Posts being here");
+            for (let i = 0; i < filteredPosts.length; i++) {
+                tempPosts.push(filteredPosts[i].item);
+            }
+            return tempPosts;
+        }
+        const fetchSearchData = async (searchText) => {
             const result = await axios.get(`http://localhost:1337/posts/searchPostsText?value=${searchText}`)
-            console.log("Filtered result \n");
-            console.log(result.data.posts);
             setSortResult(result.data.posts.length);
             let filteredPosts = getFilteredPosts(result.data.posts);
-            setEvents(filteredPosts);   
-            setIsLoading(false);
+            // setEvents(filteredPosts);
+            return filteredPosts;
         }
-        const fetchData = async() => {
-            setIsLoading(true);
+        const fetchData = async () => {
             const result = await axios.get('http://localhost:1337/posts/searchAllPosts');
-            console.log(result.data.posts);
             setSortResult(result.data.posts.length);
-            setEvents(result.data.posts);
-            setIsLoading(false);
+            // setEvents(result.data.posts);
+            return result.data.posts;
         };
-        let searchResult = queryString.parse(history.location.search).search;
-        if(searchResult != null && searchResult.replace(/\s+/g, '') != ""){
-            console.log(searchResult);
-            fetchSearchData(searchResult);
-        }else{
-            fetchData();
-        }
-    }, [history, isLogin, ])
 
-    // useEffect(() => {
-    //     const fetchData = async() => {
-    //         setIsLoading(true);
-    //         const result = await axios.get('http://localhost:1337/posts/searchAllPosts');
-    //         console.log(result.data.posts);
-    //         setSortResult(result.data.posts.length);
-    //         setEvents(result.data.posts);
-    //         setIsLoading(false);
-    //     };
-    //     fetchData();
-    // }, [isLogin, ])
-    
+        const asyncFilterTag = async (arr) => {
+            await Promise.all(arr.map(async (event) => {
+                const value = await axios.get(`http://localhost:1337/posts/getPostTags?post_id=${event.post_id}`,);
+                let strings = await value.data.tags[0].tags.split(",");
+                event.tag = await strings;
+            }))
+            return await asyncFilterLocation(arr);
+        }
+        const asyncFilterLocation = async (arr) => {
+            await Promise.all(arr.map(async (event) => {
+                const value = await axios.get(`http://localhost:1337/locations/getPostLocation?post_id=${event.post_id}`,);
+                console.log("Filter the locations")
+                console.log(value);
+                let strings = await value.data[0].locationArea;
+                event.locationArea = await strings;
+            }))
+            return arr;
+        }
+        const handleFilter = async () => {
+            setIsLoading(true);
+            let searchResult = queryString.parse(history.location.search).search;
+            let tempEvents = []
+            if (searchResult != null && searchResult.replace(/\s+/g, '') != "") {
+                tempEvents = await fetchSearchData(searchResult);
+            } else {
+                tempEvents = await fetchData();
+            }
+            const mutatedEvents = await asyncFilterTag(tempEvents);
+            const result = mutatedEvents.filter(event => {
+                let bool = false;
+                tag.value.map((id) => {
+                    for (let i = 0; i < event.tag.length; i++) {
+                        if (event.tag[i].includes(id)) {
+                            if(event.locationArea === locationSelected || locationSelected === "ALL"){
+                                bool = true;
+                            }
+                        }
+                    }
+                })
+                return bool;
+            })
+            setEvents(result);
+            setIsLoading(false);
+        }
+        handleFilter();
+    }, [history, isLogin, tag, locationSelected])
+
+    useEffect(() => {
+        const fetchLocation = async () => {
+            setIsLoading(true);
+            const result = await axios.get(`http://localhost:1337/locations/getAllLocations`)
+            const final = locations.concat(result.data.result);
+            setLocations(final);
+            setIsLoading(false);
+        }
+        fetchLocation();
+    }, [ ])
 
     useEffect(() => {
         const getLogin = () => {
-            if(props.loginState){
+            if (props.loginState) {
                 setIsLogin(true);
                 setUser(props.user);
             }
@@ -87,33 +117,9 @@ function Home(props) {
         getLogin();
     }, [props.loginState])
 
-
-    useEffect(() => {//Got to update this useEffect with respect to the backend Ids
-        function handleEventsChange() {
-            const newEvent = events.filter(event => {
-                if (location != "anywhere") {
-                    return true;
-                } else {
-                    return true;
-                }
-            })
-            return newEvent;
-        }
-        return setEvents(handleEventsChange());
-    }, [location]);
-
-
-    // useEffect(() => {
-    //     console.log(tag);
-    //     setEvents(events.filter(events => tag.value.map((ids) => {
-    //         console.log(events.tag.toLowerCase() == ids);
-    //         return events.tag.toLowerCase() == ids;
-    //     })));
-    // }, [tag]);    
-
     const cardify = (events) => {
         return events.map((event) => {
-            return <EventCards event={event} isLogin={isLogin}/>;
+            return <EventCards event={event} isLogin={isLogin} />;
         });
     };
 
@@ -127,24 +133,26 @@ function Home(props) {
         </form>
     };
 
+    const loadLocation = (locations) => {
+        return locations.map((item) => {
+            return <option value={item.location}>{item.location}</option>
+        })
+    }
+
     const locationDropDown = () => {//Fetch from db the list and populate
         return <form>
-            <select value={location} onChange={(e) => { setLocation(e.target.value) }}>
-                <option value="anywhere">Anywhere</option>
-                <option value="clementi">Clementi</option>
-                <option value="tampines">Tampines</option>
-                <option value="bishan">Bishan</option>
-                <option value="woodlands">Woodlands</option>
+            <select onChange={(e) => { setLocationSelected(e.target.value) }}>
+                {loadLocation(locations)}
             </select>
         </form>
     };
 
     const checkedFilterStyle = {
-        color: "white", 
+        color: "white",
         backgroundColor: "#7BA3D7"
     }
     const uncheckedFilterStyle = {
-        color: "#7BA3D7", 
+        color: "#7BA3D7",
         backgroundColor: "white"
     }
 
@@ -160,7 +168,7 @@ function Home(props) {
         return <form>
             <label class="filter-checkbox-label" style={tag.events ? checkedFilterStyle : uncheckedFilterStyle}>
                 Events
-                <input type="checkbox" class="filter-checkbox" checked={tag.events} onChange={(e) => { e.target.checked ? setTag({ ...tag, value: [...tag.value, "events"], events: e.target.checked }) : setTag({ ...tag, value: tag.value.filter(item => item !== "events"), events: e.target.checked }) }} />
+                <input type="checkbox" class="filter-checkbox" checked={tag.events} onChange={(e) => { e.target.checked ? setTag({ ...tag, value: [...tag.value, "event"], events: e.target.checked }) : setTag({ ...tag, value: tag.value.filter(item => item !== "event"), events: e.target.checked }) }} />
             </label>
         </form>
     }
