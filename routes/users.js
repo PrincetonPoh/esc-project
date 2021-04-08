@@ -39,7 +39,14 @@ router.put("/updateUser",checkAuth, async(req,res) =>{
     res.status(200).json({success:true})
 });
 
-
+router.get("/getPrimaryCode", checkAuth, async(req,res) => {
+    try{
+        const primaryCode = await db.getAllPostalCode();
+        res.status(200).json({primaryCode});
+    } catch{
+        res.status(409).json({message: "No available data"});
+    }
+})
 
 router.get("/getPrimaryCodeByPostalCode",checkAuth, async (req, res) => {
     const primaryCode = await db.getPrimaryCodeByPostalCode(req.query.postalCode);
