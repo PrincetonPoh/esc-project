@@ -178,6 +178,8 @@ input[type="file"] {
   display: block;
   cursor: pointer;
   height: 30px;
+  width: 110px;
+  text-align: center;
   border: #7BA3D7 solid 3px;
   padding: 0 10px;
   font-size: 15px;

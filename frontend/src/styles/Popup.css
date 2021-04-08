@@ -50,6 +50,7 @@ p {
   display: block;
   height: 30px;
   width: 80px;
+  text-align: center;
   margin: 10px 5px;
   padding: 0 10px;
   float: right;

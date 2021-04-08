@@ -42,7 +42,7 @@ function CreatePost(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(title, loc, desc, date, image);
-        if (props.user == null) {
+        if (props.loginState == false) {
             alert("Please sign in to post!"); 
         } else if (title == "" || loc == "" || desc == "" || date == "") { // checks if any of the compulsory fields are empty 
             alert("Please fill in the required fields!");
@@ -76,10 +76,15 @@ function CreatePost(props) {
                         try {
                             const result = await axios.post("http://localhost:1337/posts/addPostTags", body, props.config);
                             const result2 = await axios.post("http://localhost:1337/locations/createPostLocation", body2, props.config);
-                            const result3 = await axios.post(`http://localhost:1337/posts/postPhoto?post_id=${response.data.success_post.post_id}`, formData, props.config);
                             console.log(result);
                             console.log(result2);
-                            console.log(result3);
+                            if (image!=null) {
+                                const result3 = await axios.post(`http://localhost:1337/posts/postPhoto?post_id=${response.data.success_post.post_id}`, formData, props.config);
+                                console.log(result3);
+                            } else {
+                                console.log("There is no image to be posted")
+                            }
+                            
                             alert("Successful Posted Event")
                             history.push(`/user/${props.user.user_id}`)
                         } catch (err) {
