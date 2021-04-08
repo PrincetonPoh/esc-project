@@ -15,6 +15,7 @@ function Post(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [owner, setOwner] = useState([]);
     const [tags, setTags] = useState([]);
+    const [pic, setPic] = useState(null);
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -43,7 +44,7 @@ function Post(props) {
             setIsLoading(true);
             const result = await axios.get(`http://localhost:1337/posts/getPostTags?post_id=${id}`);
             const tagString = result.data.tags[0].tags;
-            //console.log(tagString);
+            // console.log(tagString);
             const tagArray = tagString.split(",");
             //console.log(tagArray);
             setTags(tagArray);
@@ -52,19 +53,39 @@ function Post(props) {
         fetchTags();
     }, [event, ]);
 
-    // return (
-    //     <div>
-    //     <h1>Welcome to event {id}</h1>
-    //     <Comment id={id}></Comment>
-    //     </div>
-    // )
+    useEffect(() => {
+        const fetchPic = async () => {
+            setIsLoading(true);
+            const result = await axios.get(`http://localhost:1337/posts/getPostPhoto?post_id=${id}`);
+            // console.log(result.data.photo);
+            if (result.data.photo.length!=0) {
+                const imageArray = result.data.photo[0].data;
+                console.log(imageArray);
+                const blob = new Blob([imageArray]);
+                console.log(blob);
+                const srcBlob = URL.createObjectURL(blob);
+                console.log(srcBlob);
+                setPic(srcBlob);
+            } else (
+                console.log("This event does not have an image")
+            )
+            setIsLoading(false);
+        }
+        fetchPic();
+    }, [event, ]);
+
     return (
         <div id="event-container">
-            <h1 class="event-header">  {event.postTitle}</h1>
+            <h1 class="event-header"> {event.postTitle != null ? event.postTitle : "Title could not be displayed"}</h1>
             <div id="event-tags-container">
                 {tags[0] != null ? (<div><p>{tags[0]}</p></div>) : null}
                 {tags[1] != null ? (<div><p>{tags[1]}</p></div>) : null}
             </div>
+            {pic!=null ? 
+                <div id="event-image-container">
+                    <img id="event-image" src={pic}/> 
+                </div>
+            : null }
             <div id="event-description-container">
                 <h3>Description</h3>
                 {event.description!=null ? <p>{event.description}</p> : <p>No Description Added</p> }
@@ -72,7 +93,7 @@ function Post(props) {
             <div id="event-loctimedate-container">
                 <h3>Details</h3>
                 <div> 
-                    <img src={location_icon} class="detailsIcon"/>
+                    <img src={location_icon} class="detailsIcon" alt="uploaded image"/>
                     <p> {event.postalCode != null ? event.postalCode : "Unknown Location"}</p>
                 </div>
                 <div>

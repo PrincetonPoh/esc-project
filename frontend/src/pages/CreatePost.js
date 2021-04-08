@@ -26,29 +26,10 @@ function CreatePost(props) {
     const [redirectSubmit, setRedirectSubmit] = useState(false);
     const dateRegex = new RegExp('([0-3][0-9]\.[0-1][0-9]\.[0-9][0-9][0-9][0-9])');
     const [captchaSuccess, setCaptchaSuccess] = useState(false)
-    // const [warnings, setWarnings] = useState([null,null,null,null,null,null,null]) 
-    // useEffect(() => {
-    //     const fetchLocation = async() => {
-    //         setIsLoading(true);
-    //         const result = await axios.get('http://localhost:1337/posts/getAllLocations');
-    //         setLocations(result.data.posts.locations)
-    //         setIsLoading(false);
-    //     }
-    //     fetchLocation();
-    // }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(title, loc, desc, date, image);
-        // if (title=="") {
-        //     console.log(warnings);
-        //     warnings[0] = <span class="inputWarning"> This field is required!</span>;
-        //     console.log(warnings);
-        // }
-        // if (loc=="") {
-        //     warnings[1] = <span class="inputWarning"> This field is required!</span>;
-        //     console.log(warnings);
-        // }
         if (props.user == null) {
             alert("Please sign in to post!"); 
         } else if (title == "" || loc == "" || desc == "" || date == "") { // checks if any of the compulsory fields are empty 
@@ -75,12 +56,26 @@ function CreatePost(props) {
                         try {
                             const result = await axios.post("http://localhost:1337/posts/addPostTags", body, props.config);
                             console.log(result);
-                            alert("Successful Posted Event")
-                            history.push(`/user/${props.user.user_id}`)
+                            alert("Successful Posted Tags")
+                            //history.push(`/user/${props.user.user_id}`)
                         } catch (err) {
                             console.log(err);
                             alert("Unable to upload event tags");
                         }
+
+                        var formData = new FormData();
+                        formData.append("pic",image);
+                        console.log(formData);
+                        try {
+                            const result = await axios.post(`http://localhost:1337/posts/postPhoto?post_id=${response.data.success_post.post_id}`, formData, props.config);
+                            console.log(result);
+                            alert("Successful Posted Photo")
+                            history.push(`/user/${props.user.user_id}`)
+                        } catch (err) {
+                            console.log(err);
+                            alert("Unable to upload photo");
+                        }
+
                     }, (error) => {
                         console.log(error);
                         alert("Unable to post the event");
