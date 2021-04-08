@@ -56,8 +56,12 @@ router.get('/login', async (req, res) => {
     const userName = req.query.userName
     const password = req.query.password
     const userData = await db.getUserByUserName(userName)
-    if (userData[0].password != password) return res.status(409).json({message:"incorrect password"})
-
+    try{
+        if (userData[0].password != password) return res.status(409).json({message:"Incorrect password"})
+    } catch(error){
+        console.log(error);
+        return res.status(409).json({message:'User not available'});
+    }
 
     const accessToken = generateAccessToken(req.body)
     const refreshToken = jwt.sign(req.body, process.env.REFRESH_TOKEN_SECRET)

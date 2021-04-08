@@ -7,27 +7,29 @@ const fileUpload = require('express-fileupload');
 const router = express.Router();
 
 const Fuse = require('fuse.js');
+const { Router } = require("express");
+const { route } = require("./users");
 
 router.use(fileUpload());
 
 
 // insert date of creation
-router.post("/createPost",checkAuth, async (req, res) =>{
+router.post("/createPost", checkAuth, async (req, res) => {
     const post_id = uuid.generateUuid();
-    const now = new Date()  
+    const now = new Date()
     const secondsSinceEpoch = Math.round(now.getTime() / 1000)
     req.body.post_id = post_id;
     req.body.dateOfCreation = secondsSinceEpoch;
 
     const result = await db.createPost(req.body);
-    res.status(200).json({success_post: req.body});
+    res.status(200).json({ success_post: req.body });
 });
 
 // for dev use only
-router.get("/searchAllPosts",checkAuth, async (req, res) =>{
+router.get("/searchAllPosts", async (req, res) => {
     const posts = await db.searchAllPosts();
 
-    res.status(200).json({posts})
+    res.status(200).json({ posts })
 })
 
 router.get("/searchPostsBasedOn",checkAuth, async (req, res) => {
@@ -43,59 +45,85 @@ router.get("/searchPostsBasedOn",checkAuth, async (req, res) => {
     res.status(200).json({posts})
 });
 
+//Search using fuse js with all search result
+router.get("/searchPostsText", async (req, res) => {
+    var posts = await db.searchAllPosts();
+    const postsJson = JSON.parse(JSON.stringify((posts)))
+    const fuse = new Fuse(postsJson, { keys: ['postTitle'] })
+    posts = fuse.search(req.query.value)
+    console.log(posts);
+    res.status(200).json({ posts })
+});
+
+//Trying to bundle up all the filter as one api call
+// router.post("/searchPostsFiltered", async(req, res) => {
+//     var posts = await db.searchAllPosts();
+//     if(req.body.searchBoolean){
+//         const postsJson = JSON.parse(JSON.stringify((posts)))
+//         const fuse = new Fuse(postsJson, { keys: ['postTitle'] })
+//         posts = fuse.search(req.body.searchText);
+//     }
+//     const result = posts.map(event => req.body.filter.map(async (tag) => {
+//         const tags = await db.getPostTags(req.query.post_id)
+//     }))
+// })
+
+//Search users all post
+router.get("/searchUsersPosts", checkAuth, async(req, res) => {
+    var posts = await db.searchUserPosts(req.query.user_id);
+    res.status(200).json({posts});
+})
 
 
-router.get("/displayPostsDetails",checkAuth, async (req, res) => {
+router.get("/displayPostsDetails", checkAuth, async (req, res) => {
     const posts = await db.displayPostsDetailsBasedOnPost_id(req.query.post_id);
-    res.status(200).json({posts})
+    res.status(200).json({ posts })
 });
 
 
-
-
-router.get("/displayAttendUserListsOfThePost",checkAuth, async (req, res) => {
+router.get("/displayAttendUserListsOfThePost", checkAuth, async (req, res) => {
     const users = await db.displayAttendUserListsOfThePost(req.query.post_id);
-    res.status(200).json({users})
+    res.status(200).json({ users })
 });
 
-router.post("/createUserListsOfThePost",checkAuth, async (req, res) =>{
-    const result = await db.createUserListsOfThePost(req.query.post_id,req.query.userName,req.query.phoneNumber);
+router.post("/createUserListsOfThePost", checkAuth, async (req, res) => {
+    const result = await db.createUserListsOfThePost(req.query.post_id, req.query.userName, req.query.phoneNumber);
 
-    res.status(200).json({id: result[0]});
+    res.status(200).json({ id: result[0] });
 });
-router.delete("/deleteAllUserListsOfThePost",checkAuth, async (req, res) => {
+router.delete("/deleteAllUserListsOfThePost", checkAuth, async (req, res) => {
     // const result = await db.getAllUsers(req.params.id);
     await db.deleteUserListsOfThePost(req.query.post_id);
-    res.status(200).json({success:true})
+    res.status(200).json({ success: true })
 });
-router.delete("/deleteUserListsOfThePost",checkAuth, async (req, res) => {
+router.delete("/deleteUserListsOfThePost", checkAuth, async (req, res) => {
     // const result = await db.getAllUsers(req.params.id);
-    await db.deleteUserListsOfThePost(req.query.post_id,req.query.userName);
-    res.status(200).json({success:true})
+    await db.deleteUserListsOfThePost(req.query.post_id, req.query.userName);
+    res.status(200).json({ success: true })
 });
 
 
 
-router.put("/updateUserListsOfThePost",checkAuth, async(req,res) =>{
-    await db.updateUserListsOfThePost(req.query.post_id,req.query.userName, req.query.type, req.query.value);
-    res.status(200).json({success:true})
+router.put("/updateUserListsOfThePost", checkAuth, async (req, res) => {
+    await db.updateUserListsOfThePost(req.query.post_id, req.query.userName, req.query.type, req.query.value);
+    res.status(200).json({ success: true })
 });
 
 
 
 
-router.delete("/deletePost",checkAuth, async (req, res) => {
+router.delete("/deletePost", checkAuth, async (req, res) => {
     await db.deletePost(req.query.post_id);
-    res.status(200).json({success:true})
+    res.status(200).json({ success: true })
 });
 
 
 
-router.put("/updatePost",checkAuth, async(req,res) =>{
-    await db.updatePost(post_id=req.query.post_id,
-                        type=req.query.type, 
-                        value=req.query.value);
-    res.status(200).json({success:true})
+router.put("/updatePost", checkAuth, async (req, res) => {
+    await db.updatePost(post_id = req.query.post_id,
+        type = req.query.type,
+        value = req.query.value);
+    res.status(200).json({ success: true })
 });
 
 
@@ -103,13 +131,13 @@ router.put("/updatePost",checkAuth, async(req,res) =>{
 
 router.get("/getPostTags", async (req, res) => {
     const tags = await db.getPostTags(req.query.post_id)
-    res.status(200).json({tags})
+    res.status(200).json({ tags })
 });
 
-router.post("/addPostTags",checkAuth, async (req, res) =>{
+router.post("/addPostTags", checkAuth, async (req, res) => {
     console.log(req.body)
     const result = await db.addPostTags(req.body)
-    res.status(200).json({"tags added": req.body});
+    res.status(200).json({ "tags added": req.body });
 });
 
 ///////////////////////////// tags
