@@ -64,8 +64,8 @@ function CreatePost(props) {
                         "owner_id": props.user.user_id,
                         "postTitle": title,
                         "dateOfCreation": newDate,
-                        "postalCode": loc,
-                        "description": desc
+                        "postalCode": loc, // actually should be "locationselected" here, "loc" should be under a different field in database but idk it it exists
+                        "description": desc,
                     }, props.config).then(async (response) => {
                         console.log(response.data);
                         let body = {
