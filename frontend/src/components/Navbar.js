@@ -11,13 +11,11 @@ import ProfileDropdown from './ProfileDropdown';
 import {BrowserRouter as Router, Link} from 'react-router-dom';
 
 class Navbar extends React.Component {
-
-  signup() {
-    alert("go to sign up page"); // may use router or href instead of onClick
-
-  }
-  createPost() {
-    alert("go to create post page"); // may use router or href instead of onClick
+  
+  componentDidUpdate(prevProps){
+    if (this.props.login !== prevProps.login){
+      this.setState({signedin: this.props.login})
+    }
   }
   
   componentDidUpdate(prevProps){

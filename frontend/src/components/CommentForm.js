@@ -26,9 +26,9 @@ class CommentForm extends React.Component  {
     
     render() {
         return(
-            <form className="row" id="commentForm" onSubmit={(e) => this.postParentComment(e, this.props.post_id)}>
-                <input id="pComment" class="textarea" role="textbox" contentEditable onChange={this.handleTextChange} value={this.state.text}></input>
-                <input id="pComment-button" type="submit" value="Post Comment"></input>
+            <form className="row" id="pCommentForm" onSubmit={(e) => this.postParentComment(e, this.props.post_id)}>
+                <input id="pComment" class="textarea" role="textbox" contentEditable onChange={this.handleTextChange} value={this.state.text} placeholder="Type here to comment..."></input>
+                {this.state.text!="" ? <input id="pComment-button" type="submit" value="Post Comment"></input> : null}
             </form>
         )
     }

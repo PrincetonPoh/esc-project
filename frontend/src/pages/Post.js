@@ -3,6 +3,9 @@ import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import CommentBox from '../components/CommentBox'
 import '../styles/Post.css';
+import calendar_icon from '../media/calendar_icon.png';
+import location_icon from '../media/location_icon.png';
+import placeholderProfilePic from '../media/logo_round.png'
 
 function Post(props) {
 
@@ -11,6 +14,17 @@ function Post(props) {
     const [event, setEvent] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [owner, setOwner] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [pic, setPic] = useState(null);
+
+    function timeConverter(time) {
+        var a = new Date(time * 1000);
+        var year = a.getFullYear();
+        var month = a.getMonth();
+        var date = a.getDate();
+        var time = date + '-' + month + '-' + year;
+        return time
+    };
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -27,34 +41,85 @@ function Post(props) {
         const fetchOwner = async () => {
             setIsLoading(true);
             const result = await axios.get(`http://localhost:1337/users/getUserById?user_id=${event.owner_id}`);
-            console.log(result.data);
+            //console.log(result.data);
             setOwner(result.data.user[0]);
             setIsLoading(false);
         }
         fetchOwner();
     }, [event, ]);
 
-    // return (
-    //     <div>
-    //     <h1>Welcome to event {id}</h1>
-    //     <Comment id={id}></Comment>
-    //     </div>
-    // )
+    useEffect(() => {
+        const fetchTags = async () => {
+            setIsLoading(true);
+            const result = await axios.get(`http://localhost:1337/posts/getPostTags?post_id=${id}`);
+            const tagString = result.data.tags[0].tags;
+            // console.log(tagString);
+            const tagArray = tagString.split(",");
+            //console.log(tagArray);
+            setTags(tagArray);
+            setIsLoading(false);
+        }
+        fetchTags();
+    }, [event, ]);
+
+    useEffect(() => {
+        const fetchPic = async () => {
+            setIsLoading(true);
+            const result = await axios.get(`http://localhost:1337/posts/getPostPhoto?post_id=${id}`);
+            // console.log(result.data.photo);
+            if (result.data.photo.length!=0) {
+                const imageArray = result.data.photo[0].data;
+                console.log(imageArray);
+                const blob = new Blob([imageArray]);
+                console.log(blob);
+                const srcBlob = URL.createObjectURL(blob);
+                console.log(srcBlob);
+                setPic(srcBlob);
+            } else (
+                console.log("This event does not have an image")
+            )
+            setIsLoading(false);
+        }
+        fetchPic();
+    }, [event, ]);
+
+    const generateFilters = (tags) => {
+        return tags.map((tag) => {
+            return <div><p>{tag}</p></div>;
+        });
+    };
+
     return (
         <div id="event-container">
-            <h1 class="event-header">Welcome to event {event.postTitle}</h1>
+            <h1 class="event-header"> {event.postTitle != null ? event.postTitle : "Title could not be displayed"}</h1>
             <div id="event-tags-container">
-                <div><p>Tag 1</p></div>
-                <div><p>Tag 2</p></div>
+                {generateFilters(tags)}
             </div>
+            {pic!=null ? 
+                <div id="event-image-container">
+                    <img id="event-image" src={pic}/> 
+                </div>
+            : null }
             <div id="event-description-container">
-                <h3>Event Description</h3>
-                <p>{event.description} test</p>
+                <h3>Description</h3>
+                {event.description!=null ? <p>{event.description}</p> : <p>No Description Added</p> }
+            </div>
+            <div id="event-loctimedate-container">
+                <h3>Details</h3>
+                <div> 
+                    <img src={location_icon} class="detailsIcon" alt="uploaded image"/>
+                    <p> {event.postalCode != null ? event.postalCode : "Unknown Location"}</p>
+                </div>
+                <div>
+                    <img src={calendar_icon} class="detailsIcon"/>
+                    <p> {event.dateOfCreation != null ? timeConverter(event.dateOfCreation) : "Unknown Date"}</p> {/* this field should be date of event instead of dateOfCreation right? */}
+                </div>
+                {/* {event.postalCode != null ? (<p>{event.postalCode}</p>) : <p>Unknown Location</p>} */}
             </div>
             <div id="event-owner-container">
                 <h3>Posted By</h3>
-                {owner != null ? (<p>{owner.userName}</p>) : <p>Unknown</p>}
-                {/* <p>Unknown</p> */}
+                <img src={placeholderProfilePic} class="event-owner-profile-pic"/> 
+                <p id="event-owner">{owner != null ? owner.userName : "Unknown User"}</p>
             </div>
             <div id="event-comments-container">
                 <h3>Comments</h3>

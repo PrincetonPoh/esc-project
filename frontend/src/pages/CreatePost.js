@@ -25,6 +25,7 @@ function CreatePost(props) {
     const [redirectSubmit, setRedirectSubmit] = useState(false);
     const dateRegex = new RegExp('([0-3][0-9]\.[0-1][0-9]\.[0-9][0-9][0-9][0-9])');
     const [captchaSuccess, setCaptchaSuccess] = useState(false)
+
     // const [warnings, setWarnings] = useState([null,null,null,null,null,null,null]) 
 
 
@@ -41,19 +42,12 @@ function CreatePost(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(title, loc, desc, date, image);
-        // if (title=="") {
-        //     console.log(warnings);
-        //     warnings[0] = <span class="inputWarning"> This field is required!</span>;
-        //     console.log(warnings);
-        // }
-        // if (loc=="") {
-        //     warnings[1] = <span class="inputWarning"> This field is required!</span>;
-        //     console.log(warnings);
-        // }
-        if (title == "" || loc == "" || desc == "" || date == "") { // checks if any of the compulsory fields are empty 
+        if (props.user == null) {
+            alert("Please sign in to post!"); 
+        } else if (title == "" || loc == "" || desc == "" || date == "") { // checks if any of the compulsory fields are empty 
             alert("Please fill in the required fields!");
         } else if (captchaSuccess != true) {
-            alert("Please pass the ReCAPTCHA to sign in!");
+            alert("Please pass the ReCAPTCHA to create post!");
         } else { // all compulsory fields are filled in, try post to backend
             let newDate = "";
             try {
@@ -76,11 +70,16 @@ function CreatePost(props) {
                             post_id: response.data.success_post.post_id,
                             locationArea: locationSelected
                         }
+                        var formData = new FormData();
+                        formData.append("pic",image);
+                        console.log(formData);
                         try {
                             const result = await axios.post("http://localhost:1337/posts/addPostTags", body, props.config);
                             const result2 = await axios.post("http://localhost:1337/locations/createPostLocation", body2, props.config);
+                            const result3 = await axios.post(`http://localhost:1337/posts/postPhoto?post_id=${response.data.success_post.post_id}`, formData, props.config);
                             console.log(result);
                             console.log(result2);
+                            console.log(result3);
                             alert("Successful Posted Event")
                             history.push(`/user/${props.user.user_id}`)
                         } catch (err) {

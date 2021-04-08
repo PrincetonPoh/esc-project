@@ -42,18 +42,21 @@ class ChildComments extends React.Component {
     render() {
         return(
             <div className="childComments">
+
                 <div class="childComments-header"> 
                     <img src={placeholderProfilePic} class="profile-pic"/> 
-                    <h3 class="og-commenter-username"> {this.props.ownerName} </h3>
+                    <h3 class="commenter-username"> {this.props.ownerName} </h3>
+                    <p class="comment-content">{this.props.text}</p>
                 </div>
+
                 <div class="childComments-inner"> 
-                    
-                    <p class="og-comment">{this.props.text}</p>
                     {this.state.childComment.map((element, index) => {
                         return (
                             <div key={index}>
-                                <h6>{element.ownerName}</h6>
-                                {element.text}
+                                <hr/>
+                                <img src={placeholderProfilePic} class="profile-pic"/> 
+                                <h3 class="commenter-username">{element.ownerName}</h3>
+                                <p class="comment-content">{element.text}</p>
                             </div>
                         )
                     })}

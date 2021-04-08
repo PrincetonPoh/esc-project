@@ -63,7 +63,8 @@ class SigninPopup extends Component {
       return true;
     } catch (err) {
       console.log(err);
-      this.setState({ errorMessage: err.response.data.message });
+      //this.setState({ errorMessage: err.response.data.message });
+      this.setState({ formWarning: <p class="formWarning">{err.response.data.message}!</p> });
       return false;
     }
   }
@@ -84,7 +85,7 @@ class SigninPopup extends Component {
         this.props.signin(this.state.token);
       } else {
         const { history: { push } } = this.props;
-        alert(this.state.errorMessage);
+        //alert(this.state.errorMessage);
         push('/');
       }
       // } else {
@@ -125,8 +126,9 @@ class SigninPopup extends Component {
           <img id="popup-cross-icon" src={cross_icon} onClick={this.handleClick} class="navbar-icons dropshadow" />
           <h2> Sign in to Scratchbac </h2>
           <form id="signin-form" name="signin-form">
-            <label class="popup-contents"> Username / Email / Mobile Number </label>
-            <input type="text" id="signin-creds" name="creds" onChange={this.handleChange} class="text-fields dropshadow" />
+            <label class="popup-contents"> Username </label>
+            <input type="username" id="signin-creds" name="creds" onChange={this.handleChange} class="text-fields dropshadow" />
+
             {this.state.credsWarning}
 
             <label class="popup-contents"> Password </label>
