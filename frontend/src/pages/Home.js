@@ -123,8 +123,6 @@ function Home(props) {
                 <option value="newestPosts">Newest Posts</option>
                 <option value="oldestPosts">Oldest Posts</option>
                 <option value="eventDate">Event Date</option>
-                <option value="distance">Distance</option>
-                <option value="cost">Cost</option>
             </select>
         </form>
     };

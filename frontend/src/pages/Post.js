@@ -17,6 +17,15 @@ function Post(props) {
     const [tags, setTags] = useState([]);
     const [pic, setPic] = useState(null);
 
+    function timeConverter(time) {
+        var a = new Date(time * 1000);
+        var year = a.getFullYear();
+        var month = a.getMonth();
+        var date = a.getDate();
+        var time = date + '-' + month + '-' + year;
+        return time
+    };
+
     useEffect(() => {
         const fetchEvent = async () => {
             setIsLoading(true);
@@ -74,12 +83,17 @@ function Post(props) {
         fetchPic();
     }, [event, ]);
 
+    const generateFilters = (tags) => {
+        return tags.map((tag) => {
+            return <div><p>{tag}</p></div>;
+        });
+    };
+
     return (
         <div id="event-container">
             <h1 class="event-header"> {event.postTitle != null ? event.postTitle : "Title could not be displayed"}</h1>
             <div id="event-tags-container">
-                {tags[0] != null ? (<div><p>{tags[0]}</p></div>) : null}
-                {tags[1] != null ? (<div><p>{tags[1]}</p></div>) : null}
+                {generateFilters(tags)}
             </div>
             {pic!=null ? 
                 <div id="event-image-container">
@@ -98,7 +112,7 @@ function Post(props) {
                 </div>
                 <div>
                     <img src={calendar_icon} class="detailsIcon"/>
-                    <p> {event.dateOfCreation != null ? event.dateOfCreation+" < not sure how to convert this oops" : "Unknown Date"}</p> {/* not sure why this filed is called dateOfCreation */}
+                    <p> {event.dateOfCreation != null ? timeConverter(event.dateOfCreation) : "Unknown Date"}</p> {/* this field should be date of event instead of dateOfCreation right? */}
                 </div>
                 {/* {event.postalCode != null ? (<p>{event.postalCode}</p>) : <p>Unknown Location</p>} */}
             </div>
