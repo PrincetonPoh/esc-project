@@ -15,7 +15,7 @@ class CommentForm extends React.Component  {
         if (!text){
             return;
         }
-        this.props.updateParentComments({"post_id": post_id, "text": text, "ownerName": this.props.username});
+        this.props.updateParentComments({"post_id": post_id, "text": text});
         this.setState({text: ""});
     }
 

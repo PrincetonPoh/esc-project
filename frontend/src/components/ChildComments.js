@@ -14,14 +14,18 @@ class ChildComments extends React.Component {
     }
 
     postChildComment = (newChild) => {
-        axios.post("http://localhost:1337/comments/createChildComment", newChild)
+        axios.post("http://localhost:1337/comments/createChildComment", {
+            "parent_comment_id": newChild.parent_comment_id,
+            "text": newChild.text,
+            "ownerName": this.props.user
+        })
         .then((response) => {
             var updatedChildren = this.state.childComment;
             updatedChildren.push({
                 "child_comment_id": response.data.success_child_comment_id,
                 "parent_comment_id": this.state.parent_id,
                 "text": newChild.text,
-                "ownerName": this.props.username
+                "ownerName": this.props.user
             });
             this.setState({childComment: updatedChildren})
 
@@ -60,7 +64,7 @@ class ChildComments extends React.Component {
                             </div>
                         )
                     })}
-                    <ChildCommentForm parent_id={this.state.parent_id} postChild={this.postChildComment} username={this.props.username}/>
+                    <ChildCommentForm parent_id={this.state.parent_id} postChild={this.postChildComment}/>
                 </div>
             </div>
         )
