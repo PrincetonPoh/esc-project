@@ -11,6 +11,7 @@ function Post(props) {
     const [event, setEvent] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [owner, setOwner] = useState([]);
+    const [tags, setTags] = useState([]);
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -34,6 +35,20 @@ function Post(props) {
         fetchOwner();
     }, [event, ]);
 
+    useEffect(() => {
+        const fetchTags = async () => {
+            setIsLoading(true);
+            const result = await axios.get(`http://localhost:1337/posts/getPostTags?post_id=${id}`);
+            const tagString = result.data.tags[0].tags;
+            //console.log(tagString);
+            const tagArray = tagString.split(",");
+            console.log(tagArray);
+            setTags(tagArray);
+            setIsLoading(false);
+        }
+        fetchTags();
+    }, [event, ]);
+
     // return (
     //     <div>
     //     <h1>Welcome to event {id}</h1>
@@ -42,10 +57,10 @@ function Post(props) {
     // )
     return (
         <div id="event-container">
-            <h1 class="event-header">Welcome to event {event.postTitle}</h1>
+            <h1 class="event-header">  {event.postTitle}</h1>
             <div id="event-tags-container">
-                <div><p>Tag 1</p></div>
-                <div><p>Tag 2</p></div>
+                {tags[0] != null ? (<div><p>{tags[0]}</p></div>) : null}
+                {tags[1] != null ? (<div><p>{tags[1]}</p></div>) : null}
             </div>
             <div id="event-description-container">
                 <h3>Event Description</h3>

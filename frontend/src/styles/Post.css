@@ -16,6 +16,7 @@
 #event-tags-container > div > p {
     position: relative;
     top: 3px;
+    text-transform: capitalize;
 }
 
 #event-container h3 {

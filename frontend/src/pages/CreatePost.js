@@ -79,7 +79,7 @@ function CreatePost(props) {
                             history.push(`/user/${props.user.user_id}`)
                         } catch (err) {
                             console.log(err);
-                            alert("Unable to post the event");
+                            alert("Unable to upload event tags");
                         }
                     }, (error) => {
                         console.log(error);
