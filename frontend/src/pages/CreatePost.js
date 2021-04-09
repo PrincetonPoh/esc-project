@@ -76,7 +76,6 @@ function CreatePost(props) {
                         try {
                             const result = await axios.post("http://scratchtest.ddns.net:1337/posts/addPostTags", body, props.config);
                             const result2 = await axios.post("http://scratchtest.ddns.net:1337/locations/createPostLocation", body2, props.config);
-                            const emailNoti
                             if (image!=null) {
                                 const result3 = await axios.post(`http://scratchtest.ddns.net:1337/posts/postPhoto?post_id=${response.data.success_post.post_id}`, formData, props.config);
                                 console.log(result3);
@@ -85,7 +84,7 @@ function CreatePost(props) {
                             }
                             alert("Successful Posted Event")
                             history.push(`/user/${props.user.user_id}`)
-                        } catch (err) {
+                        } catch(err){
                             console.log(err);
                             alert("Unable to post the event");
                         }

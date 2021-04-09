@@ -7,7 +7,7 @@ const uuid = require('../middleware/uuid');
 const nodemailer = require("nodemailer");
 const router = express.Router();
 
-const ipAddress = "localhost:1337"
+const ipAddress = "http://scratchtest.ddns.net:1337"
 
 // for testing. 
 let refreshTokens = []
@@ -106,7 +106,7 @@ router.get('/verifyEmail', async (req, res) => {
             
             let mailOptions = {
                 from: "randomran9898@gmail.com",
-                to: "niceprinceton@gmail.com",
+                to: req.query.email,
                 subject: 'Confirm Email',
                 text: `Please click this email to confirm your email: ${url}`,
             }

@@ -79,14 +79,20 @@ class SigninPopup extends Component {
     var credsValid = this.checkValidity("creds");
     var passwordValid = this.checkValidity("password");
     if (credsValid && passwordValid) { // first check validity of fields
-      //if (this.state.captchaSuccess == true) { 
-      var signin_auth_success = await this.postLogin(); // add auth here maybe 
-      if (signin_auth_success) {
-        this.props.signin(this.state.token);
-      } else {
-        const { history: { push } } = this.props;
-        //alert(this.state.errorMessage);
-        push('/');
+      //if (this.state.captchaSuccess == true) {
+      var checkEmailVeri = await axios.get(`http://scratchtest.ddns.net:1337/auth/checkVerifiedUser?userName=${this.state.creds}`);
+      console.log(checkEmailVeri.data.message)
+      if (checkEmailVeri.data.message[0].verificationStatus == "true") {
+        var signin_auth_success = await this.postLogin(); // add auth here maybe 
+        if (signin_auth_success) {
+          this.props.signin(this.state.token);
+        } else {
+          const { history: { push } } = this.props;
+          alert(this.state.errorMessage);
+          push('/');
+        }
+      }else{
+        alert("Please verify your email first before logging in");
       }
       // } else {
       //   this.setState({
