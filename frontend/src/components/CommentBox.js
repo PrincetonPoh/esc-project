@@ -10,7 +10,7 @@ class CommentBox extends React.Component  {
         this.state = {
             post_id: 404,
             parentComment: [],
-            username: ''
+            user: ''
         }
     }
 
@@ -21,30 +21,35 @@ class CommentBox extends React.Component  {
     }
 
     updateParentComments = (newComment) => {
-        axios.post("http://scratchtest.ddns.net:1337/comments/createParentComment", newComment)
+        axios.post("http://scratchtest.ddns.net:1337/comments/createParentComment", {
+            "post_id": newComment.post_id,
+            "text": newComment.text,
+            "ownerName": this.state.user
+        })
         .then((response) => {
             var updatedComments = this.state.parentComment;
             updatedComments.push({
                 "parent_comment_id": response.data.success_parent_comment_id,
                 "post_id": newComment.post_id,
                 "text": newComment.text,
-                "ownerName": this.state.username
+                "ownerName": this.state.user
             });
             this.setState({parentComment: updatedComments});
         }).catch(error => alert("Could not post comment."))
     }
 
     componentDidMount = () => {
+        this.setState({user: this.props.user});
         this.setState({post_id: this.props.post_id});
         this.getParentComments(this.props.post_id);
-        this.props.username != null ? this.setState({username: this.props.username}) : this.setState({username: "Unknown User"})
+        console.log(this.props.user);
     }
 
     render() {
         return(
             <div className="commentBox">
-                <CommentForm post_id={this.state.post_id} updateParentComments={this.updateParentComments} username={this.state.username}/>
-                <CommentList data={this.state.parentComment} username={this.state.username}/>
+                <CommentForm post_id={this.state.post_id} updateParentComments={this.updateParentComments}/>
+                <CommentList data={this.state.parentComment} user={this.state.user}/>
             </div>
         )
     }

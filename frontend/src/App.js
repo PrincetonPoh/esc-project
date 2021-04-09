@@ -106,8 +106,10 @@ class App extends Component {
             <Route path="/createpost">
               <CreatePost loginState={this.state.login} user={this.state.user} config={this.state.config}/>
             </Route>
-            <Route path="/post/:id" component={Post}/>
-            <Route eaxct path="/">
+            <Route path="/post/:id">
+              <Post user={this.state.user.userName}/>
+            </Route> 
+            <Route exact path="/">
             <Home loginState={this.state.login} user={this.state.user}/>  
             </Route>
           </Switch>

@@ -16,7 +16,7 @@ class ChildCommentForm extends React.Component  {
             return;
         }
         console.log(parent_id);
-        this.props.postChild({"parent_comment_id": parent_id, "text": text, "ownerName": this.props.username});
+        this.props.postChild({"parent_comment_id": parent_id, "text": text});
         this.setState({text: ""});
     }
 

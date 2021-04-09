@@ -123,7 +123,7 @@ function Post(props) {
             </div>
             <div id="event-comments-container">
                 <h3>Comments</h3>
-                <CommentBox post_id={id}/>
+                <CommentBox post_id={id} user={props.user}/>
             </div>
         </div>
     )
