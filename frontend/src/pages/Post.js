@@ -29,7 +29,7 @@ function Post(props) {
     useEffect(() => {
         const fetchEvent = async () => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/posts/displayPostsDetails?post_id=${id}`);
+            const result = await axios.get(`http://scratchtest.ddns.net:1337/posts/displayPostsDetails?post_id=${id}`);
             console.log(result.data.posts);
             setEvent(result.data.posts[0]);
             setIsLoading(false);
@@ -40,7 +40,7 @@ function Post(props) {
     useEffect(() => {
         const fetchOwner = async () => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/users/getUserById?user_id=${event.owner_id}`);
+            const result = await axios.get(`http://scratchtest.ddns.net:1337/users/getUserById?user_id=${event.owner_id}`);
             //console.log(result.data);
             setOwner(result.data.user[0]);
             setIsLoading(false);
@@ -51,7 +51,7 @@ function Post(props) {
     useEffect(() => {
         const fetchTags = async () => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/posts/getPostTags?post_id=${id}`);
+            const result = await axios.get(`http://scratchtest.ddns.net:1337/posts/getPostTags?post_id=${id}`);
             const tagString = result.data.tags[0].tags;
             // console.log(tagString);
             const tagArray = tagString.split(",");
@@ -65,7 +65,7 @@ function Post(props) {
     useEffect(() => {
         const fetchPic = async () => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/posts/getPostPhoto?post_id=${id}`);
+            const result = await axios.get(`http://scratchtest.ddns.net:1337/posts/getPostPhoto?post_id=${id}`);
             // console.log(result.data.photo);
             if (result.data.photo.length!=0) {
                 const imageArray = result.data.photo[0].data;

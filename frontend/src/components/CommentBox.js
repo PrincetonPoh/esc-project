@@ -15,13 +15,13 @@ class CommentBox extends React.Component  {
     }
 
     getParentComments = (post_id) => {
-        axios.get("http://localhost:1337/comments/getParentComments?post_id=" + post_id)
+        axios.get("http://scratchtest.ddns.net:1337/comments/getParentComments?post_id=" + post_id)
         .then((response) => { this.setState({parentComment: response.data.posts});})
         .catch(error => alert("Error fetching parent comments."))
     }
 
     updateParentComments = (newComment) => {
-        axios.post("http://localhost:1337/comments/createParentComment", newComment)
+        axios.post("http://scratchtest.ddns.net:1337/comments/createParentComment", newComment)
         .then((response) => {
             var updatedComments = this.state.parentComment;
             updatedComments.push({

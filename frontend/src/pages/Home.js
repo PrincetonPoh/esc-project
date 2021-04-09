@@ -36,14 +36,14 @@ function Home(props) {
             return tempPosts;
         }
         const fetchSearchData = async (searchText) => {
-            const result = await axios.get(`http://localhost:1337/posts/searchPostsText?value=${searchText}`)
+            const result = await axios.get(`http://scratchtest.ddns.net:1337/posts/searchPostsText?value=${searchText}`)
             setSortResult(result.data.posts.length);
             let filteredPosts = getFilteredPosts(result.data.posts);
             // setEvents(filteredPosts);
             return filteredPosts;
         }
         const fetchData = async () => {
-            const result = await axios.get('http://localhost:1337/posts/searchAllPosts');
+            const result = await axios.get('http://scratchtest.ddns.net:1337/posts/searchAllPosts');
             setSortResult(result.data.posts.length);
             // setEvents(result.data.posts);
             return result.data.posts;
@@ -51,7 +51,7 @@ function Home(props) {
 
         const asyncFilterTag = async (arr) => {
             await Promise.all(arr.map(async (event) => {
-                const value = await axios.get(`http://localhost:1337/posts/getPostTags?post_id=${event.post_id}`,);
+                const value = await axios.get(`http://scratchtest.ddns.net:1337/posts/getPostTags?post_id=${event.post_id}`,);
                 let strings = await value.data.tags[0].tags.split(",");
                 event.tag = await strings;
             }))
@@ -59,7 +59,7 @@ function Home(props) {
         }
         const asyncFilterLocation = async (arr) => {
             await Promise.all(arr.map(async (event) => {
-                const value = await axios.get(`http://localhost:1337/locations/getPostLocation?post_id=${event.post_id}`,);
+                const value = await axios.get(`http://scratchtest.ddns.net:1337/locations/getPostLocation?post_id=${event.post_id}`,);
                 console.log("Filter the locations")
                 console.log(value);
                 let strings = await value.data[0].locationArea;
@@ -99,7 +99,7 @@ function Home(props) {
     useEffect(() => {
         const fetchLocation = async () => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/locations/getAllLocations`)
+            const result = await axios.get(`http://scratchtest.ddns.net:1337/locations/getAllLocations`)
             const final = locations.concat(result.data.result);
             setLocations(final);
             setIsLoading(false);
@@ -128,7 +128,6 @@ function Home(props) {
             <select value={sort} onChange={(e) => { setSort(e.target.value) }}>
                 <option value="newestPosts">Newest Posts</option>
                 <option value="oldestPosts">Oldest Posts</option>
-                <option value="eventDate">Event Date</option>
             </select>
         </form>
     };

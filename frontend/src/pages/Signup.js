@@ -87,7 +87,7 @@ class Signup extends Component {
                         password: this.state.password,
                     };
                     console.log(data);
-                    axios.post("http://localhost:1337/auth/createUser", {
+                    axios.post("http://scratchtest.ddns.net:1337/auth/createUser", {
                         "phoneNumber": data.hp,
                         "userName": data.username,
                         "emailAddress": data.email,
