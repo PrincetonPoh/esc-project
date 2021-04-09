@@ -8,7 +8,7 @@
     "install": "node-gyp rebuild",
     "start-dev": "node server.js",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --forceExit --detectOpenHandles  --watchAll --runInBand"
   },
   "jest": {
     "testEnvironment": "node",
