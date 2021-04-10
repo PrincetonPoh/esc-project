@@ -3,7 +3,6 @@ import '../styles/Popup.css';
 import cross_icon from '../media/cross_icon.png';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
-// import ReCAPTCHA from 'react-google-recaptcha'; // npm install --save react-google-recaptcha 
 
 class SigninPopup extends Component {
   constructor(props) {
@@ -88,17 +87,12 @@ class SigninPopup extends Component {
           this.props.signin(this.state.token);
         } else {
           const { history: { push } } = this.props;
-          alert(this.state.errorMessage);
+          // alert(this.state.errorMessage);
           push('/');
         }
       }else{
         alert("Please verify your email first before logging in");
       }
-      // } else {
-      //   this.setState({
-      //     captchaWarning: <p class="formWarning"> Please pass the ReCAPTCHA to sign in! </p>
-      //   });
-      // }
     } else {
       this.setState({
         formWarning: <p class="formWarning"> Please fill in the required fields to sign in! </p>
@@ -107,28 +101,12 @@ class SigninPopup extends Component {
     e.preventDefault();
   };
 
-  // onRecaptcha = (value) => {
-  //   console.log("Captcha value: ", value); 
-  //   if (value == null) {
-  //     this.setState({
-  //       captchaSuccess: false,
-  //       captchaWarning: <p class="formWarning"> Please pass the ReCAPTCHA to sign in! </p>
-  //     });
-  //   } else {
-  //     this.setState({
-  //       captchaSuccess: true,
-  //       captchaWarning: null
-  //     });
-  //   }
-  //   console.log("captchaSuccess: ", this.state.captchaSuccess); 
-  // } 
-
   render() {
 
     return (
-      <div if="popup-container">
-        <div id="signinpopup-background" onClick={this.handleClick}> </div>
-        <div id="signin-popup" class="dropshadow">
+      <div id="popup-container">
+        <div id="popup-background" onClick={this.handleClick}> </div>
+        <div id="popup" class="dropshadow">
           <img id="popup-cross-icon" src={cross_icon} onClick={this.handleClick} class="navbar-icons dropshadow" />
           <h2> Sign in to Scratchbac </h2>
           <form id="signin-form" name="signin-form">
@@ -143,9 +121,7 @@ class SigninPopup extends Component {
             {this.state.passwordWarning}
 
             {this.state.formWarning}
-            {/* <ReCAPTCHA id="captcha" sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" secretkey="6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe" onChange={this.onRecaptcha} onExpired={this.onRecaptcha} badge="inline"/>
-            {this.state.captchaWarning} */}
-            <input id="signin-popup-button" value="Sign in" class="dropshadow" onClick={this.handleSignin} />
+            <input id="popup-button" value="Sign in" class="dropshadow" onClick={this.handleSignin} />
           </form>
         </div>
       </div>

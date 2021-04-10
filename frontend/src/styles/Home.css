@@ -40,6 +40,12 @@
   display: inline-block;
   margin-right: 5px;
 }
+.customCardDeleteIcon {
+  height: 25px;
+  margin-top: 25px;
+  float: right; 
+  cursor: pointer;
+}
 
 .cards-container {
   display:flex;

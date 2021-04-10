@@ -119,7 +119,7 @@ function Home(props) {
 
     const cardify = (events) => {
         return events.map((event) => {
-            return <EventCards event={event} isLogin={isLogin} />;
+            return <EventCards event={event} isLogin={isLogin} enableDelete={false}/>;
         });
     };
 

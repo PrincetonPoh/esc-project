@@ -28,7 +28,7 @@ function User(props){
 
     const cardify = (events) => {
         return events.map((event) => {
-            return <EventCards event={event} isLogin={true}/>;
+            return <EventCards event={event} isLogin={true} enableDelete={true}/>;
         })
     }
 
@@ -52,7 +52,7 @@ function User(props){
                 <span>Sort by: </span>
                 <div id="sortBy">{sortDropDown()} </div>
             </div>
-            {isLoading ? (<p>Events loading... </p>) :(<div class="cards-container">{cardify(events)}</div>)}
+            {isLoading ? (<p class="loading-message">Events loading... </p>) :(<div class="cards-container">{cardify(events)}</div>)}
         </div>
     );
 }

@@ -2,35 +2,51 @@ p {
   margin: 0;
 }
 
-#signin-popup h2 {
+#popup h2 {
   margin-bottom: 0;
 }
 
-#signinpopup-background {
+#popup-background {
   height: 100vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 15;
 }
-
-#signin-popup {
+#popup-container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 15;
+}
+#popup {
   width: 50vw;
+  height: auto;
   min-width: 380px;
+  max-width: 500px;
   background-color: white;
   color: black;
   padding: 20px 5vw;
-  margin: 30vh 20vw; /* replace 30vh with better vertical align */ 
-  position: fixed;
+  /*margin: 30vh auto; /* replace 30vh with better vertical align */ 
+  /* position: fixed;
+  top: 0;
+  left: 0; */
   z-index: 15;
 }
 
-#signin-popup label {
+#popup label {
   font-size: larger;
   display: inline-block;
   margin-top: 10px; 
 }
-#signin-popup label::after {
+#popup label::after {
   content: "*";
   color: red;
 }
@@ -40,11 +56,11 @@ p {
   border: none; 
   width: 90%;
   height: 30px;
-  padding: 0 5%;
+  padding: 0 10px;
   font-size: 15px;
 }
 
-#signin-popup-button{
+#popup-button{
   background-color: #7BA3D7;
   color: white;
   display: block;
@@ -65,12 +81,12 @@ p {
   cursor: pointer;
 }
 
-#signin-popup-button:hover, #popup-cross-icon:hover {
+#popup-button:hover, #popup-cross-icon:hover {
   position: relative;
 	bottom: 2px;
   filter: drop-shadow(0px 6px 2px rgba(0, 0, 0, 0.4));
 }
-#signin-popup-button:active, #popup-cross-icon:active {
+#popup-button:active, #popup-cross-icon:active {
   position: relative;
 	top: 2px;
 }
