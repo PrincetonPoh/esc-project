@@ -14,7 +14,7 @@ class ChildComments extends React.Component {
     }
 
     postChildComment = (newChild) => {
-        axios.post("http://scratchtest.ddns.net:1337/comments/createChildComment", {
+        axios.post("http://localhost:1337/comments/createChildComment", {
             "parent_comment_id": newChild.parent_comment_id,
             "text": newChild.text,
             "ownerName": this.props.user
@@ -33,7 +33,7 @@ class ChildComments extends React.Component {
     }
     
     getChildComments = (parent_id) => {
-        axios.get("http://scratchtest.ddns.net:1337/comments/getChildComments?parent_comment_id=" + parent_id)
+        axios.get("http://localhost:1337/comments/getChildComments?parent_comment_id=" + parent_id)
         .then((response => this.setState({childComment: response.data.posts})))
         .catch(error => alert("Error in getting child comments."))
     }

@@ -61,7 +61,7 @@ class EventCards extends React.Component {
     render() {
         return (
             <div class="customCard" onClick={this.checkLoggedIn}>
-                {this.props.enableDelete ? <img src={trash_icon} class="customCardDeleteIcon" idToDelete={this.props.event.post_id} onClick={this.togglePopup}/> : null}
+                {this.props.enableDelete ? <img src={trash_icon} class="customCardDeleteIcon" onClick={this.togglePopup}/> : null}
                 {this.props.isLogin ? (
                     <Link to={this.state.postDetails}>
                         {this.childCard(this.props.event.postTitle, this.props.event.postalCode, this.props.event.dateOfCreation)}
@@ -69,7 +69,7 @@ class EventCards extends React.Component {
                     (<div>
                         {this.childCard(this.props.event.postTitle, this.props.event.postalCode, this.props.event.dateOfCreation)}
                     </div>)}
-                {this.state.popup ?  <DeletePopup toggle={this.togglePopup} />  : null } 
+                {this.state.popup ?  <DeletePopup toggle={this.togglePopup} event={this.props.event} config={this.props.config}/>  : null } 
             </div >
         )
     }

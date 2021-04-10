@@ -43,7 +43,7 @@ class App extends Component {
     localStorage.setItem("accessToken", e.accessToken);
     localStorage.setItem("user", e.userName)
     this.setState({config: {headers: {'Authorization': `Bearer ` + e.accessToken}}})
-    const result = await axios.get(`http://scratchtest.ddns.net:1337/users/getUserByUserName?userName=${e.userName}`, this.state.config);
+    const result = await axios.get(`http://localhost:1337/users/getUserByUserName?userName=${e.userName}`, this.state.config);
     console.log(result.data.user[0]);
     return result.data.user[0];
   }
@@ -55,7 +55,7 @@ class App extends Component {
       try{
         let tempToken = {headers: {'Authorization': `Bearer ` + accessToken}};
         this.setState({config: {headers: {'Authorization': `Bearer ` + accessToken}}})
-        const result = await axios.get(`http://scratchtest.ddns.net:1337/users/getUserByUserName?userName=${userName}`, tempToken)
+        const result = await axios.get(`http://localhost:1337/users/getUserByUserName?userName=${userName}`, tempToken)
         if(result.data.message == "Auth failed"){
           throw new Error("Auth failed");
         }

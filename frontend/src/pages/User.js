@@ -17,7 +17,7 @@ function User(props){
         const fetchEvents = async() => {
             setIsLoading(true);
             console.log(id);
-            const result = await axios.get(`http://scratchtest.ddns.net:1337/posts/searchUsersPosts?user_id=${id}`, props.config)
+            const result = await axios.get(`http://localhost:1337/posts/searchUsersPosts?user_id=${id}`, props.config)
             console.log(result.data.posts);
             setSortResult(result.data.posts.length);
             setEvents(result.data.posts);
@@ -28,7 +28,7 @@ function User(props){
 
     const cardify = (events) => {
         return events.map((event) => {
-            return <EventCards event={event} isLogin={true} enableDelete={true}/>;
+            return <EventCards event={event} isLogin={true} enableDelete={true} config={props.config}/>;
         })
     }
 

@@ -19,7 +19,7 @@ class DeletePopup extends Component {
 
   postLogin = async () => {
     try {
-      const result = await axios.get(`http://scratchtest.ddns.net:1337/auth/login?userName=${this.state.creds}&password=${this.state.password}`)
+      const result = await axios.get(`http://localhost:1337/auth/login?userName=${this.state.creds}&password=${this.state.password}`)
       this.setState({ token: result.data });
       return true;
     } catch (err) {
@@ -30,8 +30,15 @@ class DeletePopup extends Component {
     }
   }
 
-  handleDelete = (e) => {
-    console.log("deleting!!!");
+  handleDelete = async (e) => {
+    console.log("deleting post_id = "+this.props.event.post_id);
+    try {
+      const result = await axios.get(`http://localhost:1337/posts/deletePost?post_id=${this.props.event.post_id}`, this.props.config);
+      console.log(result);
+      this.props.toggle();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   render() {
