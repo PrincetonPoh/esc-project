@@ -33,7 +33,7 @@ class DeletePopup extends Component {
   handleDelete = async (e) => {
     console.log("deleting post_id = "+this.props.event.post_id);
     try {
-      const result = await axios.get(`http://localhost:1337/posts/deletePost?post_id=${this.props.event.post_id}`, this.props.config);
+      const result = await axios.delete(`http://localhost:1337/posts/deletePost?post_id=${this.props.event.post_id}`, this.props.config);
       console.log(result);
       this.props.toggle();
     } catch (err) {
