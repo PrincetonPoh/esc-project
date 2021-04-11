@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import '../styles/Popup.css';
 import cross_icon from '../media/cross_icon.png';
 import axios from 'axios';
-import { withRouter } from 'react-router-dom';
 
 class DeletePopup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      token: '',
       errorMessage: ''
     };
   }
@@ -17,26 +15,21 @@ class DeletePopup extends Component {
     this.props.toggle();
   };
 
-  postLogin = async () => {
-    try {
-      const result = await axios.get(`http://localhost:1337/auth/login?userName=${this.state.creds}&password=${this.state.password}`)
-      this.setState({ token: result.data });
-      return true;
-    } catch (err) {
-      console.log(err);
-      //this.setState({ errorMessage: err.response.data.message });
-      this.setState({ formWarning: <p class="formWarning">{err.response.data.message}!</p> });
-      return false;
-    }
-  }
-
   handleDelete = async (e) => {
     console.log("deleting post_id = "+this.props.event.post_id);
     try {
       const result = await axios.delete(`http://localhost:1337/posts/deletePost?post_id=${this.props.event.post_id}`, this.props.config);
       console.log(result);
-      this.props.toggle();
+      if (result.data.success == true) {
+        this.props.toggle();
+        window.location.reload(false);
+        this.setState({ errorMessage: "" });
+        alert("Post deleted successfully!");
+      } else {
+        this.setState({ errorMessage: "An error occurred, please try again later." });
+      }
     } catch (err) {
+      this.setState({ errorMessage: "An error occurred, please try again later." });
       console.log(err);
     }
   };
@@ -50,6 +43,7 @@ class DeletePopup extends Component {
           <img id="popup-cross-icon" src={cross_icon} onClick={this.handleClick} class="navbar-icons dropshadow" />
           <h2> Delete this post? </h2>
           <p> This action cannot be undone. </p>
+          {this.state.errorMessage=="" ? null : <p class="formWarning">{this.state.errorMessage}</p>}
           <input id="popup-button" value="Delete" class="dropshadow" onClick={this.handleDelete} />
         </div>
       </div>
