@@ -5,6 +5,7 @@ import CommentBox from '../components/CommentBox'
 import '../styles/Post.css';
 import calendar_icon from '../media/calendar_icon.png';
 import location_icon from '../media/location_icon.png';
+import dropdown_icon from '../media/dropdown_icon.jpg';
 import placeholderProfilePic from '../media/logo_round.png'
 
 function Post(props) {
@@ -19,6 +20,7 @@ function Post(props) {
     const [isUser, setIsUser] = useState(true);
     const [attending, setAttending] = useState(false);
     const [listOfAttendes, setListOfAttendes] = useState([]);
+    const [showAttendees, setShowAttendees] = useState(false);
 
     function timeConverter(time) {
         var a = new Date(time * 1000);
@@ -157,9 +159,9 @@ function Post(props) {
     const checkAttendingButton = () => {
         console.log()
         if (attending) {
-            return <button onClick={unAttendPost}>Unattend Event</button>
+            return <button onClick={unAttendPost} id="attending-button">Unattend Event</button>
         } else {
-            return <button onClick={attendPost}>Attend Event</button>
+            return <button onClick={attendPost} id="attending-button">Attend Event</button>
         }
     }
 
@@ -167,6 +169,10 @@ function Post(props) {
         return listOfAttendes.map((attendes) => {
             return <li>{attendes.userName}</li>
         })
+    }
+
+    const toggleAttendeesList = () => {
+        setShowAttendees(!showAttendees);
     }
 
     return (
@@ -201,18 +207,19 @@ function Post(props) {
                 <img src={placeholderProfilePic} class="event-owner-profile-pic" />
                 <p id="event-owner">{owner != null ? owner.userName : "Unknown User"}</p>
             </div>
+            <div id="event-attending-container">
+                <h3>Attendees</h3>
+                <div id="toggle-attendees" onClick={toggleAttendeesList}> 
+                    <img src={dropdown_icon} class="dropdown-icon" style={showAttendees ? null : {transform: "rotate(-90deg)"}}/>
+                    <span>{showAttendees ? "Hide Attendees" : "Show Attendees"}</span>
+                    {showAttendees ? <ul>{lists()}</ul> : null}
+                </div>
+                
+                {isUser ? null : checkAttendingButton()} 
+            </div>
             <div id="event-comments-container">
                 <h3>Comments</h3>
                 <CommentBox post_id={id} user={props.user.userName} />
-            </div>
-            <div>
-                {isUser ? null : checkAttendingButton()}
-            </div>
-            <div>
-                <h2>List of attendes</h2>
-                <ul>
-                    {lists()}
-                </ul>
             </div>
         </div>
     )
