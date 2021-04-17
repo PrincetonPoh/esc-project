@@ -21,6 +21,7 @@ function Post(props) {
     const [attending, setAttending] = useState(false);
     const [listOfAttendes, setListOfAttendes] = useState([]);
     const [showAttendees, setShowAttendees] = useState(false);
+    const [expandImage, setExpandImage] = useState(false);
 
     function timeConverter(time) {
         var a = new Date(time * 1000);
@@ -124,16 +125,6 @@ function Post(props) {
             setIsLoading(true);
             const result = await axios.get(`http://localhost:1337/posts/getPostPhoto?post_id=${id}`);
             if (result.data.photo.length != 0) {
-                // const imageArray = result.data.photo[0].data.data;
-                // console.log(imageArray);
-                // const blob = new Blob([imageArray]);
-                // console.log(blob);
-                // const srcBlob = URL.createObjectURL(blob);
-                // console.log(srcBlob);
-                // setPic(srcBlob);
-                // const base64String = btoa(String.fromCharCode(...new Uint8Array(result.data.photo[0].data.data)));
-                // console.log("result of base64String : " + base64String);
-                // setPic("data:images/jpeg;base64,"+base64String);
                 let base64Flag = 'data:image/jpeg;base64,';
                 let imageStr = arrayBufferToBase64(result.data.photo[0].data.data);
                 setPic(base64Flag + imageStr);
@@ -190,17 +181,24 @@ function Post(props) {
         setShowAttendees(!showAttendees);
     }
 
+    const expandedImageContainerStyle = {
+        width: "90vw",
+        height: "90vh",
+        position: "absolute",
+        top: "60px",
+        right: "0px",
+        float: "right",
+        justifyContent: "center",
+        alignItems: "center",
+        display: "flex"
+    }
+
     return (
         <div id="event-container">
             <h1 class="event-header"> {event.postTitle != null ? event.postTitle : "Title could not be displayed"}</h1>
             <div id="event-tags-container">
                 {generateFilters(tags)}
             </div>
-            {pic != null ?
-                <div id="event-image-container">
-                    <img id="event-image" src={pic} />
-                </div>
-                : null}
             <div id="event-description-container">
                 <h3>Description</h3>
                 {event.description != null ? <p>{event.description}</p> : <p>No Description Added</p>}
@@ -236,6 +234,12 @@ function Post(props) {
                 <h3>Comments</h3>
                 <CommentBox post_id={id} user={props.user.userName} />
             </div>
+            {pic != null ?
+                <div id="event-image-container" style={expandImage ? expandedImageContainerStyle : null }>
+                    <img id="event-image" src={pic} onClick={()=>setExpandImage(!expandImage)}/>
+                    {expandImage ? null : <p id="upload-image-filename"> Click to View in Fullscreen </p>}
+                </div>
+                : null}
         </div>
     )
 }
