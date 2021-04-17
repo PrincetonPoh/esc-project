@@ -72,6 +72,7 @@ function CreatePost(props) {
                         }
                         var formData = new FormData();
                         formData.append("pic",image);
+                        console.log("Following is the data for picture");
                         console.log(formData);
                         try {
                             const result = await axios.post("http://localhost:1337/posts/addPostTags", body, props.config);

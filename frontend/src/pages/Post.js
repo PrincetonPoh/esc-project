@@ -90,7 +90,10 @@ function Post(props) {
         const checkIsUser = () => {
             setIsLoading(true);
             if (owner.userName != props.user.userName) {
+                console.log("Is not user")
                 setIsUser(false);
+            } else{
+                setIsUser(true);
             }
             setIsLoading(false);
         }
@@ -120,15 +123,20 @@ function Post(props) {
         const fetchPic = async () => {
             setIsLoading(true);
             const result = await axios.get(`http://localhost:1337/posts/getPostPhoto?post_id=${id}`);
-            // console.log(result.data.photo);
             if (result.data.photo.length != 0) {
-                const imageArray = result.data.photo[0].data;
-                console.log(imageArray);
-                const blob = new Blob([imageArray]);
-                console.log(blob);
-                const srcBlob = URL.createObjectURL(blob);
-                console.log(srcBlob);
-                setPic(srcBlob);
+                // const imageArray = result.data.photo[0].data.data;
+                // console.log(imageArray);
+                // const blob = new Blob([imageArray]);
+                // console.log(blob);
+                // const srcBlob = URL.createObjectURL(blob);
+                // console.log(srcBlob);
+                // setPic(srcBlob);
+                // const base64String = btoa(String.fromCharCode(...new Uint8Array(result.data.photo[0].data.data)));
+                // console.log("result of base64String : " + base64String);
+                // setPic("data:images/jpeg;base64,"+base64String);
+                let base64Flag = 'data:image/jpeg;base64,';
+                let imageStr = arrayBufferToBase64(result.data.photo[0].data.data);
+                setPic(base64Flag + imageStr);
             } else (
                 console.log("This event does not have an image")
             )
@@ -136,6 +144,13 @@ function Post(props) {
         }
         fetchPic();
     }, [event,]);
+
+    const arrayBufferToBase64 = (buffer) => {
+        let binary = '';
+        let bytes = [].slice.call(new Uint8Array(buffer));
+        bytes.forEach((b) => binary += String.fromCharCode(b));
+        return window.btoa(binary);
+    }
 
     const generateFilters = (tags) => {
         return tags.map((tag) => {
