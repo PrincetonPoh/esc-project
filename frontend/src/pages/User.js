@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'; 
 import {useParams} from 'react-router-dom'; 
+import {BrowserRouter as Router, Link} from 'react-router-dom';
 import EventCards from '../components/EventCards';
 import '../styles/Home.css';
 
@@ -52,7 +53,15 @@ function User(props){
                 <span>Sort by: </span>
                 <div id="sortBy">{sortDropDown()} </div>
             </div>
-            {isLoading ? (<p class="loading-message">Events loading... </p>) :(<div class="cards-container">{cardify(events)}</div>)}
+            {isLoading ? (<p class="loading-message">Events Loading...</p>) 
+            : (sortResult==0) ? 
+                <div class="empty-container"> 
+                    <h2> Nothing to see here :O </h2> 
+                    <p> Offers and Events you have posted will show up on this page. </p>
+                    <p><Link to="/createpost">Click here to create a post!</Link></p>
+                </div> 
+            : (<div class="cards-container">{cardify(events)}</div>)}
+            {/* {isLoading ? (<p class="loading-message">Events loading... </p>) :(<div class="cards-container">{cardify(events)}</div>)} */}
         </div>
     );
 }

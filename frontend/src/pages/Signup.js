@@ -99,7 +99,13 @@ class Signup extends Component {
                             })
                         alert("Sign-up successful.");
                         this.setState({ signupSuccess: true })
-                    }).catch(error => alert("Error."))
+                    }).catch(error => {
+                        if (error.response && error.response.status == 409) {
+                            alert("This username/email may have already been registered with Scratchbac, please choose another username or sign in instead.");
+                        } else {
+                            alert("A network error has occurred, please try again later. ")
+                        }
+                    })
 
                     // this.props.history.push('/');//Force push
                 } else { // captcha not successful

@@ -114,6 +114,7 @@ function Post(props) {
             // console.log(tagString);
             const tagArray = tagString.split(",");
             //console.log(tagArray);
+            tagArray.push(event.location.toLowerCase());
             setTags(tagArray);
             setIsLoading(false);
         }
@@ -172,9 +173,14 @@ function Post(props) {
     }
 
     const lists = () => {
-        return listOfAttendes.map((attendes) => {
+        let list = listOfAttendes.map((attendes) => {
             return <li>{attendes.userName}</li>
         })
+        console.log(list);
+        if (list.length == 0) {
+            return <li>No attendees yet!</li>
+        } 
+        return list;
     }
 
     const toggleAttendeesList = () => {

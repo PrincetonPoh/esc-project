@@ -90,6 +90,8 @@ function Home(props) {
                 })
                 return bool;
             })
+            console.log(result);
+            setSortResult(result.length);
             setEvents(result);
             setIsLoading(false);
         }
