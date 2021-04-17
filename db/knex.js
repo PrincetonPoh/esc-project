@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === "test") {
     const connectedKnex = knex({
         client: "sqlite3",
         connection: {
-            filename: "escData.sqlite3"
+            filename: "test.sqlite3"
         },
         useNullAsDefault: true
     });
@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === "test") {
     const connectedKnex = knex({
         client: "sqlite3",
         connection: {
-            filename: "test.sqlite3"
+            filename: "escData.sqlite3"
         },
         useNullAsDefault: true
     });
