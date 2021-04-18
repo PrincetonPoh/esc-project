@@ -47,7 +47,7 @@ function User(props){
 
     return (
         <div  id="user-posts-container">
-            <h1> Your Posts </h1>
+            <h1 id="user-posts-header"> Your Posts </h1>
             <div class="sort-container">
                 <div id="sortResults">{sortResult} Results</div>
                 <span>Sort by: </span>

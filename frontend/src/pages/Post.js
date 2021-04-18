@@ -114,7 +114,9 @@ function Post(props) {
             // console.log(tagString);
             const tagArray = tagString.split(",");
             //console.log(tagArray);
-            tagArray.push(event.location.toLowerCase());
+            if (event.location) {
+                tagArray.push(event.location.toLowerCase());
+            }
             setTags(tagArray);
             setIsLoading(false);
         }

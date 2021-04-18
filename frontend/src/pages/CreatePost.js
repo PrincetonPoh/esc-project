@@ -24,7 +24,7 @@ function CreatePost(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [redirectSubmit, setRedirectSubmit] = useState(false);
     const dateRegex = new RegExp('([0-3][0-9]\.[0-1][0-9]\.[0-9][0-9][0-9][0-9])');
-    const [captchaSuccess, setCaptchaSuccess] = useState(false)
+    const [captchaSuccess, setCaptchaSuccess] = useState(true); // set this to true when testing to disable recaptcha 
 
     // const [warnings, setWarnings] = useState([null,null,null,null,null,null,null]) 
 

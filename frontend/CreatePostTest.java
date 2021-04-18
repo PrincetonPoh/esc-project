@@ -1,14 +1,9 @@
-import java.util.List;
+import java.util.Random;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.By.ByClassName;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,32 +13,38 @@ public class CreatePostTest {
 	static String myUserName = "kewendev";
 	static String myPassword = "passw0rd";
 	static int sleepDuration = 100;
+	static String[] textInputFieldIDs = {"input-posttitle","input-location","input-description","input-datetimedetails"};
+	static String[][] legalInputs = {
+		{"Some offer","321 Clementi","Random description","01.02.2021","CLEMENTI","0","3"},
+		{"An event","Bedok Mall","Random description","12.05.2022","BEDOK","1","3"},
+		{"Badminton","CCK Community Centre","Random description","03.09.2020","CHOA CHU KANG","1","2"}, 
+		{"Walk your dog","Around SUTD","Random description","07.03.2020","TAMPINES","0","2"}
+	};
 
 	public static void main(String[] args) throws InterruptedException {	
 		
-		// String[] legalInputs1 = {"Some offer","321 Clementi","Random description","01.02.2021","CLEMENTI","0","3"};
-		// String[] legalInputs2 = {"An event","Bedok Mall","Random description","12.05.2022","BEDOK","1","3"};
-		String[] legalInputs3 = {"Badminton","CCK Community Centre","Random description","03.09.2020","CHOA CHU KANG","1","2"};
-		String[] legalInputs4 = {"Walk your dog","Around SUTD","Random description","07.03.2020","TAMPINES","0","2"};
+		
 
 		System.setProperty("webdriver.chrome.driver","/Users/kewen/Downloads/Installers/chromedriver_win32/chromedriver.exe"); 
 		WebDriver driver = new ChromeDriver();
 		driver.get("http://localhost:3000/");
 		// driver.get("http://scratchtest.ddns.net/");
-		Thread.sleep(5000);
 
 		signIn(driver);
-		// createPost(legalInputs1, driver);
-		// createPost(legalInputs2, driver);
-		createPost(legalInputs3, driver);
-		createPost(legalInputs4, driver);
+
+		for (int i=0; i<10; i++) {
+			createRandomPost(driver);
+		}
+
+		for (String[] legalInputSet : legalInputs) {
+			createPost(legalInputSet, driver);
+		}
 
 		System.out.println("Testing of CreatePost complete!"); 
 	}
 
 	static void createPost(String[] inputs, WebDriver driver) throws InterruptedException {
-
-		String[] textInputFieldIDs = {"input-posttitle","input-location","input-description","input-datetimedetails"};
+		System.out.println("==========================\nFilling in preset inputs");
 
 		// go to create post page 
 		driver.findElement(By.id("create-post-button")).click();
@@ -58,42 +59,44 @@ public class CreatePostTest {
 		regionDropdown.selectByVisibleText(inputs[4]);
 		driver.findElements(By.className("form-radio")).get(Integer.parseInt(inputs[5])).click();
 		Thread.sleep(sleepDuration);
-
-		Thread.sleep(5000); // time for us to manually click the recaptcha lmao
-		driver.findElement(By.id("create-post-form-button")).click();
 		
-		WebDriverWait wait = new WebDriverWait(driver, 15);
-		wait.until(ExpectedConditions.alertIsPresent());
-		// if (driver.switchTo().alert().getText() == "Successful Posted Event") {
-		// 	System.out.println("Posted successfully!");
-		// } else {
-		// 	System.out.println("Create post unsuccessfull!");
-		// 	return;
-		// }
-		driver.switchTo().alert().accept();
+		// click create post 
+		driver.findElement(By.id("create-post-form-button")).click();
+		dismissAlert(driver);
+		
+	}
 
-		// if (driver.findElement(By.id("user-posts-container")).getText() == "Your Posts") {
-		// 	System.out.println("Navigated to posts page successfully!");
-		// } else {
-		// 	System.out.println("Could not navigate to posts page!");
-		// 	return;
-		// }
+	static void createRandomPost(WebDriver driver) throws InterruptedException {
+		System.out.println("==========================\nFilling in random inputs");
 
-		// List<WebElement> postTitles = driver.findElements(By.className("customCardTitle"));
-		// boolean postFound = false;
-		// for ( WebElement postTitle : postTitles) {
-		// 	if (postTitle.getText() == inputs[0]) {
-		// 		postTitle.click();
-		// 		postFound = true;
-				
-		// 		break;
-		// 	}
-		// }
-		// if (postFound) {
-		// 	System.out.println("New post found!"); 
-		// } else {
-		// 	System.out.println("Could not find new post!"); 
-		// }
+		// go to create post page 
+		driver.findElement(By.id("create-post-button")).click();
+		Thread.sleep(sleepDuration);
+
+		// fill in text fields 
+		for (int i=0; i < textInputFieldIDs.length-1; i++) {
+			driver.findElement(By.id(textInputFieldIDs[i])).sendKeys(randomText());
+			Thread.sleep(sleepDuration);
+		}
+
+		// fill in date field
+		driver.findElement(By.id(textInputFieldIDs[3])).sendKeys(randomDate());
+		Thread.sleep(sleepDuration);
+
+		// select from dropdown
+		Random random = new Random(); 
+		Select regionDropdown = new Select(driver.findElement(By.id("input-region")));
+		regionDropdown.selectByIndex(random.nextInt(54));
+
+		// select radio elements 
+		java.util.List<WebElement> radioElements = driver.findElements(By.className("form-radio"));
+		radioElements.get(random.nextInt(2)).click();
+		radioElements.get(random.nextInt(2)+2).click();
+		Thread.sleep(sleepDuration);
+		
+		// click create post 
+		driver.findElement(By.id("create-post-form-button")).click();
+		dismissAlert(driver);
 	}
 
 	static void signIn(WebDriver driver) throws InterruptedException {
@@ -114,10 +117,41 @@ public class CreatePostTest {
 		Thread.sleep(sleepDuration);
 
 		// dismiss alert for successful signin
+		dismissAlert(driver);
+		System.out.println("signed in successfully!");
+	}
+
+	static void dismissAlert(WebDriver driver) {
 		WebDriverWait wait = new WebDriverWait(driver, 15);
 		wait.until(ExpectedConditions.alertIsPresent());
+		System.out.println(driver.switchTo().alert().getText());
 		driver.switchTo().alert().accept();
-		Thread.sleep(sleepDuration);
-		System.out.println("signed in successfully!");
+	}
+
+	static String randomText() {
+		String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+=-~`:;\"/\\[]{}<>,.|";
+        Random random = new Random();
+		int len = random.nextInt(10);
+		len += 5;
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++)
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        return sb.toString();
+	}
+
+	static String randomDate() {
+		Random random = new Random();
+		String ans = ""; 
+		ans += String.valueOf(random.nextInt(4)); 
+		ans += String.valueOf(random.nextInt(10)); 
+		ans += ".";
+		ans += String.valueOf(random.nextInt(1)); 
+		ans += String.valueOf(random.nextInt(10)); 
+		ans += ".";
+		ans += String.valueOf(random.nextInt(10)); 
+		ans += String.valueOf(random.nextInt(10)); 
+		ans += String.valueOf(random.nextInt(10)); 
+		ans += String.valueOf(random.nextInt(10)); 
+		return ans; 
 	}
 }

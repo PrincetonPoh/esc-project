@@ -205,7 +205,7 @@ function Home(props) {
                     <p> Here's what you can try: </p>
                     <ul>
                         <li>Refine your filters applied</li>
-                        <li>Select "Anywhere" for location</li>
+                        <li>Select "ALL" for location</li>
                         <li><Link to="/createpost">Create your own post!</Link></li>
                     </ul>
                 </div> 
