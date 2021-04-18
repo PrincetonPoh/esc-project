@@ -8,9 +8,9 @@ class CommentBox extends React.Component  {
     constructor(props) {
         super(props);
         this.state = {
-            post_id: 404,
+            post_id: this.props.post_id,
             parentComment: [],
-            user: ''
+            user: this.props.user
         }
     }
 
@@ -39,10 +39,7 @@ class CommentBox extends React.Component  {
     }
 
     componentDidMount = () => {
-        this.setState({user: this.props.user});
-        this.setState({post_id: this.props.post_id});
         this.getParentComments(this.props.post_id);
-        console.log(this.props.user);
     }
 
     render() {

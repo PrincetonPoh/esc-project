@@ -75,6 +75,7 @@ class SigninPopup extends Component {
   }
 
   handleSignin = async (e) => {
+    e.preventDefault();
     var credsValid = this.checkValidity("creds");
     var passwordValid = this.checkValidity("password");
     if (credsValid && passwordValid) { // first check validity of fields
@@ -109,7 +110,7 @@ class SigninPopup extends Component {
         <div id="popup" class="dropshadow">
           <img id="popup-cross-icon" src={cross_icon} onClick={this.handleClick} class="navbar-icons dropshadow" />
           <h2> Sign in to Scratchbac </h2>
-          <form id="signin-form" name="signin-form">
+          <form id="signin-form" name="signin-form" onSubmit={this.handleSignin}>
             <label class="popup-contents"> Username </label>
             <input type="username" id="signin-creds" name="creds" onChange={this.handleChange} class="text-fields dropshadow" />
 
@@ -121,7 +122,7 @@ class SigninPopup extends Component {
             {this.state.passwordWarning}
 
             {this.state.formWarning}
-            <input id="popup-button" value="Sign in" class="dropshadow" onClick={this.handleSignin} />
+            <input id="popup-button" value="Sign in" class="dropshadow" type="submit" />
           </form>
         </div>
       </div>

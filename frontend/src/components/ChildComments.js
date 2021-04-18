@@ -8,7 +8,7 @@ class ChildComments extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            parent_id: 404,
+            parent_id: this.props.parent_id,
             childComment: []
         }
     }
@@ -39,7 +39,6 @@ class ChildComments extends React.Component {
     }
 
     componentDidMount = () => {
-        this.setState({parent_id: this.props.parent_id});
         this.getChildComments(this.props.parent_id);
     }
 
