@@ -15,6 +15,7 @@ function User(props){
     const [sort, setSort] = useState("newestPosts");
     const [attending, setAttending] = useState([]);
     const [attendingNo, setAttendingNo] = useState(0);
+    const [attendSort, setAttendSort] = useState("newestPosts");
 
     useEffect(() => {
         const fetchEvents = async() => {
@@ -40,15 +41,27 @@ function User(props){
         fetchAttending();
     }, [])
 
-    const cardify = (events) => {
+    const cardify = (events, enableDelete) => {
         return events.map((event) => {
-            return <EventCards event={event} isLogin={true} enableDelete={true} config={props.config}/>;
+            return <EventCards event={event} isLogin={true} enableDelete={enableDelete} config={props.config}/>;
         })
     }
 
     const sortDropDown = () => {
         return <form>
             <select value={sort} onChange={(e) => { setSort(e.target.value) }}>
+                <option value="newestPosts">Newest Posts</option>
+                <option value="oldestPosts">Oldest Posts</option>
+                <option value="eventDate">Event Date</option>
+                <option value="distance">Distance</option>
+                <option value="cost">Cost</option>
+            </select>
+        </form>
+    };
+
+    const sortAttendDropDown = () => {
+        return <form>
+            <select value={attendSort} onChange={(e) => { setAttendSort(e.target.value) }}>
                 <option value="newestPosts">Newest Posts</option>
                 <option value="oldestPosts">Oldest Posts</option>
                 <option value="eventDate">Event Date</option>
@@ -75,13 +88,15 @@ function User(props){
                             <p> Offers and Events you have posted will show up on this section. </p>
                             <p><Link to="/createpost">Click here to create a post!</Link></p>
                         </div> 
-                    : (<div class="cards-container">{cardify(events)}</div>)}
+                    : (<div class="cards-container">{cardify(events, true)}</div>)}
                     {/* {isLoading ? (<p class="loading-message">Events loading... </p>) :(<div class="cards-container">{cardify(events)}</div>)} */}
                 </div>
                 <div class="col">
                     <h1> Your subscribed events </h1>
                     <div class="sort-container">
                         <div id="attendingResults">{attendingNo} Results</div>
+                        <span>Sort by: </span>
+                        <div id="attendSortBy">{sortAttendDropDown()} </div>
                     </div>
                     {isLoading ? (<p class="loading-message">Events Loading...</p>) 
                     : (attendingNo==0) ? 
@@ -90,7 +105,7 @@ function User(props){
                             <p> Offers and Events you have indicated your attendance for will show up on this section. </p>
                             <p><Link to="/">Click here to join one!</Link></p>
                         </div> 
-                    : (<div class="cards-container">{cardify(attending)}</div>)}
+                    : (<div class="cards-container">{cardify(attending, false)}</div>)}
                 </div>
             </div>
         </div>
