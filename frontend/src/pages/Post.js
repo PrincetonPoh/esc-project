@@ -154,6 +154,11 @@ function Post(props) {
 
     const attendPost = async () => {
         const result = await axios.post(`http://localhost:1337/posts/createUserListsOfThePost?post_id=${id}&userName=${props.user.userName}&phoneNumber=${props.user.phoneNumber}`, props.config);
+        const attending = await axios.post(`http://localhost:1337/users/createPostListsOfTheUser`, {
+            "user_id": props.user.user_id,
+            "post_id": id
+        }, props.config);
+        console.log("Look here: " + attending.data);
         console.log(result.data);
         setAttending(true);
 
@@ -161,6 +166,7 @@ function Post(props) {
 
     const unAttendPost = async () => {
         const result = await axios.delete(`http://localhost:1337/posts/deleteUserListsOfThePost?post_id=${id}&userName=${props.user.userName}`, props.config);
+        const attending = await axios.delete(`http://localhost:1337/users/deletePostListsOfTheUser?user_id=${props.user.user_id}&post_id=${id}`, props.config)
         console.log(result.data);
         setAttending(false);
     }

@@ -1,25 +1,24 @@
-.customCard
-{
-  height:10em;
+.customCard {
+  height: 10em;
   border: rgba(0, 0, 0, 0.25) 1px solid;
-  display:-webkit-box;
-  display:-ms-flexbox;
+  display: -webkit-box;
+  display: -ms-flexbox;
   /* display:flex; */
   padding: 5px 10px;
   margin: 15px;
-  -webkit-box-orient:vertical;
-  -webkit-box-direction:normal;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
   /* -ms-flex-direction:column;
   flex-direction:column;
   position:relative; */
-  -webkit-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
-  -o-transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
-  transition:all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
-  border-radius:16px;
+  -webkit-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -o-transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
-  -webkit-box-shadow:  4px 4px 4px rgba(0, 0, 0, 0.25);
-  box-shadow:  4px 4px 4px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .customCardTitle {
@@ -28,7 +27,7 @@
 .customCardDetails {
   overflow: hidden;
   margin-bottom: 0;
-  color: #7BA3D7;
+  color: #7ba3d7;
   display: inline-block;
 }
 .customCardDetails span {
@@ -43,45 +42,50 @@
 .customCardDeleteIcon {
   height: 25px;
   margin-top: 25px;
-  float: right; 
+  float: right;
   cursor: pointer;
 }
 
 .cards-container {
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
-  -ms-flex-direction:row;
-  flex-direction:row;
-  position:relative;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  position: relative;
   padding: 0 20px;
-} 
-.cards-container>* {
+}
+.cards-container > * {
   flex: 1 1 14em;
 }
 
-.sort-container, #filters {
+.sort-container,
+#filters {
   padding: 0 35px;
   margin-bottom: 10px;
 }
 
 .sort-container div {
-  display: inline-block; 
+  display: inline-block;
   margin-right: 30px;
 }
 
-#home-container input, #home-container select, #home-container form, #home-container label, #user-posts-container select {
+#home-container input,
+#home-container select,
+#home-container form,
+#home-container label,
+#user-posts-container select {
   display: inline-block;
   outline: none;
   box-sizing: border-box;
   cursor: pointer;
-} 
+}
 
 select {
   height: 30px;
   border-radius: 15px;
   border: 0px;
   padding: 0 15px;
-  background-color: #7BA3D7;
+  background-color: #7ba3d7;
   color: white;
   cursor: pointer;
   filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.4));
@@ -94,13 +98,13 @@ select {
   appearance: none;
 }
 .filter-checkbox:checked {
-  background-color: #7BA3D7;
+  background-color: #7ba3d7;
 }
 .filter-checkbox-label {
   border-radius: 15px;
   height: 30px;
   padding: 0 5px 0 12px;
-  border: #7BA3D7 2px solid;
+  border: #7ba3d7 2px solid;
   background-color: white;
   display: inline-block;
   outline: none;
@@ -115,7 +119,6 @@ select {
   top: 30px;
 }
 
-
 #filters form {
   /* width: 100px; */
   margin: 0 5px;
@@ -123,7 +126,7 @@ select {
 
 .loading-message {
   padding: 0 35px;
-  color:#7BA3D7;
+  color: #7ba3d7;
 }
 
 .empty-container {
@@ -135,6 +138,29 @@ select {
   list-style-type: square;
 }
 .empty-container a {
-  color:#7BA3D7;
+  color: #7ba3d7;
   text-decoration: underline;
+}
+
+.col {
+  -ms-flex-preferred-size: 0;
+  flex-basis: 0;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.row {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.justify-content-between {
+  -ms-flex-pack: justify !important;
+  justify-content: space-between !important;
 }

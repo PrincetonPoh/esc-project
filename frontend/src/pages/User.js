@@ -13,6 +13,8 @@ function User(props){
     const [user, setUser] = useState([]);
     const [sortResult, setSortResult] = useState(0);
     const [sort, setSort] = useState("newestPosts");
+    const [attending, setAttending] = useState([]);
+    const [attendingNo, setAttendingNo] = useState(0);
 
     useEffect(() => {
         const fetchEvents = async() => {
@@ -25,6 +27,17 @@ function User(props){
             setIsLoading(false);
         }
         fetchEvents();
+    }, [])
+
+    useEffect(() => {
+        const fetchAttending = async() => {
+            setIsLoading(true);
+            const attending = await axios.get(`http://localhost:1337/users/DisplayAttendPostListsOfTheUser?user_id=${id}`, props.config);
+            setAttending(attending.data.users);
+            setAttendingNo(attending.data.users.length);
+            setIsLoading(false);
+        }
+        fetchAttending();
     }, [])
 
     const cardify = (events) => {
@@ -46,22 +59,40 @@ function User(props){
     };
 
     return (
-        <div  id="user-posts-container">
-            <h1 id="user-posts-header"> Your Posts </h1>
-            <div class="sort-container">
-                <div id="sortResults">{sortResult} Results</div>
-                <span>Sort by: </span>
-                <div id="sortBy">{sortDropDown()} </div>
+        <div id="user-posts-container">
+            <div class="row justify-content-between">
+                <div class="col">
+                    <h1 id="user-posts-header"> Your Posts </h1>
+                    <div class="sort-container">
+                        <div id="sortResults">{sortResult} Results</div>
+                        <span>Sort by: </span>
+                        <div id="sortBy">{sortDropDown()} </div>
+                    </div>
+                    {isLoading ? (<p class="loading-message">Events Loading...</p>) 
+                    : (sortResult==0) ? 
+                        <div class="empty-container"> 
+                            <h2> Nothing to see here :O </h2> 
+                            <p> Offers and Events you have posted will show up on this section. </p>
+                            <p><Link to="/createpost">Click here to create a post!</Link></p>
+                        </div> 
+                    : (<div class="cards-container">{cardify(events)}</div>)}
+                    {/* {isLoading ? (<p class="loading-message">Events loading... </p>) :(<div class="cards-container">{cardify(events)}</div>)} */}
+                </div>
+                <div class="col">
+                    <h1> Your subscribed events </h1>
+                    <div class="sort-container">
+                        <div id="attendingResults">{attendingNo} Results</div>
+                    </div>
+                    {isLoading ? (<p class="loading-message">Events Loading...</p>) 
+                    : (attendingNo==0) ? 
+                        <div class="empty-container"> 
+                            <h2> Nothing to see here :O </h2> 
+                            <p> Offers and Events you have indicated your attendance for will show up on this section. </p>
+                            <p><Link to="/">Click here to join one!</Link></p>
+                        </div> 
+                    : (<div class="cards-container">{cardify(attending)}</div>)}
+                </div>
             </div>
-            {isLoading ? (<p class="loading-message">Events Loading...</p>) 
-            : (sortResult==0) ? 
-                <div class="empty-container"> 
-                    <h2> Nothing to see here :O </h2> 
-                    <p> Offers and Events you have posted will show up on this page. </p>
-                    <p><Link to="/createpost">Click here to create a post!</Link></p>
-                </div> 
-            : (<div class="cards-container">{cardify(events)}</div>)}
-            {/* {isLoading ? (<p class="loading-message">Events loading... </p>) :(<div class="cards-container">{cardify(events)}</div>)} */}
         </div>
     );
 }
