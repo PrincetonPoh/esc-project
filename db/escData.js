@@ -70,7 +70,7 @@ function deleteAllPostListsOfTheUser(user_id){
 
 function deletePostListsOfTheUser(user_id,post_id){
     console.log('deleting post list of the user now');
-    return knex("attendUsers").where("user_id", user_id).where("post_id",post_id).del();
+    return knex("attendPosts").where("user_id", user_id).where("post_id",post_id).del();
 };
 
 
