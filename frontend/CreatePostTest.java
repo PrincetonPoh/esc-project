@@ -22,8 +22,6 @@ public class CreatePostTest {
 	};
 
 	public static void main(String[] args) throws InterruptedException {	
-		
-		
 
 		System.setProperty("webdriver.chrome.driver","/Users/kewen/Downloads/Installers/chromedriver_win32/chromedriver.exe"); 
 		WebDriver driver = new ChromeDriver();
@@ -38,6 +36,14 @@ public class CreatePostTest {
 
 		for (String[] legalInputSet : legalInputs) {
 			createPost(legalInputSet, driver);
+		}
+
+		for (int i=0; i<3; i++) {
+			createRandomEmptyFieldPost(driver);
+		}
+
+		for (int i=0; i<3; i++) {
+			createRandomIllegalDatePost(driver);
 		}
 
 		System.out.println("Testing of CreatePost complete!"); 
@@ -99,6 +105,77 @@ public class CreatePostTest {
 		dismissAlert(driver);
 	}
 
+	static void createRandomEmptyFieldPost(WebDriver driver) throws InterruptedException {
+		System.out.println("==========================\nFilling in random inputs but with a random empty field");
+
+		// go to create post page 
+		driver.findElement(By.id("create-post-button")).click();
+		Thread.sleep(sleepDuration);
+
+		// choose random field to leave empty 
+		Random random = new Random();
+		int emptyFieldIndex = random.nextInt(textInputFieldIDs.length); 
+
+		// fill in text fields 
+		for (int i=0; i < textInputFieldIDs.length-1; i++) {
+			if (i != emptyFieldIndex) {
+				driver.findElement(By.id(textInputFieldIDs[i])).sendKeys(randomText());
+				Thread.sleep(sleepDuration);
+			}
+		}
+
+		// fill in date field
+		if (emptyFieldIndex != 3) {
+			driver.findElement(By.id(textInputFieldIDs[3])).sendKeys(randomDate());
+			Thread.sleep(sleepDuration);
+		}
+
+		// select from dropdown
+		Select regionDropdown = new Select(driver.findElement(By.id("input-region")));
+		regionDropdown.selectByIndex(random.nextInt(54));
+
+		// select radio elements 
+		java.util.List<WebElement> radioElements = driver.findElements(By.className("form-radio"));
+		radioElements.get(random.nextInt(2)).click();
+		radioElements.get(random.nextInt(2)+2).click();
+		Thread.sleep(sleepDuration);
+		
+		// click create post 
+		driver.findElement(By.id("create-post-form-button")).click();
+		dismissAlert(driver);
+		driver.navigate().back();
+	}
+
+	static void createRandomIllegalDatePost(WebDriver driver) throws InterruptedException {
+		System.out.println("==========================\nFilling in random inputs");
+
+		// go to create post page 
+		driver.findElement(By.id("create-post-button")).click();
+		Thread.sleep(sleepDuration);
+
+		// fill in text fields and date field
+		for (int i=0; i < textInputFieldIDs.length; i++) {
+			driver.findElement(By.id(textInputFieldIDs[i])).sendKeys(randomText());
+			Thread.sleep(sleepDuration);
+		}
+
+		// select from dropdown
+		Random random = new Random(); 
+		Select regionDropdown = new Select(driver.findElement(By.id("input-region")));
+		regionDropdown.selectByIndex(random.nextInt(54));
+
+		// select radio elements 
+		java.util.List<WebElement> radioElements = driver.findElements(By.className("form-radio"));
+		radioElements.get(random.nextInt(2)).click();
+		radioElements.get(random.nextInt(2)+2).click();
+		Thread.sleep(sleepDuration);
+		
+		// click create post 
+		driver.findElement(By.id("create-post-form-button")).click();
+		dismissAlert(driver);
+		driver.navigate().back();
+	}
+
 	static void signIn(WebDriver driver) throws InterruptedException {
 		// click signin button on navbar to trigger signinpopup
 		driver.findElement(By.id("signin-button")).click();
@@ -124,7 +201,7 @@ public class CreatePostTest {
 	static void dismissAlert(WebDriver driver) {
 		WebDriverWait wait = new WebDriverWait(driver, 15);
 		wait.until(ExpectedConditions.alertIsPresent());
-		System.out.println(driver.switchTo().alert().getText());
+		System.out.println("Alert message: "+driver.switchTo().alert().getText());
 		driver.switchTo().alert().accept();
 	}
 

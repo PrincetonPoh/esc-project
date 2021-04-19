@@ -89,8 +89,8 @@ class EventCards extends React.Component {
     render() {
         return (
             <div class="customCard" onClick={this.checkLoggedIn}>
-                {this.props.enableDelete ? <img src={trash_icon} class="customCardDeleteIcon" onClick={this.toggleDelPopUp}/> : null}
-                {this.props.enableDelete ? <img src={attendance_icon} class="customCardDeleteIcon" onClick={this.toggleAttendancePopUp}/> : null}
+                {this.props.enableDelete ? <img src={trash_icon} class="customCardDeleteIcon customCardTopRightIcon" onClick={this.toggleDelPopUp}/> : null}
+                {this.props.enableDelete ? <img src={attendance_icon} class="customCardTopRightIcon" onClick={this.toggleAttendancePopUp}/> : null}
                 {this.props.isLogin ? (
                     <Link to={this.state.postDetails}>
                         {this.childCard(this.props.event.postTitle, this.props.event.postalCode, this.props.event.dateOfCreation, this.state.attendees.length)}
