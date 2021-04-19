@@ -14,6 +14,7 @@ public class SiteNavigationTest {
 	static String myUserName = "kewendev";
 	static String myPassword = "passw0rd";
 	static int sleepDuration = 1000;
+	static int errorCount = 0;
 
 	public static void main(String[] args) throws InterruptedException {		
 
@@ -25,39 +26,72 @@ public class SiteNavigationTest {
 		Thread.sleep(sleepDuration);
 
 		// click signup button on navbar to go to signup page
-		driver.findElement(By.id("signup-button")).click();
-		System.out.println("signup-button clicked!");
-		System.out.println("Navigated to: "+driver.getCurrentUrl()+"\nExpected:     "+rootAddresss+"signup");
-		Thread.sleep(sleepDuration);
-		// if (driver.getCurrentUrl() != "http://localhost:3000/signup") {
-		// 	System.out.println("Error: Navigated to "+driver.getCurrentUrl()+" instead of "+rootAddresss+"signup"); 
-		// } else {
-		// 	System.out.println("Navigated successfully to "+rootAddresss+"signup");
-		// }
+		try {
+			driver.findElement(By.id("signup-button")).click();
+			System.out.println("signup-button clicked!");
+			System.out.println("Navigated to: "+driver.getCurrentUrl()+"\nExpected:     "+rootAddresss+"signup");
+			Thread.sleep(sleepDuration);
+		} catch (Exception e) {
+			System.out.println("Could not go to "+rootAddresss+"signup");
+			e.printStackTrace();
+			errorCount++;
+		}
+		
 		
 		// click Scratchbac logo on navbar to go back to homepage 
-		driver.findElement(By.id("nav-brand")).click();
-		System.out.println("nav-brand clicked!");
-		System.out.println("Navigated to: "+driver.getCurrentUrl()+"\nExpected:     "+rootAddresss);
-		Thread.sleep(sleepDuration);
+		try {
+			driver.findElement(By.id("nav-brand")).click();
+			System.out.println("nav-brand clicked!");
+			System.out.println("Navigated to: "+driver.getCurrentUrl()+"\nExpected:     "+rootAddresss);
+			Thread.sleep(sleepDuration);
+		} catch (Exception e) {
+			System.out.println("Could not go to "+rootAddresss);
+			e.printStackTrace();
+			errorCount++;
+		}
 
-		// signin so we cancreate post
-		driver.findElement(By.id("signin-button")).click();
-		driver.findElement(By.id("signin-creds")).sendKeys(myUserName);
-		driver.findElement(By.id("signin-password")).sendKeys(myPassword);
-		driver.findElement(By.id("popup-button")).click();
-		WebDriverWait wait = new WebDriverWait(driver, 15);
-		wait.until(ExpectedConditions.alertIsPresent());
-		driver.switchTo().alert().accept();
-		System.out.println("signed in!");
-		Thread.sleep(sleepDuration);
-		
+		// signin so we can create post
+		try {
+			driver.findElement(By.id("signin-button")).click();
+			driver.findElement(By.id("signin-creds")).sendKeys(myUserName);
+			driver.findElement(By.id("signin-password")).sendKeys(myPassword);
+			driver.findElement(By.id("popup-button")).click();
+			WebDriverWait wait = new WebDriverWait(driver, 15);
+			wait.until(ExpectedConditions.alertIsPresent());
+			driver.switchTo().alert().accept();
+			System.out.println("signed in!");
+			Thread.sleep(sleepDuration);
+		} catch (Exception e) {
+			System.out.println("Could not sign in");
+			e.printStackTrace();
+			errorCount++;
+		}
+
 		// click create post button to go to createpost page
-		driver.findElement(By.id("create-post-button")).click();
-		System.out.println("create-post-button clicked!");
-		System.out.println("Navigated to: "+driver.getCurrentUrl()+"\nExpected:     "+rootAddresss+"createpost");
-		Thread.sleep(sleepDuration);
-		
-		System.out.println("SiteNavigationTest complete!"); 
+		try {
+			driver.findElement(By.id("create-post-button")).click();
+			System.out.println("create-post-button clicked!");
+			System.out.println("Navigated to: "+driver.getCurrentUrl()+"\nExpected:     "+rootAddresss+"createpost");
+			Thread.sleep(sleepDuration);
+		} catch (Exception e) {
+			System.out.println("Could not go to "+rootAddresss+"createpost");
+			e.printStackTrace();
+			errorCount++;
+		}
+
+		// click profile dropdown so we can go to user page 
+		try {
+			driver.findElement(By.id("profile-button")).click();
+			Thread.sleep(sleepDuration);
+			driver.findElement(By.id("profile-dropdown-userpage")).click();
+			System.out.println("profile-dropdown-userpage clicked!");
+			System.out.println("Navigated to: "+driver.getCurrentUrl()+"\nExpected:     "+rootAddresss+"user/ <user_id appears here>");
+		} catch (Exception e) {
+			System.out.println("Could not go to user page");
+			e.printStackTrace();
+			errorCount++;
+		}
+
+		System.out.println("SiteNavigationTest complete! Number of errors: "+errorCount); 
 	}
 }
