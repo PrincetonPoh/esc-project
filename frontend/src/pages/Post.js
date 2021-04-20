@@ -35,7 +35,7 @@ function Post(props) {
     useEffect(() => {
         const fetchEvent = async () => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/posts/displayPostsDetails?post_id=${id}`);
+            const result = await axios.get(`http://scratchtest.ddns.net:1337/posts/displayPostsDetails?post_id=${id}`);
             console.log(result.data.posts);
             setEvent(result.data.posts[0]);
             setIsLoading(false);
@@ -46,7 +46,7 @@ function Post(props) {
     useEffect(() => {
         const fetchOwner = async () => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/users/getUserById?user_id=${event.owner_id}`);
+            const result = await axios.get(`http://scratchtest.ddns.net:1337/users/getUserById?user_id=${event.owner_id}`);
             setOwner(result.data.user[0]);
             console.log(owner);
             setIsLoading(false);
@@ -57,7 +57,7 @@ function Post(props) {
     useEffect(() => {
         const fetchAttendes = async () => {
             setIsLoading(true);
-            const status = await axios.get(`http://localhost:1337/posts/displayAttendUserListsOfThePost?post_id=${id}`, props.config);
+            const status = await axios.get(`http://scratchtest.ddns.net:1337/posts/displayAttendUserListsOfThePost?post_id=${id}`, props.config);
             console.log("List of users attending: ");
             console.log(status.data.users);
             setListOfAttendes(status.data.users);
@@ -109,7 +109,7 @@ function Post(props) {
     useEffect(() => {
         const fetchTags = async () => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/posts/getPostTags?post_id=${id}`);
+            const result = await axios.get(`http://scratchtest.ddns.net:1337/posts/getPostTags?post_id=${id}`);
             const tagString = result.data.tags[0].tags;
             // console.log(tagString);
             const tagArray = tagString.split(",");
@@ -126,7 +126,7 @@ function Post(props) {
     useEffect(() => {
         const fetchPic = async () => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/posts/getPostPhoto?post_id=${id}`);
+            const result = await axios.get(`http://scratchtest.ddns.net:1337/posts/getPostPhoto?post_id=${id}`);
             if (result.data.photo.length != 0) {
                 let base64Flag = 'data:image/jpeg;base64,';
                 let imageStr = arrayBufferToBase64(result.data.photo[0].data.data);
@@ -153,8 +153,8 @@ function Post(props) {
     };
 
     const attendPost = async () => {
-        const result = await axios.post(`http://localhost:1337/posts/createUserListsOfThePost?post_id=${id}&userName=${props.user.userName}&phoneNumber=${props.user.phoneNumber}`, props.config);
-        const attending = await axios.post(`http://localhost:1337/users/createPostListsOfTheUser`, {
+        const result = await axios.post(`http://scratchtest.ddns.net:1337/posts/createUserListsOfThePost?post_id=${id}&userName=${props.user.userName}&phoneNumber=${props.user.phoneNumber}`, props.config);
+        const attending = await axios.post(`http://scratchtest.ddns.net:1337/users/createPostListsOfTheUser`, {
             "user_id": props.user.user_id,
             "post_id": id
         }, props.config);
@@ -165,8 +165,8 @@ function Post(props) {
     }
 
     const unAttendPost = async () => {
-        const result = await axios.delete(`http://localhost:1337/posts/deleteUserListsOfThePost?post_id=${id}&userName=${props.user.userName}`, props.config);
-        const attending = await axios.delete(`http://localhost:1337/users/deletePostListsOfTheUser?user_id=${props.user.user_id}&post_id=${id}`, props.config)
+        const result = await axios.delete(`http://scratchtest.ddns.net:1337/posts/deleteUserListsOfThePost?post_id=${id}&userName=${props.user.userName}`, props.config);
+        const attending = await axios.delete(`http://scratchtest.ddns.net:1337/users/deletePostListsOfTheUser?user_id=${props.user.user_id}&post_id=${id}`, props.config)
         console.log(result.data);
         setAttending(false);
     }
