@@ -53,14 +53,41 @@ class Signup extends Component {
     }
 
     checkValidity = (name) => { // can check for other illegal input here too
+        let result = true;
         if (this.state[name] == '') {
             this.setState({
                 [name + "Warning"]: <p class="inputWarning"> This field is required! </p>
             });
-            return false;
-        } else {
-            return true;
+            result = false;
+        } else if(name.includes("Name")){
+            var letters = /^[A-Za-z]+$/;
+            console.log(this.state[name].replace(/\s/g,'').match(letters));
+            if(this.state[name].replace(/\s/g,'').match(letters) == null){
+                this.setState({
+                    [name + "Warning"]: <p class="inputWarning"> No Symbol or Number is allowed </p>
+                })
+                result = false;
+            }
+        } else if(name === "hp"){
+            var isnum = /^\d+$/;
+            console.log(this.state[name].replace(/\s/g,'').match(isnum));
+            if(this.state[name].replace(/\s/g,'').match(isnum) == null){
+                this.setState({
+                    [name + "Warning"]: <p class="inputWarning"> Only number is allowed </p>
+                })
+                result = false;
+            }
+        } else if(name.includes("name")){
+            var letters = /^[0-9a-zA-Z]+$/;
+            console.log(this.state[name].replace(/\s/g,'').match(letters));
+            if(this.state[name].replace(/\s/g,'').match(letters) == null){
+                this.setState({
+                    [name + "Warning"]: <p class="inputWarning"> No Symbol is allowed </p>
+                })
+                result = false;
+            }
         }
+        return result;
     }
 
     handleSubmit = (e) => {
