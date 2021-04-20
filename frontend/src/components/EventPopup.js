@@ -9,7 +9,7 @@ function EventPopup(eventId) {//Need change to class for instance property
     const event = [];
 
     const getEventDetails = async (id) => {
-        axios.get("http://localhost:1337/posts/displayPostsDetails/?post_id=" + id)
+        axios.get("http://scratchtest.ddns.net:1337/posts/displayPostsDetails/?post_id=" + id)
             .then((response) => {
                 console.log(response);
                 event = response;

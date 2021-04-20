@@ -32,7 +32,7 @@ function CreatePost(props) {
     useEffect(() => {
         const fetchLocation = async () => {
             setIsLoading(true);
-            const result = await axios.get(`http://localhost:1337/locations/getAllLocations`)
+            const result = await axios.get(`http://scratchtest.ddns.net:1337/locations/getAllLocations`)
             setLocations(result.data.result);
             setIsLoading(false);
         }
@@ -52,7 +52,7 @@ function CreatePost(props) {
             let newDate = "";
             try {
                 newDate = convertDate(date);
-                axios.post("http://localhost:1337/posts/createPost",
+                axios.post("http://scratchtest.ddns.net:1337/posts/createPost",
                     {
                         "owner_id": props.user.user_id,
                         "postTitle": title,
@@ -75,10 +75,10 @@ function CreatePost(props) {
                         console.log("Following is the data for picture");
                         console.log(formData);
                         try {
-                            const result = await axios.post("http://localhost:1337/posts/addPostTags", body, props.config);
-                            const result2 = await axios.post("http://localhost:1337/locations/createPostLocation", body2, props.config);
+                            const result = await axios.post("http://scratchtest.ddns.net:1337/posts/addPostTags", body, props.config);
+                            const result2 = await axios.post("http://scratchtest.ddns.net:1337/locations/createPostLocation", body2, props.config);
                             if (image!=null) {
-                                const result3 = await axios.post(`http://localhost:1337/posts/postPhoto?post_id=${response.data.success_post.post_id}`, formData, props.config);
+                                const result3 = await axios.post(`http://scratchtest.ddns.net:1337/posts/postPhoto?post_id=${response.data.success_post.post_id}`, formData, props.config);
                                 console.log(result3);
                             } else {
                                 console.log("There is no image to be posted")
