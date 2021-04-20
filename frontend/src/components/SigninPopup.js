@@ -57,7 +57,7 @@ class SigninPopup extends Component {
 
   postLogin = async () => {
     try {
-      const result = await axios.get(`http://localhost:1337/auth/login?userName=${this.state.creds}&password=${this.state.password}`)
+      const result = await axios.get(`http://scratchtest.ddns.net:1337/auth/login?userName=${this.state.creds}&password=${this.state.password}`)
       this.setState({ token: result.data });
       return true;
     } catch (err) {
@@ -70,7 +70,7 @@ class SigninPopup extends Component {
 
   checkAuth = (username, password) => {
     let body = { username: username, password: password };
-    const result = axios.post('http://localhost:1337/auth/login', body)
+    const result = axios.post('http://scratchtest.ddns.net:1337/auth/login', body)
     console.log(result.data);
   }
 
@@ -79,7 +79,7 @@ class SigninPopup extends Component {
     var credsValid = this.checkValidity("creds");
     var passwordValid = this.checkValidity("password");
     if (credsValid && passwordValid) { // first check validity of fields
-      var checkEmailVeri = await axios.get(`http://localhost:1337/auth/checkVerifiedUser?userName=${this.state.creds}`);
+      var checkEmailVeri = await axios.get(`http://scratchtest.ddns.net:1337/auth/checkVerifiedUser?userName=${this.state.creds}`);
       console.log(checkEmailVeri)
       console.log(checkEmailVeri.data.message)
       if (checkEmailVeri.data.message.length > 0 && checkEmailVeri.data.message[0].verificationStatus == "true") {

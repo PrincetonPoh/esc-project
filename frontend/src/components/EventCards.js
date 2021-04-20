@@ -29,7 +29,7 @@ class EventCards extends React.Component {
     }
 
     getAttendeeNo = () => {
-        axios.get(`http://localhost:1337/posts/displayAttendUserListsOfThePost?post_id=${this.state.post_id}`)
+        axios.get(`http://scratchtest.ddns.net:1337/posts/displayAttendUserListsOfThePost?post_id=${this.state.post_id}`)
         .then(response => {this.setState({attendees: response.data.users})})
         .catch(error => console.log("Cannot fetch attendance"));
     }
