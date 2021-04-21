@@ -18,13 +18,17 @@ class DeletePopup extends Component {
   handleDelete = async (e) => {
     console.log("deleting post_id = "+this.props.event.post_id);
     try {
-      const result = await axios.delete(`http://localhost:1337/posts/deletePost?post_id=${this.props.event.post_id}`, this.props.config);
+      const result = await axios.delete(`http://scratchtest.ddns.net:1337/posts/deletePost?post_id=${this.props.event.post_id}`, this.props.config);
       console.log(result);
       if (result.data.success == true) {
         this.props.toggle();
+<<<<<<< HEAD
         window.location.reload();
+=======
+>>>>>>> ab9d5c07 (Fixed refresh after delete)
         this.setState({ errorMessage: "" });
         alert("Post deleted successfully!");
+        window.location.reload(false);
       } else {
         this.setState({ errorMessage: "An error occurred, please try again later." });
       }
