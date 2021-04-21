@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "a86772b9-0471-4de0-9537-5f840db81639",
-		"name": "ESC colllection v2.4",
+		"_postman_id": "f15feb9c-6a7d-4a8b-a491-5113437f6ea0",
+		"name": "ESC colllection v2.6",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -241,7 +241,7 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:1337/posts/DisplayPostsDetails?post_id=4",
+							"raw": "localhost:1337/posts/DisplayPostsDetails?post_id=5a16458b-7416-47d9-bb46-e9ea6a5e8bf7",
 							"host": [
 								"localhost"
 							],
@@ -253,7 +253,7 @@
 							"query": [
 								{
 									"key": "post_id",
-									"value": "4"
+									"value": "5a16458b-7416-47d9-bb46-e9ea6a5e8bf7"
 								}
 							]
 						}
@@ -464,7 +464,7 @@
 							"query": [
 								{
 									"key": "token",
-									"value": null
+									"value": ""
 								}
 							]
 						}
@@ -503,7 +503,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"owner_id\": \"333\",\n    \"postTitle\": \"3treegooood\",\n    \"postalCode\": 670333,\n    \"description\": \"lies\"\n}",
+							"raw": "{\n    \"owner_id\": \"333\",\n    \"postTitle\": \"3treegooood\",\n    \"postalCode\": 670333,\n    \"description\": \"lies\",\n    \"dateOfPostEvent\": \"today or 2359 or any text\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -537,12 +537,7 @@
 									"type": "file",
 									"src": "/C:/Users/poh_j/Downloads/Telegram Desktop/1 (2).png"
 								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							]
 						},
 						"url": {
 							"raw": "localhost:1337/posts/postPhoto?post_id=129",
