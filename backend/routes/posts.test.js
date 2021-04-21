@@ -2,6 +2,9 @@ const supertest = require('supertest');
 const app = require('../server');
 const request = supertest(app);
 
+beforeAll(() => {
+    process.env.NODE_ENV = 'test';
+})
 
 it('testing to see whether searchPostsByPostTitle work', async done => {
     const testTitle="good"

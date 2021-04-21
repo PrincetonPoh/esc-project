@@ -1,7 +1,6 @@
 const knex = require("./knex");
 const Fuse = require('fuse.js');
 
-
 /////////////////////////////////////////// users
 
 function getAllUsers(){
@@ -100,11 +99,8 @@ function simpleStringify (object){
     return JSON.stringify(simpleObject); // returns cleaned up JSON
 };
 
-
-
 function searchPostsBasedOn(type, value){
    
-
    if(type=="owner_id"){   
         return knex("posts").where("owner_id", value).select("postTitle");
     } else if (type=="postalCode"){
@@ -114,88 +110,6 @@ function searchPostsBasedOn(type, value){
     } else if (type=="post_id"){
         return knex("posts").where("post_id",value).select("postTitle");
     } else if(type == "title"){
-/*
-        var cache = [];
-		const posts = JSON.stringify( knex("posts").select("*") , function(key, value) {
-            if (typeof value === 'object' && value !== null) {
-                if (cache.indexOf(value) !== -1) {
-                    return;
-                }
-                cache.push(value);
-            }
-            return value;
-        });
-        cache = null;
-*/
-
-
-
-     /*  
-       const posts={
-        "posts": [
-            {
-                "post_id": "2",
-                "owner_id": "321",
-                "postTitle": "gooood",
-                "dateOfCreation": 888888,
-                "postalCode": 670222,
-                "description": "pns is great today!"
-            },
-            {
-                "post_id": "4",
-                "owner_id": "333",
-                "postTitle": "3treegooood",
-                "dateOfCreation": 33333,
-                "postalCode": 670333,
-                "description": "lies"
-            },
-            {
-                "post_id": "100",
-                "owner_id": "80",
-                "postTitle": "gooo13eq3od",
-                "dateOfCreation": 88128998,
-                "postalCode": 671322,
-                "description": "check uuid!"
-            },
-            {
-                "post_id": "456",
-                "owner_id": "80",
-                "postTitle": "gooo13eq3od",
-                "dateOfCreation": 88128998,
-                "postalCode": 671322,
-                "description": "check uuid!"
-            },
-            {
-                "post_id": "1234",
-                "owner_id": "80123",
-                "postTitle": "gooo13eq3od",
-                "dateOfCreation": 88128998,
-                "postalCode": 671322,
-                "description": "check uuid131!"
-            },
-            {
-                "post_id": "9c012ab3-5685-471e-b9e2-862baf7096f8",
-                "owner_id": "333",
-                "postTitle": "3treegooood",
-                "dateOfCreation": 1616713269,
-                "postalCode": 670333,
-                "description": "lies"
-            }
-        ]
-    }*/
-
-   /*     const fuse = new Fuse(posts, {
-            keys: [
-              'postTitle'
-            ],
-            includeScore: true
-          });
-
-        const results = fuse.search(value);*/
-
-      //  const posts=JSON.stringify(postsObject);//undefined type
-
-       
         return knex("posts").select("*");;
     }
 };
@@ -230,7 +144,6 @@ function deleteAllUserListsOfThePost(post_id,userName){
     return knex("attendUsers").where("post_id", post_id).del();
 };
 function updateUserListsOfThePost(post_id, type, value){
-
     if(type=="userName"){   
         return knex("posts").where("post_id",post_id).where("userName",userName).update({userName: value});
     }
@@ -239,7 +152,6 @@ function updateUserListsOfThePost(post_id, type, value){
     
     }
 }
-
 
 function createPost(post){
     console.log('creating post now');
@@ -251,25 +163,21 @@ function deletePost(post_id){
     return knex("posts").where("post_id", post_id).del();
 };
 
-
 function updatePost(post_id, type, value){
     if(type=="owner_id"){   
         return knex("posts").where("post_id",post_id).update({owner_id: value});
     }
     if(type=="postal_code"){
         return knex("posts").where("post_id",post_id).update({postalCode: value});
-    
     }
     if(type=="dateOfcreation"){
         return knex("posts").where("post_id",post_id).update({dateOfCreation: value});
     }
     if(type=="description"){
         return knex("posts").where("post_id",post_id).update({description: value});
-    
     }if(type=="postTitle"){
         return knex("posts").where("post_id",post_id).update({postTitle: value});
     }
-    
 }
 
 // tags

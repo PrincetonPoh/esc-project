@@ -19,10 +19,17 @@ require(`./route_paths/routes`)(app);
 
 
 // set port, listen for requests
-const PORT = process.env.PORT || 1337;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-});
+if (process.env.NODE_ENV === "test") {
+    const PORT = process.env.PORT;
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}.`);
+    });
+} else {
+    const PORT = process.env.PORT || 1337;
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}.`);
+    });
+}
 
 
 

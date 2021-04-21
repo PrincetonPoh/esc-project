@@ -1,7 +1,12 @@
 const supertest = require('supertest');
 const app = require('../server');
 const request = supertest(app);
+const knex = require("../db/knex.js");
 
+
+beforeAll(() => {
+    process.env.NODE_ENV = 'test';
+})
 
 it('testing to see whether getAllUsers work', async done => {
     const response = await request.get('/users/getAllUsers')
@@ -28,35 +33,45 @@ it('testing to see whether updateUser work', async done => {
     done()
 })
 
-
-
-
-
 it('testing to see whether createUser work', async done => {
     const response = await request.post('/auth/createUser').send({
-        "phoneNumber": 12320000,
-        "userName": "wof41sji",
+        "phoneNumber": 1232100008,
+        "userName": "honghonghuohuo",
         "emailAddress": "prince@gmail.com",
         "password": "asd123"
     });
-    console.log("create already exist user "+response.status)
-    expect(response.status).toBe(409)
+    // console.log("create already exist user "+response.status)
+    expect(response.status).toBe(200)
     done()
 })
 
+it('testing to see whether createUser work for repeated input fields', async done => {
+    const response = await request.post('/auth/createUser').send({
+        "phoneNumber": 1232100008,
+        "userName": "honghonghuohuo",
+        "emailAddress": "prince@gmail.com",
+        "password": "asd123"
+    });
+    // console.log("create already exist user "+response.status)
+    expect(response.status).toBe(409)
+    done()
+})
 
 it('testing to see whether deleteUser work', async done => {
-    const userId="07429e5b-ef7a-451e-845c-b67f10af0635";
+    const userId="a24b42c9-2526-4a93-8406-5cc8d33bb0c0";
     const response = await request.delete('/users/deleteUser/?user_id='+userId)
-    console.log("delete non exist user is "+response.status)
-    expect(response.status).toBe(409)
+    // console.log("delete non exist user is "+response.status)
+    expect(response.status).toBe(200)
     done()
 })
 
-
+afterAll( async() => {
+   await knex('users')
+  .where({ phoneNumber: 1232100008 })
+  .del();
+})
 
 /*
-
 it('testing to see whether getPrimaryCodeByPostalCode work', async done => {
     const testPostalCode=990123
     const response = await request.get('/users/getPrimaryCodeByPostalCode?postalCode='+testPostalCode)

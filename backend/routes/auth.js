@@ -7,7 +7,7 @@ const uuid = require('../middleware/uuid');
 const nodemailer = require("nodemailer");
 const router = express.Router();
 
-const ipAddress = "http://scratchtest.ddns.net:1337"
+const ipAddress = "localhost:1337"
 
 // for testing. 
 let refreshTokens = []
@@ -40,15 +40,15 @@ router.post('/createUser', async (req, res) => {
 
     try {
         const result = await db.createUser(req.body);
+        const accessToken = generateAccessToken(req.body)
+        const refreshToken = jwt.sign(req.body, process.env.REFRESH_TOKEN_SECRET)
+        refreshTokens.push(refreshToken)
+        
+        res.json({ success_user_id: user_id, accessToken: accessToken, refreshToken: refreshToken })
     } catch {
         res.status(409).json({message: "invalid data fills. probably non-unique phone number/username"})
     }
     
-    const accessToken = generateAccessToken(req.body)
-    const refreshToken = jwt.sign(req.body, process.env.REFRESH_TOKEN_SECRET)
-    refreshTokens.push(refreshToken)
-    
-    res.json({ success_user_id: user_id, accessToken: accessToken, refreshToken: refreshToken })
 })
 
 

@@ -12,7 +12,6 @@ const { route } = require("./users");
 
 router.use(fileUpload());
 
-
 // insert date of creation
 router.post("/createPost", checkAuth, async (req, res) => {
     const post_id = uuid.generateUuid();
@@ -80,7 +79,6 @@ router.get("/displayPostsDetails", checkAuth, async (req, res) => {
     res.status(200).json({ posts })
 });
 
-
 router.get("/displayAttendUserListsOfThePost", checkAuth, async (req, res) => {
     const users = await db.displayAttendUserListsOfThePost(req.query.post_id);
     res.status(200).json({ users })
@@ -88,7 +86,6 @@ router.get("/displayAttendUserListsOfThePost", checkAuth, async (req, res) => {
 
 router.post("/createUserListsOfThePost", checkAuth, async (req, res) => {
     const result = await db.createUserListsOfThePost(req.query.post_id, req.query.userName, req.query.phoneNumber);
-
     res.status(200).json({ id: result[0] });
 });
 router.delete("/deleteAllUserListsOfThePost", checkAuth, async (req, res) => {
