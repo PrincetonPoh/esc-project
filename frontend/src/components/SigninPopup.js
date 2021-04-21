@@ -82,7 +82,7 @@ class SigninPopup extends Component {
       var checkEmailVeri = await axios.get(`http://localhost:1337/auth/checkVerifiedUser?userName=${this.state.creds}`);
       console.log(checkEmailVeri)
       console.log(checkEmailVeri.data.message)
-      if (checkEmailVeri.data.message.length > 0 && checkEmailVeri.data.message[0].verificationStatus == "true") {
+      if (checkEmailVeri.data.message.length > 0 && checkEmailVeri.data.message[0].verificationStatus == "true") { // message length 0 when user does not exist, 
         var signin_auth_success = await this.postLogin(); // add auth here maybe 
         if (signin_auth_success) {
           this.props.signin(this.state.token);
@@ -92,7 +92,7 @@ class SigninPopup extends Component {
           push('/');
         }
       }else{
-        alert("Please verify your email first before logging in");
+        alert("Username not found. Create an account or verify your email before logging in");
       }
     } else {
       this.setState({

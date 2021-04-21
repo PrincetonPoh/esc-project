@@ -69,7 +69,6 @@ public class DeletePostTest {
 			driver.findElement(By.id("profile-button")).click();
 			Thread.sleep(sleepDuration);
 			driver.findElement(By.id("profile-dropdown-userpage")).click();
-			System.out.println("Navigated to: "+driver.getCurrentUrl());
 			driver.findElement(By.id("profile-button")).click();
 		} catch (Exception e) {
 			System.out.println("Could not go to user page");
