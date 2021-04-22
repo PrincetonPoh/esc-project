@@ -234,7 +234,7 @@ function Post(props) {
                 <p id="event-owner">{owner != null ? owner.userName : "Unknown User"} on {event.dateOfCreation != null ? timeConverter(event.dateOfCreation) : "Unknown Date"}</p>
             </div>
             <div id="event-attending-container">
-                <h3>Attendees</h3>
+                <h3>Attendees ({listOfAttendes.length})</h3>
                 <div id="toggle-attendees" style={{width: "20vw"}} onClick={toggleAttendeesList}> 
                     <img src={dropdown_icon} class="dropdown-icon" style={showAttendees ? null : {transform: "rotate(-90deg)"}}/>
                     <span>{showAttendees ? "Hide Attendees" : "Show Attendees"}</span>

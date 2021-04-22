@@ -60,13 +60,20 @@ public class CommentTest {
 
                 System.out.println("---------- Testing parent comments ----------");
                 WebElement parentComment = driver.findElement(By.id("pComment"));
-                parentComment.sendKeys(Generator.generateRandomComment(i * 3));      // i=0 would send in an empty string, but the submit button will not appear if empty string
+                parentComment.sendKeys( Generator.generateRandomComment(i * 3));      // i=0 would send in an empty string, but the submit button will not appear if empty string
                 try {
                     WebElement parentSubmit = driver.findElement(By.id("pComment-button"));
                     parentSubmit.click();
                 } catch (NoSuchElementException e) {
                     if (i == 0) {
                         System.out.println("Parent comment box is empty string, hence parent-comment-submit button is disabled.\n");
+                        Thread.sleep(2000);
+                        System.out.println("Testing string with only whitespace");
+                        parentComment.sendKeys("                      ");
+                        Thread.sleep(500);
+                        WebElement parentSubmit = driver.findElement(By.id("pComment-button"));
+                        parentSubmit.click();
+                        System.out.println("Submit button appears and is clicked, but the comment is not submitted.");
                     } else {
                         System.out.println("Error!");
                     }
@@ -90,11 +97,11 @@ public class CommentTest {
                             System.out.println("Error!");
                         }
                     }
-                    Thread.sleep(2000);
                 } else {
                     System.out.println("No parent comments, hence no child-comment-box.");
                     System.out.println("Moving on to next iteration.\n");
                 }
+                Thread.sleep(2000);
 
                 // go back and choose next post to comment
                 driver.navigate().to("http://localhost:3000/");
@@ -111,7 +118,7 @@ public class CommentTest {
 class Generator {
     public static String generateRandomComment(int len) {
         String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk"
-                +"lmnopqrstuvwxyz!@#$%&";
+                +"lmnopqrstuvwxyz!@#$%&" + "      ";
         Random rnd = new Random();
         StringBuilder sb = new StringBuilder(len);
         for (int i = 0; i < len; i++)
