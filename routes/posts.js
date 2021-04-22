@@ -14,14 +14,19 @@ router.use(fileUpload());
 
 // insert date of creation
 router.post("/createPost", checkAuth, async (req, res) => {
-    const post_id = uuid.generateUuid();
-    const now = new Date()
-    const secondsSinceEpoch = Math.round(now.getTime() / 1000)
-    req.body.post_id = post_id;
-    req.body.dateOfCreation = secondsSinceEpoch;
-
-    const result = await db.createPost(req.body);
-    res.status(200).json({ success_post: req.body });
+   
+    if( Number.isInteger(req.body.postalCode) ){
+        const post_id = uuid.generateUuid();
+        const now = new Date()
+        const secondsSinceEpoch = Math.round(now.getTime() / 1000)
+        req.body.post_id = post_id;
+        req.body.dateOfCreation = secondsSinceEpoch;
+        const result = await db.createPost(req.body);
+        res.status(200).json({ success_post: req.body });
+    }else{
+        res.status(409).json({ error: "Invalid input." });
+    }
+    
 });
 
 // for dev use only
@@ -38,10 +43,15 @@ router.get("/searchPostsBasedOn",checkAuth, async (req, res) => {
         const fuse = new Fuse(postsJson, {
             keys: [
             'postTitle'],
-      });
-    posts= fuse.search(req.query.value)}
+        });
+        posts= fuse.search(req.query.value)
+    }
 
-    res.status(200).json({posts})
+    if(posts.length == 0){
+        res.status(409).json({error: "the post id is invalid"})
+    }else{
+        res.status(200).json({posts})
+    }
 });
 
 //Search using fuse js with all search result
@@ -76,7 +86,11 @@ router.get("/searchUsersPosts", checkAuth, async(req, res) => {
 
 router.get("/displayPostsDetails", checkAuth, async (req, res) => {
     const posts = await db.displayPostsDetailsBasedOnPost_id(req.query.post_id);
-    res.status(200).json({ posts })
+    if(posts.length == 0){
+        res.status(409).json({error: "the post id is invalid"})
+    }else{
+        res.status(200).json({posts})
+    }
 });
 
 router.get("/displayAttendUserListsOfThePost", checkAuth, async (req, res) => {
@@ -110,8 +124,13 @@ router.put("/updateUserListsOfThePost", checkAuth, async (req, res) => {
 
 
 router.delete("/deletePost", checkAuth, async (req, res) => {
-    await db.deletePost(req.query.post_id);
-    res.status(200).json({ success: true })
+    const result = await db.displayPostsDetailsBasedOnPost_id(req.query.post_id);
+    if(result.length != 0){
+        await db.deletePost(req.query.post_id);
+        res.status(200).json({ success: true })
+    }else{
+        res.status(409).json({ message: "The post id doesn't exist!"});
+    }
 });
 
 
@@ -128,11 +147,15 @@ router.put("/updatePost", checkAuth, async (req, res) => {
 
 router.get("/getPostTags", async (req, res) => {
     const tags = await db.getPostTags(req.query.post_id)
-    res.status(200).json({ tags })
+    if(tags.length == 0 ){
+        res.status(409).json({ error: "Invalid post id" })
+    }else{
+        res.status(200).json({ tags })
+    }
+
 });
 
 router.post("/addPostTags", checkAuth, async (req, res) => {
-    console.log(req.body)
     const result = await db.addPostTags(req.body)
     res.status(200).json({ "tags added": req.body });
 });
@@ -141,12 +164,13 @@ router.post("/addPostTags", checkAuth, async (req, res) => {
 
 router.get("/getPostPhoto", async (req, res) => {
     const img = await db.getPostPhoto(req.query.post_id)
-    if (img){
+    if (img.length != 0){
         res.status(200).json({photo:img})
     } else {
         res.status(400).json({message : "photo not found"})
     }
 });
+
 
 router.post("/postPhoto",checkAuth, async (req, res) =>{
     console.log('posting photos')

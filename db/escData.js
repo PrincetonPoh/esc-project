@@ -56,7 +56,9 @@ function updatePrimaryCodeByPostalCode(postalCode,primaryCode){
 
 
 function displayAttendPostListsOfTheUser(user_id){
-    return knex("attendPosts").where("user_id",user_id).join("posts","attendPosts.post_id","=","posts.post_id").select("posts.*");
+   return knex("attendPosts").where("user_id",user_id).join("posts","attendPosts.post_id","=","posts.post_id").select("posts.*");
+   //return knex("attendPosts").where("user_id",user_id).select("*");
+
 };
 
 function createPostListsOfTheUser(postList){

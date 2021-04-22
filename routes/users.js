@@ -3,6 +3,7 @@ const db = require('../db/escData');
 const uuid = require('../middleware/uuid');
 const checkAuth = require('../middleware/check-auth');
 const bodyParser = require('body-parser');
+const knex = require("../db/knex.js");
 const router = express.Router();
 
 
@@ -24,16 +25,20 @@ router.get("/getUserByUserName",checkAuth, async (req, res) => {
 router.post("/createUserDeveloper",checkAuth, async (req, res) =>{
     const user_id = uuid.generateUuid();
     req.body.user_id = user_id;
-
     const result = await db.createUser(req.body);
     res.status(200).json({success_user_id: user_id});
 });
 
 router.delete("/deleteUser",checkAuth, async (req, res) => {
-    // const result = await db.getAllUsers(req.params.id);
-    await db.deleteUser(req.query.user_id);
-    res.status(200).json({success:true})
+    const result = await db.getUserById(req.query.user_id);
+    if(result.length != 0){
+        await db.deleteUser(req.query.user_id);
+        res.status(200).json({success:true})
+    }else{
+        res.status(409).json({ message: "The user id doesn't exist!"});
+    }
 });
+
 router.put("/updateUser",checkAuth, async(req,res) =>{
     await db.updateUser(req.body);
     res.status(200).json({success:true})
@@ -62,12 +67,14 @@ router.put("/updatePrimaryCodeByPostalCode",checkAuth, async(req,res) =>{
     res.status(200).json({success:true})
 });
 
-
-
-
 router.get("/displayAttendPostListsOfTheUser",checkAuth, async (req, res) => {
-    const users = await db.displayAttendPostListsOfTheUser(req.query.user_id);
-    res.status(200).json({users})
+    const posts = await db.displayAttendPostListsOfTheUser(req.query.user_id);
+    console.log(posts);
+    if( posts.length == 0 ){
+        res.status(409).json({ message :"UserId is invalid"})
+    }else{
+        res.status(200).json({posts})
+    }
 });
 
 router.post("/createPostListsOfTheUser",checkAuth, async (req, res) =>{
