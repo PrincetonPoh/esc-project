@@ -42,9 +42,9 @@ public class CreatePostTest {
 			createRandomEmptyFieldPost(driver);
 		}
 
-		for (int i=0; i<3; i++) {
-			createRandomIllegalDatePost(driver);
-		}
+		// for (int i=0; i<3; i++) {
+		// 	createRandomIllegalDatePost(driver);  // removed because date no longer restricted to DD.MM.YYYY format
+		// }
 
 		System.out.println("Testing of CreatePost complete!"); 
 	}
@@ -86,7 +86,7 @@ public class CreatePostTest {
 		}
 
 		// fill in date field
-		driver.findElement(By.id(textInputFieldIDs[3])).sendKeys(randomDate());
+		driver.findElement(By.id(textInputFieldIDs[3])).sendKeys(randomText());
 		Thread.sleep(sleepDuration);
 
 		// select from dropdown
@@ -126,7 +126,7 @@ public class CreatePostTest {
 
 		// fill in date field
 		if (emptyFieldIndex != 3) {
-			driver.findElement(By.id(textInputFieldIDs[3])).sendKeys(randomDate());
+			driver.findElement(By.id(textInputFieldIDs[3])).sendKeys(randomText());
 			Thread.sleep(sleepDuration);
 		}
 
