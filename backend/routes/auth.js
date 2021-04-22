@@ -7,7 +7,7 @@ const uuid = require('../middleware/uuid');
 const nodemailer = require("nodemailer");
 const router = express.Router();
 
-const ipAddress = "localhost:1337"
+const ipAddress = "scratchtest.ddns.net:1337"
 
 // for testing. 
 let refreshTokens = []
