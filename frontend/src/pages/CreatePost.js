@@ -51,12 +51,12 @@ function CreatePost(props) {
         } else { // all compulsory fields are filled in, try post to backend
             let newDate = "";
             try {
-                newDate = convertDate(date);
+                // newDate = convertDate(date);
                 axios.post("http://localhost:1337/posts/createPost",
                     {
                         "owner_id": props.user.user_id,
                         "postTitle": title,
-                        "dateOfCreation": newDate,
+                        "dateOfPostEvent": date,
                         "postalCode": loc,
                         "description": desc,
                         "location": locationSelected

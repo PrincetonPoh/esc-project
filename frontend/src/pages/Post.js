@@ -225,14 +225,14 @@ function Post(props) {
                 </div>
                 <div>
                     <img src={calendar_icon} class="detailsIcon" />
-                    <p> {event.dateOfCreation != null ? timeConverter(event.dateOfCreation) : "Unknown Date"}</p> {/* this field should be date of event instead of dateOfCreation right? */}
+                    <p> {event.dateOfPostEvent != null ? event.dateOfPostEvent : "Unknown Date"}</p> {/* this field should be date of event instead of dateOfCreation right? */}
                 </div>
                 {/* {event.postalCode != null ? (<p>{event.postalCode}</p>) : <p>Unknown Location</p>} */}
             </div>
             <div id="event-owner-container">
                 <h3>Posted By</h3>
                 <img src={placeholderProfilePic} class="event-owner-profile-pic" />
-                <p id="event-owner">{owner != null ? owner.userName : "Unknown User"}</p>
+                <p id="event-owner">{owner != null ? owner.userName : "Unknown User"} on {event.dateOfCreation != null ? timeConverter(event.dateOfCreation) : "Unknown Date"}</p>
             </div>
             <div id="event-attending-container">
                 <h3>Attendees</h3>
