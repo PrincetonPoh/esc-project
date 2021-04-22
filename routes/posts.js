@@ -185,7 +185,7 @@ router.post("/postPhoto",checkAuth, async (req, res) =>{
         }
         try{
             const img = await db.postPhoto(photoData)
-            res.status(200).json({"message": "message added"});
+            res.status(200).json({"message": "photo added"});
         } catch (error){
             // console.log(error)
             res.status(409).json({"message": "probably non-unique post_id"})

@@ -71,15 +71,15 @@ it('testing to see deleteUser doesn\'t, work when user doesn\'t exist' , async d
 
 it('testing to see whether createPostListsOfTheUser work' , async done => {
     const response = await request.post('/users/createPostListsOfTheUser').send({
-        "post_id": "3ff05b38-efd2-4c64-bae2-fb2652a0a0e1",
-        "user_id": "237d491d-a421-418c-93a6-8da5b197e01c",
+        "post_id": "68fdd5cf-5016-4cf2-8c0e-8d6a8ebbfd8f",
+        "user_id": "509d721a-2da3-4c9f-b895-7a85f3a82e4d",
     });
     expect(response.status).toBe(200)
     done()
 })
 
 it('testing to see whether displayAttendPostListsOfTheUser work' , async done => {
-    const user_id="237d491d-a421-418c-93a6-8da5b197e01c"
+    const user_id="509d721a-2da3-4c9f-b895-7a85f3a82e4d"
     const response = await request.get('/users/displayAttendPostListsOfTheUser?user_id='+user_id)
     expect(response.status).toBe(200)
     done()
