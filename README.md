@@ -2,7 +2,7 @@
 
 ## Team C4G3
 
-1. Kong Yik Khuen (@Jukross)
+1. Kong Yik Khuen (@Jukocross)
 2. Tan Kewen (@kewennnnn)
 3. Princeton Poh (@PrincetonPoh)
 4. Wang Han (@We-here)
@@ -14,5 +14,5 @@ Source code, tests, and READMEs for backend and frontend found in the respective
 
 Branches of note:
 
-- `online`: all API changed to ddns url used for hosting
+- `online`: all APIs changed to ddns url used for hosting
 - `backendPrinceton`: development branch for backend
