@@ -40,7 +40,6 @@ it('testing to see whether createUser work', async done => {
         "emailAddress": "prince@gmail.com",
         "password": "asd123"
     });
-    // console.log("create already exist user "+response.status)
     expect(response.status).toBe(200)
     done()
 })
@@ -52,16 +51,44 @@ it('testing to see whether createUser work for repeated input fields', async don
         "emailAddress": "prince@gmail.com",
         "password": "asd123"
     });
-    // console.log("create already exist user "+response.status)
     expect(response.status).toBe(409)
     done()
 })
 
 it('testing to see whether deleteUser work', async done => {
-    const userId="a24b42c9-2526-4a93-8406-5cc8d33bb0c0";
-    const response = await request.delete('/users/deleteUser/?user_id='+userId)
-    // console.log("delete non exist user is "+response.status)
+   const userId= await knex('users').where('userName','honghonghuohuo').select('user_id');
+    const response = await request.delete('/users/deleteUser/?user_id='+userId[0].user_id)
     expect(response.status).toBe(200)
+    done()
+})
+
+it('testing to see deleteUser doesn\'t, work when user doesn\'t exist' , async done => {
+    const userId= "invalid_user_id";
+    const response = await request.delete('/users/deleteUser/?user_id='+userId)
+    expect(response.status).toBe(409)
+    done()
+})
+
+it('testing to see whether createPostListsOfTheUser work' , async done => {
+    const response = await request.post('/users/createPostListsOfTheUser').send({
+        "post_id": "3ff05b38-efd2-4c64-bae2-fb2652a0a0e1",
+        "user_id": "237d491d-a421-418c-93a6-8da5b197e01c",
+    });
+    expect(response.status).toBe(200)
+    done()
+})
+
+it('testing to see whether displayAttendPostListsOfTheUser work' , async done => {
+    const user_id="237d491d-a421-418c-93a6-8da5b197e01c"
+    const response = await request.get('/users/displayAttendPostListsOfTheUser?user_id='+user_id)
+    expect(response.status).toBe(200)
+    done()
+})
+
+it('testing to see whether displayAttendPostListsOfTheUser doesn\'t work with invalid user id' , async done => {
+    const testUser_id="invalid user id"
+    const response = await request.get('/users/displayAttendPostListsOfTheUser?user_id='+testUser_id)
+    expect(response.status).toBe(409)
     done()
 })
 
@@ -69,7 +96,15 @@ afterAll( async() => {
    await knex('users')
   .where({ phoneNumber: 1232100008 })
   .del();
+
+  
+  await knex('attendPosts')
+  .where({post_id : "3ff05b38-efd2-4c64-bae2-fb2652a0a0e1"})
+  .where({user_id: "237d491d-a421-418c-93a6-8da5b197e01c"})
+  .del();
+
 })
+
 
 /*
 it('testing to see whether getPrimaryCodeByPostalCode work', async done => {

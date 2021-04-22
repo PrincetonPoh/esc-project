@@ -2,6 +2,8 @@ const supertest = require('supertest');
 const app = require('../server');
 const request = supertest(app);
 
+const knex = require("../db/knex.js");
+
 beforeAll(() => {
     process.env.NODE_ENV = 'test';
 })
@@ -13,11 +15,27 @@ it('testing to see whether searchPostsByPostTitle work', async done => {
     done()
 });
 
-
 it('testing to see whether getPostsDetailsByPostId work', async done => {
-    const testPostId = "4"
-    const response = await request.get('/posts/DisplayPostsDetails?post_id='+testPostId)
+
+    const testPostId= await knex('posts').where('postTitle','3treeg1dwed2d').select('post_id');
+    const response = await request.get('/posts/DisplayPostsDetails?post_id='+testPostId[0].post_id)
     expect(response.status).toBe(200)
+    done()
+});
+
+it('testing to see whether createUserListsOfThePost work', async done => {
+    const testPostId = "50bdb0bc-f404-4499-a940-50590d243554"
+    const testUserName= "yoyoman"
+    const testPhoneNumber="121232131212"
+    const response = await request.post('/posts/createUserListsOfThePost?post_id='+testPostId+"&userName="+testUserName+"&phoneNumber="+testPhoneNumber)
+    expect(response.status).toBe(200)
+    done()
+});
+
+it('testing to see whether DisplayPostsDetails doesn\'t work with invalid postid', async done => {
+    const testPostId = "invalid_post"
+    const response = await request.get('/posts/DisplayPostsDetails?post_id='+testPostId)
+    expect(response.status).toBe(409)
     done()
 });
 
@@ -29,17 +47,42 @@ it('testing to see whether DisplayAttendUserListsOfThePost work', async done => 
     done()
 });
 
+
+it('testing to see whether add post tags work', async done => {
+    const response = await request.post('/posts/addPostTags').send({
+        "post_id": "311143",
+        "tags":"Test tags"
+    });
+    expect(response.status).toBe(200)
+    done()
+});
+
 it('testing to see whether get post tags work', async done => {
-    const testPostId = "4yu213iu12o3iu12oi3u12o33"
+    const testPostId = "311143"
     const response = await request.get('/posts/getPostTags?post_id='+testPostId)
     expect(response.status).toBe(200)
     done()
 });
 
+it('testing to see get post tags doesn\'t work with invalid post id', async done => {
+    const testPostId = "invalid post id"
+    const response = await request.get('/posts/getPostTags?post_id='+testPostId)
+    expect(response.status).toBe(409)
+    done()
+});
+
+
 it('testing to see whether get photo work', async done => {
     const testPostId = "d20ad2ce-34ee-4a42-8cf0-45cf65bba749"
     const response = await request.get('/posts/getPostPhoto?post_id='+testPostId)
     expect(response.status).toBe(200)
+    done()
+});
+
+it('testing to see whether get photo doesn\'t work with invalid post id', async done => {
+    const testPostId = "invalid post id"
+    const response = await request.get('/posts/getPostPhoto?post_id='+testPostId)
+    expect(response.status).toBe(400)
     done()
 });
 
@@ -54,10 +97,28 @@ it('testing to see whether create post work', async done => {
     done()
 });
 
+it('testing to see whether create post doesn\'t work with invalid input', async done => {
+    const response = await request.post('/posts/createPost').send({
+        "owner_id": "311143",
+        "postTitle": "3treeg1dwed2d",
+        "postalCode": "6fwsf133",
+        "description": "dwdwedwdees"
+    });
+    expect(response.status).toBe(409)
+    done()
+});
+
 it('testing to see whether delete post work', async done => {
-    const testPostId = "d20ad2ce-34ee-4a42-8cf0-45cf65bba749"
-    const response = await request.delete('/posts/deletePost/?post_id='+testPostId)
+    const testPostId= await knex('posts').where('postTitle','3treeg1dwed2d').select('post_id');
+    const response = await request.delete('/posts/deletePost/?post_id='+testPostId[0].post_id)
     expect(response.status).toBe(200)
+    done()
+});
+
+it('testing to see whether delete post work', async done => {
+    const testPostId = "invalid"
+    const response = await request.delete('/posts/deletePost/?post_id='+testPostId)
+    expect(response.status).toBe(409)
     done()
 });
 
@@ -70,14 +131,7 @@ it('testing to see whether deleteUserListsOfThePost work', async done => {
     done()
 });
 
-it('testing to see whether createUserListsOfThePost work', async done => {
-    const testPostId = "50bdb0bc-f404-4499-a940-50590d243554"
-    const testUserName= "yoyoman"
-    const testPhoneNumber="121232131212"
-    const response = await request.post('/posts/createUserListsOfThePost?post_id='+testPostId+"&userName="+testUserName+"&phoneNumber="+testPhoneNumber)
-    expect(response.status).toBe(200)
-    done()
-});
+
 
 //need have one more add tag to post
 /*
