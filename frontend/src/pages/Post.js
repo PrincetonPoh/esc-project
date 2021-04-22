@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import CommentBox from '../components/CommentBox'
+import CommentBox from '../components/Comment/CommentBox'
 import '../styles/Post.css';
 import calendar_icon from '../media/calendar_icon.png';
 import location_icon from '../media/location_icon.png';
@@ -172,21 +172,20 @@ function Post(props) {
     }
 
     const checkAttendingButton = () => {
-        console.log()
         if (attending) {
-            return <button onClick={unAttendPost} id="attending-button">Unattend Event</button>
+            return <button onClick={unAttendPost} id="unattend-button" className="attending-button">Unattend Event</button>
         } else {
-            return <button onClick={attendPost} id="attending-button">Attend Event</button>
+            return <button onClick={attendPost} id="attend-button" className="attending-button">Attend Event</button>
         }
     }
 
     const lists = () => {
         let list = listOfAttendes.map((attendes) => {
-            return <li>{attendes.userName}</li>
+            return <li id={attendes.userName}>{attendes.userName}</li>
         })
         console.log(list);
         if (list.length == 0) {
-            return <li>No attendees yet!</li>
+            return <li id="none">No attendees yet!</li>
         } 
         return list;
     }
@@ -236,10 +235,10 @@ function Post(props) {
             </div>
             <div id="event-attending-container">
                 <h3>Attendees</h3>
-                <div id="toggle-attendees" onClick={toggleAttendeesList}> 
+                <div id="toggle-attendees" style={{width: "20vw"}} onClick={toggleAttendeesList}> 
                     <img src={dropdown_icon} class="dropdown-icon" style={showAttendees ? null : {transform: "rotate(-90deg)"}}/>
                     <span>{showAttendees ? "Hide Attendees" : "Show Attendees"}</span>
-                    {showAttendees ? <ul>{lists()}</ul> : null}
+                    {showAttendees ? <ul id="attendance">{lists()}</ul> : null}
                 </div>
                 
                 {isUser ? null : checkAttendingButton()} 

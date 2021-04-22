@@ -21,7 +21,7 @@ class AttendancePopup extends Component {
     });
     console.log(list);
     if (list.length == 0) {
-        return <li>No attendees yet!</li>
+        return <li id="none">No attendees yet!</li>
     }
     else {
         return list;

@@ -74,7 +74,7 @@ class EventCards extends React.Component {
                 </div>
                 <div>
                     <img src={attendance} class="customCardIcon"/>
-                    <p class="customCardDetails"> <span>No. of attendees</span> {attendeeNo}</p>
+                    <p class="customCardDetails" id="attendanceNo"> <span>No. of attendees</span> {attendeeNo}</p>
                 </div>
             </div>
         );
@@ -88,9 +88,9 @@ class EventCards extends React.Component {
 
     render() {
         return (
-            <div class="customCard" onClick={this.checkLoggedIn}>
+            <div class="customCard" id={this.state.post_id} onClick={this.checkLoggedIn}>
                 {this.props.enableDelete ? <img src={trash_icon} class="customCardDeleteIcon customCardTopRightIcon" onClick={this.toggleDelPopUp}/> : null}
-                {this.props.enableDelete ? <img src={attendance_icon} class="customCardTopRightIcon" onClick={this.toggleAttendancePopUp}/> : null}
+                {this.props.enableDelete ? <img src={attendance_icon} class="customCardTopRightIcon" id="checkAttendance" onClick={this.toggleAttendancePopUp}/> : null}
                 {this.props.isLogin ? (
                     <Link to={this.state.postDetails}>
                         {this.childCard(this.props.event.postTitle, this.props.event.postalCode, this.props.event.dateOfPostEvent, this.state.attendees.length)}

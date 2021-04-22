@@ -74,7 +74,7 @@ function User(props){
     return (
         <div id="user-posts-container">
             <div class="row justify-content-between">
-                <div class="col">
+                <div class="col" id="myEvents">
                     <h1 id="user-posts-header"> Your Posts </h1>
                     <div class="sort-container">
                         <div id="sortResults">{sortResult} Results</div>
@@ -91,7 +91,7 @@ function User(props){
                     : (<div class="cards-container">{cardify(events, true)}</div>)}
                     {/* {isLoading ? (<p class="loading-message">Events loading... </p>) :(<div class="cards-container">{cardify(events)}</div>)} */}
                 </div>
-                <div class="col">
+                <div class="col" id="subbedEvents">
                     <h1> Your subscribed events </h1>
                     <div class="sort-container">
                         <div id="attendingResults">{attendingNo} Results</div>

@@ -6,87 +6,112 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.util.List;
+import org.openqa.selenium.NoSuchElementException;
 import java.util.Random;
 
 public class CommentTest {
 
     public static void main(String[] args) throws InterruptedException {
 
-        // this test is conducted with the assumption that user has already logged in
+        // this test is conducted with the assumption that user has an existing account
 
-        System.setProperty("webdriver.chrome.driver", "C:/Users/JH/Desktop/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver","C:/Users/JH/Desktop/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
 
         driver.get("http://localhost:3000/");
+        // driver.get("http://scratchtest.ddns.net/");
 
         // click signin button on navbar to trigger signinpopup
         driver.findElement(By.id("signin-button")).click();
         System.out.println("signin-button clicked!");
         Thread.sleep(1000);
-        // activatePopup();
 
         // fill in credentials field
-        driver.findElement(By.id("signin-creds")).sendKeys("princeton15");
+        driver.findElement(By.id("signin-creds")).sendKeys("sff");
         Thread.sleep(1000);
 
         // fill in password field
-        driver.findElement(By.id("signin-password")).sendKeys("asd123");
+        driver.findElement(By.id("signin-password")).sendKeys("000");
         Thread.sleep(1000);
 
         // click signin button on popup to submit
-        driver.findElement(By.id("signin-popup-button")).click();
+        driver.findElement(By.id("popup-button")).click();
         System.out.println("signin-popup-button clicked!");
         Thread.sleep(1000);
 
         // dismiss alert for successful signin
         driver.switchTo().alert().accept();
         System.out.println("alert dismissed!");
-        Thread.sleep(1000);
+        Thread.sleep(3000);
 
         // get all event cards, then choose one at random to comment
         List<WebElement> events = driver.findElements(By.className("customCard"));
         Random next = new Random();
+        if (events.size() > 0) {
+            for (int i = 0; i < 5; i++) {
+                // System.out.println(events);
+                WebElement nextPost = events.get(next.nextInt(events.size()));
+                WebDriverWait wait = new WebDriverWait(driver, 10);
+                wait.until(ExpectedConditions.elementToBeClickable(nextPost));
+                nextPost.click();
 
-        for (int i = 0; i < 10; i++) {
-            System.out.println(events);
-            WebElement nextPost = events.get(next.nextInt(events.size()));
-            WebDriverWait wait = new WebDriverWait(driver, 10);
-            wait.until(ExpectedConditions.elementToBeClickable(nextPost));
-            nextPost.click();
+                Thread.sleep(1000);
 
-            Thread.sleep(1000);
+                System.out.println("---------- Testing parent comments ----------");
+                WebElement parentComment = driver.findElement(By.id("pComment"));
+                parentComment.sendKeys(Generator.generateRandomComment(i * 3));      // i=0 would send in an empty string, but the submit button will not appear if empty string
+                try {
+                    WebElement parentSubmit = driver.findElement(By.id("pComment-button"));
+                    parentSubmit.click();
+                } catch (NoSuchElementException e) {
+                    if (i == 0) {
+                        System.out.println("Parent comment box is empty string, hence parent-comment-submit button is disabled.\n");
+                    } else {
+                        System.out.println("Error!");
+                    }
+                }
 
-            WebElement parentComment = driver.findElement(By.id("pComment"));
-            parentComment.sendKeys(Generator.generateRandomPassword(i + 10)); // i=0 would send in an empty string, but
-                                                                              // the submit button will not be appear if
-                                                                              // empty string
-            WebElement parentSubmit = driver.findElement(By.id("pComment-button"));
-            parentSubmit.click();
+                Thread.sleep(2000);
 
-            Thread.sleep(3000);
+                System.out.println("---------- Testing child comments ----------");
+                List<WebElement> childComments = driver.findElements(By.id("cCommentForm"));
+                if (childComments.size() > 0) {
+                    WebElement childComment = childComments.get(next.nextInt(childComments.size()));
+                    WebElement childCommentForm = childComment.findElement(By.id("cComment"));
+                    childCommentForm.sendKeys(Generator.generateRandomComment(i * 3));   // i=0 would send in an empty string, but the submit button will not appear if empty string
+                    try {
+                        WebElement childSubmit = childComment.findElement(By.id("cComment-button"));
+                        childSubmit.click();
+                    } catch (NoSuchElementException e) {
+                        if (i == 0) {
+                            System.out.println("Child comment box is empty string, hence child-comment-submit button is disabled.\n");
+                        } else {
+                            System.out.println("Error!");
+                        }
+                    }
+                    Thread.sleep(2000);
+                } else {
+                    System.out.println("No parent comments, hence no child-comment-box.");
+                    System.out.println("Moving on to next iteration.\n");
+                }
 
-            List<WebElement> childComments = driver.findElements(By.id("cCommentForm"));
-            WebElement childComment = childComments.get(next.nextInt(childComments.size()));
-            WebElement childCommentForm = childComment.findElement(By.id("cComment"));
-            childCommentForm.sendKeys(Generator.generateRandomPassword(i + 10)); // i=0 would send in an empty string,
-                                                                                 // but the submit button will not be
-                                                                                 // appear if empty string
-            WebElement childSubmit = childComment.findElement(By.id("cComment-button"));
-            childSubmit.click();
-
-            Thread.sleep(3000);
-
-            driver.navigate().to("http://localhost:3000/");
-            events = driver.findElements(By.className("customCard"));
+                // go back and choose next post to comment
+                driver.navigate().to("http://localhost:3000/");
+                Thread.sleep(3000);
+                events = driver.findElements(By.className("customCard"));
+            }
+        }
+        else {
+            System.out.println("No posts to comment.");
         }
     }
 }
 
 class Generator {
-    public static String generateRandomPassword(int len) {
-        String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk" + "lmnopqrstuvwxyz!@#$%&";
+    public static String generateRandomComment(int len) {
+        String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk"
+                +"lmnopqrstuvwxyz!@#$%&";
         Random rnd = new Random();
         StringBuilder sb = new StringBuilder(len);
         for (int i = 0; i < len; i++)
