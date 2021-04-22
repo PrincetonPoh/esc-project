@@ -16,6 +16,7 @@ function User(props){
     const [attending, setAttending] = useState([]);
     const [attendingNo, setAttendingNo] = useState(0);
     const [attendSort, setAttendSort] = useState("newestPosts");
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         const fetchEvents = async() => {
@@ -28,7 +29,7 @@ function User(props){
             setIsLoading(false);
         }
         fetchEvents();
-    }, [])
+    }, [refresh, ])
 
     useEffect(() => {
         const fetchAttending = async() => {
@@ -41,9 +42,13 @@ function User(props){
         fetchAttending();
     }, [])
 
+    const triggerRefresh = () => {
+        setRefresh(!refresh);
+    }
+
     const cardify = (events, enableDelete) => {
         return events.map((event) => {
-            return <EventCards event={event} isLogin={true} enableDelete={enableDelete} config={props.config}/>;
+            return <EventCards event={event} isLogin={true} enableDelete={enableDelete} config={props.config} setRefresh={triggerRefresh}/>;
         })
     }
 
