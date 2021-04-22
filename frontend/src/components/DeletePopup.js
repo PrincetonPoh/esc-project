@@ -22,13 +22,9 @@ class DeletePopup extends Component {
       console.log(result);
       if (result.data.success == true) {
         this.props.toggle();
-<<<<<<< HEAD
-        window.location.reload();
-=======
->>>>>>> ab9d5c07 (Fixed refresh after delete)
         this.setState({ errorMessage: "" });
         alert("Post deleted successfully!");
-        this.props.setRefresh(true);
+        this.props.setRefresh();
       } else {
         this.setState({ errorMessage: "An error occurred, please try again later." });
       }
