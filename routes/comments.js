@@ -16,6 +16,10 @@ router.get("/getParentComments",checkAuth, async (req, res) => {
 router.post("/createParentComment",checkAuth, async (req, res) =>{
     const parent_comment_id= uuid.generateUuid();
     req.body.parent_comment_id = parent_comment_id;
+    if (req.body.post_id == undefined || req.body.text == undefined) {
+        res.status(400).json({error:"undefined post_id or text field"})
+        return false
+    } 
     const result = await db.createParentComment(req.body);
     res.status(200).json({success_parent_comment_id: parent_comment_id});
 });

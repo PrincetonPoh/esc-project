@@ -16,6 +16,15 @@ it('testing to see whether createParentComment work', async done => {
     done()
 });
 
+it('testing failed createParentComment', async done => {
+    const response = await request.post('/comments/createParentComment').send({
+        "text": "this is my very 2nd p.commmnett!",
+        "ownerName":"princeton6"
+    })
+    expect(response.status).toBe(400)
+    done()
+});
+
 it('testing to see whether getParentComments work', async done => {
     const response = await request.get('/comments/getParentComments?post_id=4')
     expect(response.status).toBe(200)
