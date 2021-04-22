@@ -22,7 +22,7 @@ class DeletePopup extends Component {
       console.log(result);
       if (result.data.success == true) {
         this.props.toggle();
-        // window.location.reload(false);
+        window.location.reload();
         this.setState({ errorMessage: "" });
         alert("Post deleted successfully!");
       } else {

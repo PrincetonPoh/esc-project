@@ -30,7 +30,7 @@ public class CreatePostTest {
 
 		signIn(driver);
 
-		for (int i=0; i<10; i++) {
+		for (int i=0; i<6; i++) {
 			createRandomPost(driver);
 		}
 
@@ -147,7 +147,7 @@ public class CreatePostTest {
 	}
 
 	static void createRandomIllegalDatePost(WebDriver driver) throws InterruptedException {
-		System.out.println("==========================\nFilling in random inputs");
+		System.out.println("==========================\nFilling in random inputs with illegal date");
 
 		// go to create post page 
 		driver.findElement(By.id("create-post-button")).click();
