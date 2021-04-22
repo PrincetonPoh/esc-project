@@ -98,7 +98,7 @@ class EventCards extends React.Component {
                     (<div>
                         {this.childCard(this.props.event.postTitle, this.props.event.postalCode, this.props.event.dateOfCreation, this.state.attendees.length)}
                     </div>)}
-                {this.state.delPopUp ?  <DeletePopup toggle={this.toggleDelPopUp} event={this.props.event} config={this.props.config}/>  : null } 
+                {this.state.delPopUp ?  <DeletePopup toggle={this.toggleDelPopUp} event={this.props.event} config={this.props.config} setRefresh={this.props.setRefresh}/>  : null } 
                 {this.state.attendancePopUp ? <AttendancePopup toggle={this.toggleAttendancePopUp} attendees={this.state.attendees}/> : null }
             </div >
         )
