@@ -36,7 +36,7 @@ Test files can be found under the `frontend` folder. These mostly consist of sys
 - `CreatePostTest` uses a fuzzer to generate random inputs to fill in the different fields required when creating a post. Preset inputs are also used to create a few posts.
 - `SiteNavigationTest` clicks different links to navigate to different pages on the web app.
 - `SigninPopupTest` tests the sign in functionality by logging in with valid credentials and attempting to do so with invalid ones. Field validation is also detected by checking if the relevant error messages appear.
-- `CommentTest` uses a simple fuzzer to generate random plain text to fill in both the parent and child comment fields (comment threads). Of note is that the comment-submit button on these fields are disabled till the user enters a non-empty string, and subsequently all leading and trailing whitespaces are stripped. If string is stil empty, it will not be posted.
+- `CommentTest` uses a simple fuzzer to generate random plain text to fill in both the parent and child comment fields (comment threads). Of note is that the comment-submit button on these fields are disabled till the user enters a non-empty string. If string consists of purely whitespaces, it will not be posted as well.
 - `AttendTest` clicks through the many posts and toggles the attend/unattend event on the posts (depending on whether user has indicated his/her attendance prior). It will check for the user's name being added to the attendance list, check if this 'subscribed' event is then added to his/her overview page, and lastly check if the user's _own_ posts are able to return their attendance list.
 
 # Further Possible Improvements

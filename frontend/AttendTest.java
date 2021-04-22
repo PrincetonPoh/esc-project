@@ -162,7 +162,7 @@ public class AttendTest {
                         throw new InterruptedException("Profile page error");
                     }
                 }
-                Thread.sleep(1000);
+                Thread.sleep(2000);
                 System.out.println("Next, testing my own posts.");
                 WebElement postCol = driver.findElement(By.id("myEvents"));
                 List<WebElement> myPosts = postCol.findElements(By.className("customCard"));
@@ -199,7 +199,7 @@ public class AttendTest {
                 System.out.println("This is my own post.");
                 Thread.sleep(1000);
                 System.out.println("As owner of the event, I am implied to be attending, hence there will be no attend-button.");
-                Thread.sleep(1000);
+                Thread.sleep(2000);
                 System.out.println("Continuing with test...");
             }
 
