@@ -60,7 +60,7 @@ class EventCards extends React.Component {
         });
     }
 
-    childCard(postTitle, postalCode, dateOfCreation, attendeeNo) {
+    childCard(postTitle, postalCode, dateOfPostEvent, attendeeNo) {
         return (
             <div class="customCardContainer">
                 <h2 class="customCardTitle">{postTitle}</h2>
@@ -70,7 +70,7 @@ class EventCards extends React.Component {
                 </div>
                 <div>
                     <img src={calendar_icon} class="customCardIcon"/>
-                    <p class="customCardDetails"> <span>Date:</span> {this.timeConverter(dateOfCreation)}</p>
+                    <p class="customCardDetails"> <span>Date:</span> {dateOfPostEvent}</p>
                 </div>
                 <div>
                     <img src={attendance} class="customCardIcon"/>
@@ -93,10 +93,10 @@ class EventCards extends React.Component {
                 {this.props.enableDelete ? <img src={attendance_icon} class="customCardTopRightIcon" onClick={this.toggleAttendancePopUp}/> : null}
                 {this.props.isLogin ? (
                     <Link to={this.state.postDetails}>
-                        {this.childCard(this.props.event.postTitle, this.props.event.postalCode, this.props.event.dateOfCreation, this.state.attendees.length)}
+                        {this.childCard(this.props.event.postTitle, this.props.event.postalCode, this.props.event.dateOfPostEvent, this.state.attendees.length)}
                     </Link>) :
                     (<div>
-                        {this.childCard(this.props.event.postTitle, this.props.event.postalCode, this.props.event.dateOfCreation, this.state.attendees.length)}
+                        {this.childCard(this.props.event.postTitle, this.props.event.postalCode, this.props.event.dateOfPostEvent, this.state.attendees.length)}
                     </div>)}
                 {this.state.delPopUp ?  <DeletePopup toggle={this.toggleDelPopUp} event={this.props.event} config={this.props.config}/>  : null } 
                 {this.state.attendancePopUp ? <AttendancePopup toggle={this.toggleAttendancePopUp} attendees={this.state.attendees}/> : null }

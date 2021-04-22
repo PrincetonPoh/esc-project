@@ -58,7 +58,7 @@ class ChildComments extends React.Component {
                             <div key={index}>
                                 <hr/>
                                 <img src={placeholderProfilePic} class="profile-pic"/> 
-                                <h3 class="commenter-username">{element.ownerName}</h3>
+                                <h3 class="commenter-username">{element.ownerName==null ? "Unknown User": element.ownerName}</h3>
                                 <p class="comment-content">{element.text}</p>
                             </div>
                         )
