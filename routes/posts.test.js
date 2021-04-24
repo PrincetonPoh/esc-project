@@ -76,12 +76,13 @@ it('testing to see whether DisplayPostsDetails doesn\'t work with invalid postid
 
 it('testing to see whether add post tags work', async done => {
     const response = await request.post('/posts/addPostTags').send({
-        "post_id": "311143",
-        "tags":"Test tags"
+        "post_id": "d20ad2ce-34ee-4a42-8cf0-45cf65bba749",
+        "tags" : "string of tags insert here pls"
     });
     expect(response.status).toBe(200)
     done()
 });
+
 
 it('testing to see whether get post tags work', async done => {
     const testPostId = "311143"
@@ -95,13 +96,6 @@ it('testing to see get post tags doesn\'t work with invalid post id', async done
     const response = await request.get('/posts/getPostTags?post_id='+testPostId)
     expect(response.status).toBe(409)
     done()
-});
-
-it('testing to see whether add photo work', async done => {
- const testPostId = "3ff05b38-efd2-4c64-bae2-fb2652a0a0e1"
- const response = await request.post('/posts/postPhoto?post_id=='+testPostId).set('content-type', 'multipart/form-data').attach('pic',  '1.jpg');
- expect(response.status).toBe(200)
- done()
 });
 
 
@@ -138,14 +132,6 @@ it('testing to see whether deleteUserListsOfThePost work', async done => {
 
 
 
-it('testing to see whether add post tags work', async done => {
-    const response = await request.post('/posts/addPostTags').send({
-        "post_id": "d20ad2ce-34ee-4a42-8cf0-45cf65bba749",
-        "tags" : "string of tags insert here pls"
-    });
-    expect(response.status).toBe(200)
-    done()
-});
 
 
 
